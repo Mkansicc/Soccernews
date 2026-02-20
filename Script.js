@@ -20,7 +20,7 @@ const fixtures = [
   { date: "2026-02-22", time: "16:00", home: "Real Rangers", away: "W/ Masters", venue: "Real", status: "Week 2 • Stream B" }
 ];
 
-// WEEK 1 RESULTS 
+// WEEK 1 RESULTS (from sheet)
 const resultsA = [
   { home: "FC Wonderous", away: "Royal Tigers", homeGoals: 0, awayGoals: 2, notes: "W/O" },
   { home: "Fast 11", away: "Crusaders", homeGoals: 0, awayGoals: 2, notes: "" },
