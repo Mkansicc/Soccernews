@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welverdiend Soccer League | BLFA Updates</title>
+  <meta name="description" content="Local league updates for Welverdiend Soccer League under BLFA: fixtures, results, standings, team info, donations, and photos." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">⚽</div>
+        <div class="brand-text">
+          <div class="brand-title">Welverdiend Soccer League</div>
+          <div class="brand-subtitle">Under BLFA (Bushbuckridge Local Football Association)</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#fixtures">Next Matches</a>
+        <a href="#results">Results</a>
+        <a href="#standings">Standings</a>
+        <a href="#team">Team</a>
+        <a href="#photos">Photos</a>
+        <a class="btn btn-donate" href="#donate" title="Sponsor / Donate">
+          💛 Donate
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1>Soccer Updates, Fixtures & Standings</h1>
+          <p class="muted">
+            Official updates page for Welverdiend Soccer League. Follow upcoming matches, latest results,
+            and league standings — plus team details and sponsorship support.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn" href="#fixtures">View Next Matches</a>
+            <a class="btn btn-outline" href="#standings">View Standings</a>
+          </div>
+
+          <div class="quick-cards">
+            <div class="card">
+              <div class="card-title">Next Match</div>
+              <div id="nextMatch" class="card-big">Loading…</div>
+              <div id="nextMatchMeta" class="muted small"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">Latest Result</div>
+              <div id="latestResult" class="card-big">Loading…</div>
+              <div id="latestResultMeta" class="muted small"></div>
+            </div>
+            <div class="card">
+              <div class="card-title">League Status</div>
+              <div class="card-big">Live Log</div>
+              <div class="muted small">Fixtures • Results • Standings</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="card card-highlight">
+            <div class="card-title">Important Notice</div>
+            <p class="muted">
+              This page is managed by the league admin. Updates can be posted weekly after matches.
+            </p>
+            <div class="notice">
+              <span aria-hidden="true">📍</span>
+              <div>
+                <div class="notice-title">Home Ground</div>
+                <div id="homeGround" class="muted small">Welverdiend Sports Ground</div>
+              </div>
+            </div>
+
+            <div class="notice">
+              <span aria-hidden="true">📞</span>
+              <div>
+                <div class="notice-title">Contact</div>
+                <div id="contactInfo" class="muted small">League Secretary: +27 …</div>
+              </div>
+            </div>
+
+            <a class="btn btn-donate wide" href="#donate">💛 Sponsor / Donate</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIXTURES -->
+    <section id="fixtures" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Next Matches (Fixtures)</h2>
+          <div class="tools">
+            <input id="fixtureSearch" class="input" placeholder="Search team (e.g., Tigers)..." />
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" aria-label="Next matches">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Match</th>
+                <th>Venue</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="fixturesBody"></tbody>
+          </table>
+        </div>
+
+        <p class="muted small">Tip: Update fixtures in <code>script.js</code> (the <code>fixtures</code> list).</p>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>Match Results</h2>
+          <div class="tools">
+            <input id="resultSearch" class="input" placeholder="Search team (e.g., United)..." />
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" aria-label="Match results">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Match</th>
+                <th>Score</th>
+                <th>Venue</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+
+        <p class="muted small">Tip: Update results in <code>script.js</code> (the <code>results</code> list).</p>
+      </div>
+    </section>
+
+    <!-- STANDINGS -->
+    <section id="standings" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>League Standings (Log)</h2>
+          <div class="tools">
+            <button id="sortStandingsBtn" class="btn btn-outline small-btn" type="button">Sort by Points</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" aria-label="League standings">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>MP</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Pts</th>
+              </tr>
+            </thead>
+            <tbody id="standingsBody"></tbody>
+          </table>
+        </div>
+
+        <p class="muted small">Tip: Update standings in <code>script.js</code> (the <code>standings</code> list).</p>
+      </div>
+    </section>
+
+    <!-- TEAM INFO -->
+    <section id="team" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>Team & Executive Members</h2>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Executive Committee</div>
+            <ul id="execList" class="list"></ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Captain</div>
+            <div id="captainBox" class="profile"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Team Banking Details</div>
+            <div id="bankBox" class="bank"></div>
+            <p class="muted small">
+              Note: Please confirm details before publishing publicly. You can also hide account number by showing last 4 digits only.
+            </p>
+          </div>
+
+          <div id="donate" class="card card-highlight">
+            <div class="card-title">Sponsor / Donate</div>
+            <p class="muted">
+              Support kits, transport, match balls, and youth development. Tap below to donate.
+            </p>
+
+            <div class="donate-actions">
+              <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">
+                💛 Donate Now
+              </a>
+              <div class="muted small">Or pay via bank transfer using the details on the left.</div>
+            </div>
+
+            <div class="sponsor-logos">
+              <div class="sponsor-pill" title="Sponsor badge">🏷️ Sponsor</div>
+              <div class="sponsor-pill" title="Community partner">🤝 Partner</div>
+              <div class="sponsor-pill" title="Youth support">🧒 Youth</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHOTOS -->
+    <section id="photos" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Team Photos (Slideshow)</h2>
+          <div class="tools">
+            <button class="btn btn-outline small-btn" type="button" id="prevPhoto">◀</button>
+            <button class="btn btn-outline small-btn" type="button" id="nextPhoto">▶</button>
+          </div>
+        </div>
+
+        <div class="slideshow card">
+          <div class="slide-frame">
+            <img id="slideImage" alt="Team photo slideshow" />
+          </div>
+          <div class="slide-caption">
+            <div id="slideTitle" class="slide-title">Loading…</div>
+            <div id="slideMeta" class="muted small"></div>
+          </div>
+        </div>
+
+        <p class="muted small">
+          Tip: Put photos in the same folder (or an <code>images/</code> folder) and update <code>photoSlides</code> in <code>script.js</code>.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="muted small">
+          © <span id="yearNow"></span> Welverdiend Soccer League • Under BLFA
+        </div>
+        <div class="muted small">
+          Built for GitHub Pages • Updates managed by league admin
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
