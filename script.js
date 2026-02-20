@@ -1,4 +1,4 @@
-// WSL - Full Script.js (Fixtures + Results + Slideshow)
+// WSL - Full script.js (Fixtures + Results + Slideshow)
 // If you still see "Loading fixtures..." then this file is NOT loading.
 
 const donateUrl = "https://www.paypal.com/";
