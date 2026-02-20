@@ -1,13 +1,9 @@
-// =====================
-// WSL WEBSITE - FULL Script.js
-// =====================
+// WSL - Full Script.js (Fixtures + Results + Slideshow)
+// If you still see "Loading fixtures..." then this file is NOT loading.
 
-// Donation link (change to PayFast / BackaBuddy / WhatsApp / PayPal)
 const donateUrl = "https://www.paypal.com/";
 
-// =====================
-// WEEK 2 FIXTURES (Sunday 22 Feb 2026)
-// =====================
+// WEEK 2 FIXTURES — Sunday 22 Feb 2026
 const fixtures = [
   // STREAM A
   { date: "2026-02-22", time: "TBC", home: "Crusaders", away: "FC Wonderous", venue: "TBC", status: "Week 2 • Stream A" },
@@ -22,9 +18,7 @@ const fixtures = [
   { date: "2026-02-22", time: "TBC", home: "Real Rangers", away: "W/ Masters", venue: "TBC", status: "Week 2 • Stream B" }
 ];
 
-// =====================
 // WEEK 1 RESULTS (from your picture)
-// =====================
 const resultsA = [
   { home: "FC Wonderous", away: "Royal Tigers", homeGoals: 0, awayGoals: 2, notes: "W/O" },
   { home: "Fast 11", away: "Crusaders", homeGoals: 0, awayGoals: 2, notes: "" },
@@ -39,18 +33,12 @@ const resultsB = [
   { home: "Real Rangers", away: "Bhubhezi", homeGoals: 0, awayGoals: 4, notes: "" }
 ];
 
-// =====================
-// SLIDESHOW PHOTOS
-// =====================
+// Slideshow photos
 const photoSlides = [
   { src: "images/photo1.jpg", title: "Team Photo", meta: "Welverdiend • Season" },
   { src: "images/photo2.jpg", title: "Match Day", meta: "Players & Supporters" },
   { src: "images/photo3.jpg", title: "Training", meta: "Fitness & Drills" }
 ];
-
-// =====================
-// APP LOGIC (DON'T EDIT BELOW)
-// =====================
 
 const $ = (id) => document.getElementById(id);
 
@@ -74,12 +62,11 @@ function renderNextMatchCard() {
     return;
   }
 
-  // Sort by date (and keep stable)
   const sorted = fixtures.slice().sort((a, b) => (a.date > b.date ? 1 : -1));
   const f = sorted[0];
 
   next.textContent = `${f.home} vs ${f.away}`;
-  meta.textContent = `${f.date} • ${f.time || "-"} • ${f.status}`;
+  meta.textContent = `${f.date} • ${f.time || "-"} • ${f.status || "Upcoming"}`;
 }
 
 function renderFixturesTable(filterText = "") {
@@ -98,9 +85,7 @@ function renderFixturesTable(filterText = "") {
     return;
   }
 
-  body.innerHTML = list
-    .map(
-      (f) => `
+  body.innerHTML = list.map((f) => `
     <tr>
       <td>${f.date || "-"}</td>
       <td>${f.time || "-"}</td>
@@ -108,9 +93,7 @@ function renderFixturesTable(filterText = "") {
       <td>${f.venue || "-"}</td>
       <td>${badge(f.status || "Upcoming")}</td>
     </tr>
-  `
-    )
-    .join("");
+  `).join("");
 }
 
 function renderResultsLists(filterText = "") {
@@ -125,25 +108,23 @@ function renderResultsLists(filterText = "") {
     return `${r.home} ${score} ${r.away}${note}`;
   };
 
-  const filterFn = (r) => {
+  const match = (r) => {
     if (!q) return true;
     return `${r.home} ${r.away} ${r.notes || ""}`.toLowerCase().includes(q);
   };
 
   if (listA) {
-    const a = resultsA.filter(filterFn);
-    listA.innerHTML = a.length ? a.map((r) => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
+    const a = resultsA.filter(match);
+    listA.innerHTML = a.length ? a.map(r => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
   }
 
   if (listB) {
-    const b = resultsB.filter(filterFn);
-    listB.innerHTML = b.length ? b.map((r) => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
+    const b = resultsB.filter(match);
+    listB.innerHTML = b.length ? b.map(r => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
   }
 }
 
-// =====================
-// SLIDESHOW
-// =====================
+// Slideshow
 let slideIndex = 0;
 let slideTimer = null;
 
@@ -168,7 +149,7 @@ function startAutoSlides() {
 }
 
 function init() {
-  // year
+  // If these IDs don’t exist, page won’t break.
   const y = $("yearNow");
   if (y) y.textContent = new Date().getFullYear();
 
@@ -178,14 +159,10 @@ function init() {
   renderResultsLists();
 
   const fixtureSearch = $("fixtureSearch");
-  if (fixtureSearch) {
-    fixtureSearch.addEventListener("input", (e) => renderFixturesTable(e.target.value));
-  }
+  if (fixtureSearch) fixtureSearch.addEventListener("input", (e) => renderFixturesTable(e.target.value));
 
   const resultSearch = $("resultSearch");
-  if (resultSearch) {
-    resultSearch.addEventListener("input", (e) => renderResultsLists(e.target.value));
-  }
+  if (resultSearch) resultSearch.addEventListener("input", (e) => renderResultsLists(e.target.value));
 
   const prev = $("prevPhoto");
   const next = $("nextPhoto");
@@ -197,4 +174,9 @@ function init() {
   startAutoSlides();
 }
 
-document.addEventListener("DOMContentLoaded", init);
+// Runs whether script loads early or late
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
