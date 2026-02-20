@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Welverdiend Soccer League | BLFA Updates</title>
-  <meta name="description" content="Local league updates for Welverdiend Soccer League under BLFA: fixtures, results, standings, team info, donations, and photos." />
+  <meta name="description" content="Local league updates for Welverdiend Soccer League under BLFA: fixtures, results, standings, donations, and photos." />
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -25,9 +25,7 @@
         <a href="#standings">Standings</a>
         <a href="#team">Team</a>
         <a href="#photos">Photos</a>
-        <a class="btn btn-donate" href="#donate" title="Sponsor / Donate">
-          💛 Donate
-        </a>
+        <a class="btn btn-donate" href="#donate" title="Sponsor / Donate">💛 Donate</a>
       </nav>
     </div>
   </header>
@@ -60,8 +58,8 @@
             </div>
             <div class="card">
               <div class="card-title">League Status</div>
-              <div class="card-big">Live Log</div>
-              <div class="muted small">Fixtures • Results • Standings</div>
+              <div class="card-big">Week 1</div>
+              <div class="muted small">Stream A • Stream B</div>
             </div>
           </div>
         </div>
@@ -69,9 +67,8 @@
         <div class="hero-side">
           <div class="card card-highlight">
             <div class="card-title">Important Notice</div>
-            <p class="muted">
-              This page is managed by the league admin. Updates can be posted weekly after matches.
-            </p>
+            <p class="muted">This page is updated after matches. Stream A and Stream B logs are included.</p>
+
             <div class="notice">
               <span aria-hidden="true">📍</span>
               <div>
@@ -84,7 +81,7 @@
               <span aria-hidden="true">📞</span>
               <div>
                 <div class="notice-title">Contact</div>
-                <div id="contactInfo" class="muted small">League Secretary: +27 …</div>
+                <div id="contactInfo" class="muted small">Loading…</div>
               </div>
             </div>
 
@@ -100,7 +97,7 @@
         <div class="section-head">
           <h2>Next Matches (Fixtures)</h2>
           <div class="tools">
-            <input id="fixtureSearch" class="input" placeholder="Search team (e.g., Tigers)..." />
+            <input id="fixtureSearch" class="input" placeholder="Search team (e.g., Liverpool)..." />
           </div>
         </div>
 
@@ -119,7 +116,7 @@
           </table>
         </div>
 
-        <p class="muted small">Tip: Update fixtures in <code>script.js</code> (the <code>fixtures</code> list).</p>
+        <p class="muted small">Tip: Update fixtures in <code>Script.js</code>.</p>
       </div>
     </section>
 
@@ -127,9 +124,9 @@
     <section id="results" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2>Match Results</h2>
+          <h2>Match Results (Week 1)</h2>
           <div class="tools">
-            <input id="resultSearch" class="input" placeholder="Search team (e.g., United)..." />
+            <input id="resultSearch" class="input" placeholder="Search team (e.g., Crusaders)..." />
           </div>
         </div>
 
@@ -148,7 +145,7 @@
           </table>
         </div>
 
-        <p class="muted small">Tip: Update results in <code>script.js</code> (the <code>results</code> list).</p>
+        <p class="muted small">Tip: Results are from your Week 1 picture (Stream A & B).</p>
       </div>
     </section>
 
@@ -181,8 +178,6 @@
             <tbody id="standingsBody"></tbody>
           </table>
         </div>
-
-        <p class="muted small">Tip: Update standings in <code>script.js</code> (the <code>standings</code> list).</p>
       </div>
     </section>
 
@@ -207,28 +202,22 @@
           <div class="card">
             <div class="card-title">Team Banking Details</div>
             <div id="bankBox" class="bank"></div>
-            <p class="muted small">
-              Note: Please confirm details before publishing publicly. You can also hide account number by showing last 4 digits only.
-            </p>
+            <p class="muted small">Tip: If you don’t want to show full account number, replace it with ******1234.</p>
           </div>
 
           <div id="donate" class="card card-highlight">
             <div class="card-title">Sponsor / Donate</div>
-            <p class="muted">
-              Support kits, transport, match balls, and youth development. Tap below to donate.
-            </p>
+            <p class="muted">Support kits, transport, match balls, and youth development.</p>
 
             <div class="donate-actions">
-              <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">
-                💛 Donate Now
-              </a>
-              <div class="muted small">Or pay via bank transfer using the details on the left.</div>
+              <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">💛 Donate Now</a>
+              <div class="muted small">Or donate via bank transfer using the details provided.</div>
             </div>
 
             <div class="sponsor-logos">
-              <div class="sponsor-pill" title="Sponsor badge">🏷️ Sponsor</div>
-              <div class="sponsor-pill" title="Community partner">🤝 Partner</div>
-              <div class="sponsor-pill" title="Youth support">🧒 Youth</div>
+              <div class="sponsor-pill">🏷️ Sponsor</div>
+              <div class="sponsor-pill">🤝 Partner</div>
+              <div class="sponsor-pill">🧒 Youth</div>
             </div>
           </div>
         </div>
@@ -257,23 +246,20 @@
         </div>
 
         <p class="muted small">
-          Tip: Put photos in the same folder (or an <code>images/</code> folder) and update <code>photoSlides</code> in <code>script.js</code>.
+          Add photos in <code>images/photo1.jpg</code>, <code>images/photo2.jpg</code>, <code>images/photo3.jpg</code>
         </p>
       </div>
     </section>
 
     <footer class="footer">
       <div class="container footer-inner">
-        <div class="muted small">
-          © <span id="yearNow"></span> Welverdiend Soccer League • Under BLFA
-        </div>
-        <div class="muted small">
-          Built for GitHub Pages • Updates managed by league admin
-        </div>
+        <div class="muted small">© <span id="yearNow"></span> Welverdiend Soccer League • Under BLFA</div>
+        <div class="muted small">Built for GitHub Pages</div>
       </div>
     </footer>
   </main>
 
-  <script src="script.js"></script>
+  <!-- IMPORTANT: matches your repo file name "Script.js" -->
+  <script src="Script.js"></script>
 </body>
 </html>
