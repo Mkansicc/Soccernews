@@ -3,29 +3,46 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welverdiend Soccer League | WSL Week 1</title>
-  <meta name="description" content="Welverdiend Soccer League (WSL) Week 1 Log Table and Results: Stream A and Stream B." />
+  <title>Welverdiend Soccer League (WSL) | Updates</title>
+  <meta name="description" content="Welverdiend Soccer League updates under BLFA: fixtures, results, log tables, photos, donations." />
+
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Google AdSense (replace ca-pub-XXXX with your publisher ID after approval) -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
+  <!-- Animated background -->
+  <div class="bg-anim" aria-hidden="true">
+    <div class="glow"></div>
+    <div class="ball"></div>
+    <div class="ball ball2"></div>
+    <div class="ball ball3"></div>
+  </div>
+
   <header class="topbar">
     <div class="container topbar-inner">
       <div class="brand">
-        <img class="wsl-logo" src="images/wsl-logo.png" alt="WSL Logo" />
+        <img class="wsl-logo" src="images/wsl-logo.png" alt="WSL Logo" onerror="this.style.display='none'">
         <div class="brand-text">
           <div class="brand-title">WELVERDIEND SOCCER LEAGUE (WSL)</div>
-          <div class="brand-subtitle">Week 1 Log Table and Results • Under BLFA</div>
+          <div class="brand-subtitle">Under BLFA • Fixtures • Results • Logs</div>
         </div>
       </div>
 
       <nav class="nav">
-        <a href="#fixtures">Next Matches</a>
-        <a href="#results">Results</a>
-        <a href="#streamA">Stream A</a>
-        <a href="#streamB">Stream B</a>
-        <a href="#photos">Photos</a>
-        <a class="btn btn-donate" href="#donate" title="Sponsor / Donate">💛 Donate</a>
+        <a href="#fixtures"><i class="fa-solid fa-calendar-days"></i> Next Matches</a>
+        <a href="#results"><i class="fa-solid fa-trophy"></i> Results</a>
+        <a href="#streamA"><i class="fa-solid fa-table-list"></i> Stream A</a>
+        <a href="#streamB"><i class="fa-solid fa-table-list"></i> Stream B</a>
+        <a href="#photos"><i class="fa-solid fa-image"></i> Photos</a>
+        <a class="btn btn-donate" href="#donate"><i class="fa-solid fa-heart"></i> Donate</a>
       </nav>
     </div>
   </header>
@@ -35,39 +52,66 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <h1>WSL Week 1 Update</h1>
+          <h1>WSL Match Updates</h1>
           <p class="muted">
             Enquiries: Senkie Nyathi (076 8062 013) • Clife Juzie (078 084 6573)
           </p>
 
+          <div class="hero-actions">
+            <a class="btn" href="#fixtures"><i class="fa-solid fa-bolt"></i> View Week 2 Fixtures</a>
+            <a class="btn btn-outline" href="#results"><i class="fa-solid fa-trophy"></i> View Week 1 Results</a>
+          </div>
+
           <div class="quick-cards">
             <div class="card">
-              <div class="card-title">Next Match</div>
-              <div id="nextMatch" class="card-big">No fixtures yet</div>
-              <div id="nextMatchMeta" class="muted small">Add fixtures in Script.js</div>
+              <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Next Match</div>
+              <div id="nextMatch" class="card-big">Loading…</div>
+              <div id="nextMatchMeta" class="muted small"></div>
             </div>
 
             <div class="card">
-              <div class="card-title">Highlighted Result</div>
-              <div id="highlightResult" class="card-big">Liverpool 2 - 0 Junior Pirates</div>
-              <div class="muted small">Stream B • Week 1</div>
+              <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
+              <div id="highlightResult" class="card-big">Loading…</div>
+              <div class="muted small">Week 1 • Stream B</div>
             </div>
 
             <div class="card">
-              <div class="card-title">Top Teams</div>
-              <div class="card-big">Stream A: Morning Stars</div>
-              <div class="muted small">Stream B: Labamba</div>
+              <div class="card-title"><i class="fa-solid fa-crown"></i> Leaders</div>
+              <div class="card-big">A: Morning Stars</div>
+              <div class="muted small">B: Labamba</div>
             </div>
+          </div>
+
+          <!-- Ad block (AdSense-ready) -->
+          <div class="ad-box">
+            <div class="muted small">Advertisement</div>
+            <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+              data-ad-slot="1234567890"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
         </div>
 
         <div class="hero-side">
           <div class="card card-highlight" id="donate">
-            <div class="card-title">Sponsor / Donate</div>
+            <div class="card-title"><i class="fa-solid fa-hand-holding-heart"></i> Sponsor / Donate</div>
             <p class="muted">Support kits, transport, balls, and youth development.</p>
-            <a id="donateLink" class="btn btn-donate wide" href="https://www.paypal.com/" target="_blank" rel="noopener">💛 Donate Now</a>
+
+            <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">
+              <i class="fa-solid fa-heart"></i> Donate Now
+            </a>
+
             <div class="muted small" style="margin-top:10px;">
-               <code>Script.js</code>.
+              Update the donate link in <code>Script.js</code>.
+            </div>
+
+            <div class="sponsor-row">
+              <span class="pill"><i class="fa-solid fa-shirt"></i> Kits</span>
+              <span class="pill"><i class="fa-solid fa-bus"></i> Transport</span>
+              <span class="pill"><i class="fa-solid fa-futbol"></i> Balls</span>
             </div>
           </div>
         </div>
@@ -78,10 +122,22 @@
     <section id="fixtures" class="section">
       <div class="container">
         <div class="section-head">
-          <h2>Next Matches (Fixtures)</h2>
+          <h2><i class="fa-solid fa-calendar-days"></i> Next Matches (Week 2 Fixtures)</h2>
           <div class="tools">
             <input id="fixtureSearch" class="input" placeholder="Search team..." />
           </div>
+        </div>
+
+        <div class="search-actions">
+          <button class="btn btn-outline small-btn" type="button" id="btnStreamA">
+            <i class="fa-solid fa-filter"></i> Stream A
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnStreamB">
+            <i class="fa-solid fa-filter"></i> Stream B
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnClearFixture">
+            <i class="fa-solid fa-eraser"></i> Clear
+          </button>
         </div>
 
         <div class="table-wrap">
@@ -100,40 +156,59 @@
             </tbody>
           </table>
         </div>
-
-        <p class="muted small">2025/2025 WSL Season log standing.</p>
       </div>
     </section>
 
-    <!-- RESULTS (SUMMARY) -->
+    <!-- RESULTS -->
     <section id="results" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2>Results (Week 1)</h2>
+          <h2><i class="fa-solid fa-trophy"></i> Results (Week 1)</h2>
           <div class="tools">
             <input id="resultSearch" class="input" placeholder="Search team..." />
           </div>
         </div>
 
+        <div class="search-actions">
+          <button class="btn btn-outline small-btn" type="button" id="btnAllResults">
+            <i class="fa-solid fa-layer-group"></i> All
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnClearResults">
+            <i class="fa-solid fa-eraser"></i> Clear
+          </button>
+        </div>
+
         <div class="grid-2">
           <div class="card">
-            <div class="card-title">Stream A • Results</div>
-            <ol id="resultsListA" class="muted" style="margin:0; padding-left:18px;"></ol>
+            <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+            <ol id="resultsListA" class="muted list-ol"></ol>
           </div>
 
           <div class="card">
-            <div class="card-title">Stream B • Results</div>
-            <ol id="resultsListB" class="muted" style="margin:0; padding-left:18px;"></ol>
+            <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+            <ol id="resultsListB" class="muted list-ol"></ol>
           </div>
+        </div>
+
+        <!-- Ad block -->
+        <div class="ad-box">
+          <div class="muted small">Advertisement</div>
+          <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+            data-ad-slot="1234567890"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       </div>
     </section>
 
-    <!-- STREAM A -->
+    <!-- STREAM A LOG -->
     <section id="streamA" class="section">
       <div class="container">
         <div class="section-head">
-          <h2>STREAM A • Log Table</h2>
+          <h2><i class="fa-solid fa-table-list"></i> Stream A • Log Table (Week 1)</h2>
         </div>
 
         <div class="table-wrap">
@@ -158,11 +233,11 @@
       </div>
     </section>
 
-    <!-- STREAM B -->
+    <!-- STREAM B LOG -->
     <section id="streamB" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2>STREAM B • Log Table</h2>
+          <h2><i class="fa-solid fa-table-list"></i> Stream B • Log Table (Week 1)</h2>
         </div>
 
         <div class="table-wrap">
@@ -180,66 +255,4 @@
               <tr><td>5</td><td><strong>Welverdiend Masters</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>3</td><td>4</td><td>-1</td><td><strong>0</strong></td></tr>
               <tr><td>6</td><td><strong>Junior Pirates FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>-2</td><td><strong>0</strong></td></tr>
               <tr><td>7</td><td><strong>Real Rangers</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>4</td><td>-4</td><td><strong>0</strong></td></tr>
-              <tr><td>8</td><td><strong>City Pillars FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>7</td><td>-6</td><td><strong>0</strong></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="card" style="margin-top:12px;">
-          <div class="card-title">WSL Executive (from sheet)</div>
-          <p class="muted small" style="line-height:1.6; margin:0;">
-            Jethro Gumede (Chairperson), Seepane Emanuel (Deputy Chair), Thabiso Ndlovu (Treasure),
-            Clife Ndlovu (Secretary), Bophelo Mogakane (H. Referee), Jomo Unisi (Marketing Director),
-            Gift Ndlovu (DC), Ripfumelo Mlambo (Media), Senkie Nyathi (Admin)
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- PHOTOS -->
-    <section id="photos" class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>Team Photos (Slideshow)</h2>
-          <div class="tools">
-            <button class="btn btn-outline small-btn" type="button" id="prevPhoto">◀</button>
-            <button class="btn btn-outline small-btn" type="button" id="nextPhoto">▶</button>
-          </div>
-        </div>
-
-        <div class="slideshow card">
-          <div class="slide-frame">
-            <img id="slideImage" alt="Team photo slideshow" />
-          </div>
-          <div class="slide-caption">
-            <div id="slideTitle" class="slide-title">Loading…</div>
-            <div id="slideMeta" class="muted small"></div>
-          </div>
-        </div>
-
-        <p class="muted small"></code>.</p>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <div class="muted small">© <span id="yearNow"></span> Welverdiend Soccer League • Under BLFA</div>
-        <div class="muted small">Built for GitHub Pages</div>
-      </div>
-    </footer>
-  </main>
-
-  <!-- IMPORTANT: If your file is "Script.js" keep this exactly -->
-  <script src="Script.js"></script>
-
-  <style>
-    .wsl-logo{
-      width:44px;height:44px;object-fit:contain;
-      border-radius:14px;border:1px solid rgba(243,245,255,.12);
-      background: rgba(255,255,255,.04);
-      padding:6px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-    }
-  </style>
-</body>
-</html>
+              <tr><td>8</td><td><strong>City Pillars FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>7
