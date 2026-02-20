@@ -1,18 +1,30 @@
 // =====================
-// EDIT THESE WHEN NEEDED
+// WSL WEBSITE - FULL Script.js
 // =====================
 
-// Donation link
+// Donation link (change to PayFast / BackaBuddy / WhatsApp / PayPal)
 const donateUrl = "https://www.paypal.com/";
 
-// Next matches (fixtures)
-// If you don’t have fixtures yet, leave it empty [] and it will show “No fixtures”.
+// =====================
+// WEEK 2 FIXTURES (Sunday 22 Feb 2026)
+// =====================
 const fixtures = [
-  // Example (edit later):
-  // { date: "2026-03-01", time: "14:00", home: "Morning Stars FC", away: "Crusaders FC", venue: "Welverdiend Ground", status: "Upcoming" }
+  // STREAM A
+  { date: "2026-02-22", time: "TBC", home: "Crusaders", away: "FC Wonderous", venue: "TBC", status: "Week 2 • Stream A" },
+  { date: "2026-02-22", time: "TBC", home: "Royal Tigers", away: "Eastern Rangers", venue: "TBC", status: "Week 2 • Stream A" },
+  { date: "2026-02-22", time: "TBC", home: "Morning Stars", away: "Fast 11", venue: "TBC", status: "Week 2 • Stream A" },
+  { date: "2026-02-22", time: "TBC", home: "Movers FC", away: "Highlanders", venue: "TBC", status: "Week 2 • Stream A" },
+
+  // STREAM B
+  { date: "2026-02-22", time: "TBC", home: "City Pillars", away: "Liverpool", venue: "TBC", status: "Week 2 • Stream B" },
+  { date: "2026-02-22", time: "TBC", home: "Junior Pirates", away: "Xihuhuri", venue: "TBC", status: "Week 2 • Stream B" },
+  { date: "2026-02-22", time: "TBC", home: "Bhubhezi", away: "Labamba", venue: "TBC", status: "Week 2 • Stream B" },
+  { date: "2026-02-22", time: "TBC", home: "Real Rangers", away: "W/ Masters", venue: "TBC", status: "Week 2 • Stream B" }
 ];
 
-// Week 1 Results (from your picture)
+// =====================
+// WEEK 1 RESULTS (from your picture)
+// =====================
 const resultsA = [
   { home: "FC Wonderous", away: "Royal Tigers", homeGoals: 0, awayGoals: 2, notes: "W/O" },
   { home: "Fast 11", away: "Crusaders", homeGoals: 0, awayGoals: 2, notes: "" },
@@ -27,7 +39,9 @@ const resultsB = [
   { home: "Real Rangers", away: "Bhubhezi", homeGoals: 0, awayGoals: 4, notes: "" }
 ];
 
-// Slideshow photos
+// =====================
+// SLIDESHOW PHOTOS
+// =====================
 const photoSlides = [
   { src: "images/photo1.jpg", title: "Team Photo", meta: "Welverdiend • Season" },
   { src: "images/photo2.jpg", title: "Match Day", meta: "Players & Supporters" },
@@ -35,54 +49,58 @@ const photoSlides = [
 ];
 
 // =====================
-// APP LOGIC (DON'T EDIT)
+// APP LOGIC (DON'T EDIT BELOW)
 // =====================
 
 const $ = (id) => document.getElementById(id);
 
-function badge(text){
+function badge(text) {
   return `<span class="badge">${text}</span>`;
 }
 
-function renderDonate(){
+function renderDonate() {
   const a = $("donateLink");
-  if(a) a.href = donateUrl;
+  if (a) a.href = donateUrl;
 }
 
-function renderNextMatchCard(){
+function renderNextMatchCard() {
   const next = $("nextMatch");
   const meta = $("nextMatchMeta");
+  if (!next || !meta) return;
 
-  if(!next || !meta) return;
-
-  if(!fixtures.length){
+  if (!fixtures.length) {
     next.textContent = "No fixtures yet";
     meta.textContent = "Add fixtures in Script.js";
     return;
   }
 
-  const f = fixtures[0];
+  // Sort by date (and keep stable)
+  const sorted = fixtures.slice().sort((a, b) => (a.date > b.date ? 1 : -1));
+  const f = sorted[0];
+
   next.textContent = `${f.home} vs ${f.away}`;
-  meta.textContent = `${f.date} • ${f.time || "-"} • ${f.venue || "-"}`;
+  meta.textContent = `${f.date} • ${f.time || "-"} • ${f.status}`;
 }
 
-function renderFixturesTable(filterText = ""){
+function renderFixturesTable(filterText = "") {
   const body = $("fixturesBody");
-  if(!body) return;
+  if (!body) return;
 
   const q = filterText.trim().toLowerCase();
 
-  const list = fixtures.filter(f => {
-    if(!q) return true;
-    return `${f.home} ${f.away} ${f.venue}`.toLowerCase().includes(q);
+  const list = fixtures.filter((f) => {
+    if (!q) return true;
+    return `${f.home} ${f.away} ${f.venue} ${f.status}`.toLowerCase().includes(q);
   });
 
-  if(!list.length){
+  if (!list.length) {
     body.innerHTML = `<tr><td colspan="5" class="muted">No fixtures available.</td></tr>`;
     return;
   }
 
-  body.innerHTML = list.map(f => `
+  body.innerHTML = list
+    .map(
+      (f) => `
     <tr>
       <td>${f.date || "-"}</td>
       <td>${f.time || "-"}</td>
@@ -90,10 +108,12 @@ function renderFixturesTable(filterText = ""){
       <td>${f.venue || "-"}</td>
       <td>${badge(f.status || "Upcoming")}</td>
     </tr>
-  `).join("");
+  `
+    )
+    .join("");
 }
 
-function renderResultsLists(filterText = ""){
+function renderResultsLists(filterText = "") {
   const q = filterText.trim().toLowerCase();
 
   const listA = $("resultsListA");
@@ -106,31 +126,29 @@ function renderResultsLists(filterText = ""){
   };
 
   const filterFn = (r) => {
-    if(!q) return true;
+    if (!q) return true;
     return `${r.home} ${r.away} ${r.notes || ""}`.toLowerCase().includes(q);
   };
 
-  if(listA){
+  if (listA) {
     const a = resultsA.filter(filterFn);
-    listA.innerHTML = a.length
-      ? a.map(r => `<li>${format(r)}</li>`).join("")
-      : `<li>No results found.</li>`;
+    listA.innerHTML = a.length ? a.map((r) => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
   }
 
-  if(listB){
+  if (listB) {
     const b = resultsB.filter(filterFn);
-    listB.innerHTML = b.length
-      ? b.map(r => `<li>${format(r)}</li>`).join("")
-      : `<li>No results found.</li>`;
+    listB.innerHTML = b.length ? b.map((r) => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
   }
 }
 
-// Slideshow
+// =====================
+// SLIDESHOW
+// =====================
 let slideIndex = 0;
 let slideTimer = null;
 
-function showSlide(i){
-  if(!photoSlides.length) return;
+function showSlide(i) {
+  if (!photoSlides.length) return;
 
   slideIndex = (i + photoSlides.length) % photoSlides.length;
   const s = photoSlides[slideIndex];
@@ -139,19 +157,20 @@ function showSlide(i){
   const title = $("slideTitle");
   const meta = $("slideMeta");
 
-  if(img) img.src = s.src;
-  if(title) title.textContent = s.title || "Photo";
-  if(meta) meta.textContent = s.meta || "";
+  if (img) img.src = s.src;
+  if (title) title.textContent = s.title || "Photo";
+  if (meta) meta.textContent = s.meta || "";
 }
 
-function startAutoSlides(){
-  if(slideTimer) clearInterval(slideTimer);
+function startAutoSlides() {
+  if (slideTimer) clearInterval(slideTimer);
   slideTimer = setInterval(() => showSlide(slideIndex + 1), 4500);
 }
 
-function init(){
+function init() {
+  // year
   const y = $("yearNow");
-  if(y) y.textContent = new Date().getFullYear();
+  if (y) y.textContent = new Date().getFullYear();
 
   renderDonate();
   renderNextMatchCard();
@@ -159,20 +178,20 @@ function init(){
   renderResultsLists();
 
   const fixtureSearch = $("fixtureSearch");
-  if(fixtureSearch){
+  if (fixtureSearch) {
     fixtureSearch.addEventListener("input", (e) => renderFixturesTable(e.target.value));
   }
 
   const resultSearch = $("resultSearch");
-  if(resultSearch){
+  if (resultSearch) {
     resultSearch.addEventListener("input", (e) => renderResultsLists(e.target.value));
   }
 
   const prev = $("prevPhoto");
   const next = $("nextPhoto");
 
-  if(prev) prev.addEventListener("click", () => { showSlide(slideIndex - 1); startAutoSlides(); });
-  if(next) next.addEventListener("click", () => { showSlide(slideIndex + 1); startAutoSlides(); });
+  if (prev) prev.addEventListener("click", () => { showSlide(slideIndex - 1); startAutoSlides(); });
+  if (next) next.addEventListener("click", () => { showSlide(slideIndex + 1); startAutoSlides(); });
 
   showSlide(0);
   startAutoSlides();
