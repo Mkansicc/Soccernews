@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Welverdiend Soccer League | BLFA Updates</title>
-  <meta name="description" content="Local league updates for Welverdiend Soccer League under BLFA: fixtures, results, standings, donations, and photos." />
+  <meta name="description" content="Welverdiend Soccer League (WSL) under BLFA: fixtures, results, and log tables for Stream A & Stream B." />
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -14,7 +14,7 @@
       <div class="brand">
         <div class="logo" aria-hidden="true">⚽</div>
         <div class="brand-text">
-          <div class="brand-title">Welverdiend Soccer League</div>
+          <div class="brand-title">Welverdiend Soccer League (WSL)</div>
           <div class="brand-subtitle">Under BLFA (Bushbuckridge Local Football Association)</div>
         </div>
       </div>
@@ -22,8 +22,8 @@
       <nav class="nav">
         <a href="#fixtures">Next Matches</a>
         <a href="#results">Results</a>
-        <a href="#standings">Standings</a>
-        <a href="#team">Team</a>
+        <a href="#standings">Log Table</a>
+        <a href="#team">Committee</a>
         <a href="#photos">Photos</a>
         <a class="btn btn-donate" href="#donate" title="Sponsor / Donate">💛 Donate</a>
       </nav>
@@ -34,15 +34,14 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <h1>Soccer Updates, Fixtures & Standings</h1>
+          <h1>Week 1 Log Table & Results</h1>
           <p class="muted">
-            Official updates page for Welverdiend Soccer League. Follow upcoming matches, latest results,
-            and league standings — plus team details and sponsorship support.
+            Updated from the official WSL Week 1 sheet. Includes Stream A and Stream B tables and results.
           </p>
 
           <div class="hero-actions">
-            <a class="btn" href="#fixtures">View Next Matches</a>
-            <a class="btn btn-outline" href="#standings">View Standings</a>
+            <a class="btn" href="#results">View Results</a>
+            <a class="btn btn-outline" href="#standings">View Log Table</a>
           </div>
 
           <div class="quick-cards">
@@ -52,36 +51,35 @@
               <div id="nextMatchMeta" class="muted small"></div>
             </div>
             <div class="card">
-              <div class="card-title">Latest Result</div>
+              <div class="card-title">Highlighted Result</div>
               <div id="latestResult" class="card-big">Loading…</div>
               <div id="latestResultMeta" class="muted small"></div>
             </div>
             <div class="card">
-              <div class="card-title">League Status</div>
-              <div class="card-big">Week 1</div>
-              <div class="muted small">Stream A • Stream B</div>
+              <div class="card-title">Streams</div>
+              <div class="card-big">A & B</div>
+              <div class="muted small">Official Week 1 update</div>
             </div>
           </div>
         </div>
 
         <div class="hero-side">
           <div class="card card-highlight">
-            <div class="card-title">Important Notice</div>
-            <p class="muted">This page is updated after matches. Stream A and Stream B logs are included.</p>
-
-            <div class="notice">
-              <span aria-hidden="true">📍</span>
-              <div>
-                <div class="notice-title">Home Ground</div>
-                <div id="homeGround" class="muted small">Welverdiend Sports Ground</div>
-              </div>
-            </div>
+            <div class="card-title">Contacts</div>
 
             <div class="notice">
               <span aria-hidden="true">📞</span>
               <div>
-                <div class="notice-title">Contact</div>
+                <div class="notice-title">Enquiries</div>
                 <div id="contactInfo" class="muted small">Loading…</div>
+              </div>
+            </div>
+
+            <div class="notice">
+              <span aria-hidden="true">📍</span>
+              <div>
+                <div class="notice-title">Ground</div>
+                <div id="homeGround" class="muted small">Loading…</div>
               </div>
             </div>
 
@@ -97,7 +95,7 @@
         <div class="section-head">
           <h2>Next Matches (Fixtures)</h2>
           <div class="tools">
-            <input id="fixtureSearch" class="input" placeholder="Search team (e.g., Liverpool)..." />
+            <input id="fixtureSearch" class="input" placeholder="Search team..." />
           </div>
         </div>
 
@@ -116,7 +114,7 @@
           </table>
         </div>
 
-        <p class="muted small">Tip: Update fixtures in <code>Script.js</code>.</p>
+        <p class="muted small">Note: Week 1 sheet does not include fixtures. Add fixtures in <code>Script.js</code>.</p>
       </div>
     </section>
 
@@ -124,28 +122,43 @@
     <section id="results" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2>Match Results (Week 1)</h2>
+          <h2>Results (Week 1)</h2>
           <div class="tools">
-            <input id="resultSearch" class="input" placeholder="Search team (e.g., Crusaders)..." />
+            <input id="resultSearch" class="input" placeholder="Search team..." />
           </div>
         </div>
 
-        <div class="table-wrap">
-          <table class="table" aria-label="Match results">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Match</th>
-                <th>Score</th>
-                <th>Venue</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody id="resultsBody"></tbody>
-          </table>
+        <div class="card" style="margin-bottom:12px;">
+          <div class="card-title">Stream A - Results</div>
+          <div class="table-wrap">
+            <table class="table" aria-label="Stream A results">
+              <thead>
+                <tr>
+                  <th>Match</th>
+                  <th>Score</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBodyA"></tbody>
+            </table>
+          </div>
         </div>
 
-        <p class="muted small">Tip: Results are from your Week 1 picture (Stream A & B).</p>
+        <div class="card">
+          <div class="card-title">Stream B - Results</div>
+          <div class="table-wrap">
+            <table class="table" aria-label="Stream B results">
+              <thead>
+                <tr>
+                  <th>Match</th>
+                  <th>Score</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBodyB"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -153,31 +166,58 @@
     <section id="standings" class="section">
       <div class="container">
         <div class="section-head">
-          <h2>League Standings (Log)</h2>
+          <h2>Log Table (Week 1)</h2>
           <div class="tools">
             <button id="sortStandingsBtn" class="btn btn-outline small-btn" type="button">Sort by Points</button>
           </div>
         </div>
 
-        <div class="table-wrap">
-          <table class="table" aria-label="League standings">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Team</th>
-                <th>MP</th>
-                <th>W</th>
-                <th>D</th>
-                <th>L</th>
-                <th>GF</th>
-                <th>GA</th>
-                <th>GD</th>
-                <th>Pts</th>
-              </tr>
-            </thead>
-            <tbody id="standingsBody"></tbody>
-          </table>
+        <div class="card" style="margin-bottom:12px;">
+          <div class="card-title">Stream A - Log Table</div>
+          <div class="table-wrap">
+            <table class="table" aria-label="Stream A standings">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Team</th>
+                  <th>P</th>
+                  <th>W</th>
+                  <th>D</th>
+                  <th>L</th>
+                  <th>GF</th>
+                  <th>GA</th>
+                  <th>GD</th>
+                  <th>Pts</th>
+                </tr>
+              </thead>
+              <tbody id="standingsBodyA"></tbody>
+            </table>
+          </div>
         </div>
+
+        <div class="card">
+          <div class="card-title">Stream B - Log Table</div>
+          <div class="table-wrap">
+            <table class="table" aria-label="Stream B standings">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Team</th>
+                  <th>P</th>
+                  <th>W</th>
+                  <th>D</th>
+                  <th>L</th>
+                  <th>GF</th>
+                  <th>GA</th>
+                  <th>GD</th>
+                  <th>Pts</th>
+                </tr>
+              </thead>
+              <tbody id="standingsBodyB"></tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -185,40 +225,19 @@
     <section id="team" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2>Team & Executive Members</h2>
+          <h2>WSL Executive Committee</h2>
         </div>
 
         <div class="grid-2">
           <div class="card">
-            <div class="card-title">Executive Committee</div>
+            <div class="card-title">Committee</div>
             <ul id="execList" class="list"></ul>
-          </div>
-
-          <div class="card">
-            <div class="card-title">Captain</div>
-            <div id="captainBox" class="profile"></div>
-          </div>
-
-          <div class="card">
-            <div class="card-title">Team Banking Details</div>
-            <div id="bankBox" class="bank"></div>
-            <p class="muted small">Tip: If you don’t want to show full account number, replace it with ******1234.</p>
           </div>
 
           <div id="donate" class="card card-highlight">
             <div class="card-title">Sponsor / Donate</div>
-            <p class="muted">Support kits, transport, match balls, and youth development.</p>
-
-            <div class="donate-actions">
-              <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">💛 Donate Now</a>
-              <div class="muted small">Or donate via bank transfer using the details provided.</div>
-            </div>
-
-            <div class="sponsor-logos">
-              <div class="sponsor-pill">🏷️ Sponsor</div>
-              <div class="sponsor-pill">🤝 Partner</div>
-              <div class="sponsor-pill">🧒 Youth</div>
-            </div>
+            <p class="muted">Support kits, transport, balls, and youth development.</p>
+            <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">💛 Donate Now</a>
           </div>
         </div>
       </div>
@@ -245,9 +264,7 @@
           </div>
         </div>
 
-        <p class="muted small">
-          Add photos in <code>images/photo1.jpg</code>, <code>images/photo2.jpg</code>, <code>images/photo3.jpg</code>
-        </p>
+        <p class="muted small">Put photos in <code>images/photo1.jpg</code>, <code>images/photo2.jpg</code>, <code>images/photo3.jpg</code>.</p>
       </div>
     </section>
 
@@ -259,7 +276,7 @@
     </footer>
   </main>
 
-  <!-- IMPORTANT: matches your repo file name "Script.js" -->
+  <!-- Match your repo filename (Script.js) -->
   <script src="Script.js"></script>
 </body>
 </html>
