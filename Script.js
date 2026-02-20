@@ -1,24 +1,26 @@
-// WSL - Full script.js (Fixtures + Results + Slideshow)
-// If you still see "Loading fixtures..." then this file is NOT loading.
+// =====================
+// WSL Pro Script.js (Fixtures + Results + Filters + Slideshow)
+// =====================
 
+// Donation link (replace with PayFast/BackaBuddy/WhatsApp)
 const donateUrl = "https://www.paypal.com/";
 
 // WEEK 2 FIXTURES — Sunday 22 Feb 2026
 const fixtures = [
   // STREAM A
-  { date: "2026-02-22", time: "TBC", home: "Crusaders", away: "FC Wonderous", venue: "TBC", status: "Week 2 • Stream A" },
-  { date: "2026-02-22", time: "TBC", home: "Royal Tigers", away: "Eastern Rangers", venue: "TBC", status: "Week 2 • Stream A" },
-  { date: "2026-02-22", time: "TBC", home: "Morning Stars", away: "Fast 11", venue: "TBC", status: "Week 2 • Stream A" },
-  { date: "2026-02-22", time: "TBC", home: "Movers FC", away: "Highlanders", venue: "TBC", status: "Week 2 • Stream A" },
+  { date: "2026-02-22", time: "Mtembeni", home: "Crusaders", away: "FC Wonderous", venue: "Mtembeni", status: "Week 2 • Stream A" },
+  { date: "2026-02-22", time: "Royal", home: "Royal Tigers", away: "Eastern Rangers", venue: "Royal", status: "Week 2 • Stream A" },
+  { date: "2026-02-22", time: "Tlhavekisa", home: "Morning Stars", away: "Fast 11", venue: "Tlhavekisa", status: "Week 2 • Stream A" },
+  { date: "2026-02-22", time: "Movers", home: "Movers FC", away: "Highlanders", venue: "Movers", status: "Week 2 • Stream A" },
 
   // STREAM B
-  { date: "2026-02-22", time: "TBC", home: "City Pillars", away: "Liverpool", venue: "TBC", status: "Week 2 • Stream B" },
-  { date: "2026-02-22", time: "TBC", home: "Junior Pirates", away: "Xihuhuri", venue: "TBC", status: "Week 2 • Stream B" },
-  { date: "2026-02-22", time: "TBC", home: "Bhubhezi", away: "Labamba", venue: "TBC", status: "Week 2 • Stream B" },
-  { date: "2026-02-22", time: "TBC", home: "Real Rangers", away: "W/ Masters", venue: "TBC", status: "Week 2 • Stream B" }
+  { date: "2026-02-22", time: "City Pillars", home: "City Pillars", away: "Liverpool", venue: "City Pillars", status: "Week 2 • Stream B" },
+  { date: "2026-02-22", time: "Mahlale", home: "Junior Pirates", away: "Xihuhuri", venue: "Mahlale", status: "Week 2 • Stream B" },
+  { date: "2026-02-22", time: "Bhubezi", home: "Bhubhezi", away: "Labamba", venue: "Bhubezi", status: "Week 2 • Stream B" },
+  { date: "2026-02-22", time: "Real", home: "Real Rangers", away: "W/ Masters", venue: "Real", status: "Week 2 • Stream B" }
 ];
 
-// WEEK 1 RESULTS (from your picture)
+// WEEK 1 RESULTS 
 const resultsA = [
   { home: "FC Wonderous", away: "Royal Tigers", homeGoals: 0, awayGoals: 2, notes: "W/O" },
   { home: "Fast 11", away: "Crusaders", homeGoals: 0, awayGoals: 2, notes: "" },
@@ -40,6 +42,10 @@ const photoSlides = [
   { src: "images/photo3.jpg", title: "Training", meta: "Fitness & Drills" }
 ];
 
+// =====================
+// APP LOGIC
+// =====================
+
 const $ = (id) => document.getElementById(id);
 
 function badge(text) {
@@ -51,39 +57,50 @@ function renderDonate() {
   if (a) a.href = donateUrl;
 }
 
-function renderNextMatchCard() {
+function getSortedFixtures() {
+  return fixtures.slice().sort((a, b) => (a.date > b.date ? 1 : -1));
+}
+
+function renderNextMatchCard(list = fixtures) {
   const next = $("nextMatch");
   const meta = $("nextMatchMeta");
   if (!next || !meta) return;
 
-  if (!fixtures.length) {
+  if (!list.length) {
     next.textContent = "No fixtures yet";
     meta.textContent = "Add fixtures in Script.js";
     return;
   }
 
-  const sorted = fixtures.slice().sort((a, b) => (a.date > b.date ? 1 : -1));
+  const sorted = list.slice().sort((a, b) => (a.date > b.date ? 1 : -1));
   const f = sorted[0];
 
   next.textContent = `${f.home} vs ${f.away}`;
   meta.textContent = `${f.date} • ${f.time || "-"} • ${f.status || "Upcoming"}`;
 }
 
-function renderFixturesTable(filterText = "") {
+function filterFixtures(searchText = "", stream = "") {
+  const q = searchText.trim().toLowerCase();
+  return getSortedFixtures().filter(f => {
+    const matchesText = !q || `${f.home} ${f.away} ${f.venue} ${f.status}`.toLowerCase().includes(q);
+    const matchesStream = !stream || (f.status || "").toLowerCase().includes(stream.toLowerCase());
+    return matchesText && matchesStream;
+  });
+}
+
+function renderFixturesTable(searchText = "", stream = "") {
   const body = $("fixturesBody");
   if (!body) return;
 
-  const q = filterText.trim().toLowerCase();
-
-  const list = fixtures.filter((f) => {
-    if (!q) return true;
-    return `${f.home} ${f.away} ${f.venue} ${f.status}`.toLowerCase().includes(q);
-  });
+  const list = filterFixtures(searchText, stream);
 
   if (!list.length) {
     body.innerHTML = `<tr><td colspan="5" class="muted">No fixtures available.</td></tr>`;
+    renderNextMatchCard([]); // keep card consistent
     return;
   }
+
+  renderNextMatchCard(list);
 
   body.innerHTML = list.map((f) => `
     <tr>
@@ -96,35 +113,37 @@ function renderFixturesTable(filterText = "") {
   `).join("");
 }
 
-function renderResultsLists(filterText = "") {
-  const q = filterText.trim().toLowerCase();
+function formatResult(r) {
+  const score = `${r.homeGoals} - ${r.awayGoals}`;
+  const note = r.notes ? ` (${r.notes})` : "";
+  return `${r.home} ${score} ${r.away}${note}`;
+}
 
+function renderResultsLists(searchText = "") {
+  const q = searchText.trim().toLowerCase();
   const listA = $("resultsListA");
   const listB = $("resultsListB");
 
-  const format = (r) => {
-    const score = `${r.homeGoals} - ${r.awayGoals}`;
-    const note = r.notes ? ` (${r.notes})` : "";
-    return `${r.home} ${score} ${r.away}${note}`;
-  };
-
-  const match = (r) => {
-    if (!q) return true;
-    return `${r.home} ${r.away} ${r.notes || ""}`.toLowerCase().includes(q);
-  };
+  const filterFn = (r) => !q || `${r.home} ${r.away} ${r.notes || ""}`.toLowerCase().includes(q);
 
   if (listA) {
-    const a = resultsA.filter(match);
-    listA.innerHTML = a.length ? a.map(r => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
+    const a = resultsA.filter(filterFn);
+    listA.innerHTML = a.length ? a.map(r => `<li>${formatResult(r)}</li>`).join("") : `<li>No results found.</li>`;
   }
 
   if (listB) {
-    const b = resultsB.filter(match);
-    listB.innerHTML = b.length ? b.map(r => `<li>${format(r)}</li>`).join("") : `<li>No results found.</li>`;
+    const b = resultsB.filter(filterFn);
+    listB.innerHTML = b.length ? b.map(r => `<li>${formatResult(r)}</li>`).join("") : `<li>No results found.</li>`;
   }
+
+  const highlight = resultsB[0];
+  const hl = $("highlightResult");
+  if (hl && highlight) hl.textContent = `${highlight.home} ${highlight.homeGoals} - ${highlight.awayGoals} ${highlight.away}`;
 }
 
-// Slideshow
+// =====================
+// SLIDESHOW
+// =====================
 let slideIndex = 0;
 let slideTimer = null;
 
@@ -149,21 +168,68 @@ function startAutoSlides() {
 }
 
 function init() {
-  // If these IDs don’t exist, page won’t break.
   const y = $("yearNow");
   if (y) y.textContent = new Date().getFullYear();
 
   renderDonate();
-  renderNextMatchCard();
-  renderFixturesTable();
-  renderResultsLists();
 
+  // Initial render
+  renderFixturesTable("", "");
+  renderResultsLists("");
+
+  // Search inputs
   const fixtureSearch = $("fixtureSearch");
-  if (fixtureSearch) fixtureSearch.addEventListener("input", (e) => renderFixturesTable(e.target.value));
-
   const resultSearch = $("resultSearch");
-  if (resultSearch) resultSearch.addEventListener("input", (e) => renderResultsLists(e.target.value));
 
+  let currentStreamFilter = "";
+
+  if (fixtureSearch) {
+    fixtureSearch.addEventListener("input", (e) => {
+      renderFixturesTable(e.target.value, currentStreamFilter);
+    });
+  }
+
+  if (resultSearch) {
+    resultSearch.addEventListener("input", (e) => {
+      renderResultsLists(e.target.value);
+    });
+  }
+
+  // Filter buttons
+  const btnStreamA = $("btnStreamA");
+  const btnStreamB = $("btnStreamB");
+  const btnClearFixture = $("btnClearFixture");
+
+  if (btnStreamA) btnStreamA.addEventListener("click", () => {
+    currentStreamFilter = "stream a";
+    renderFixturesTable(fixtureSearch ? fixtureSearch.value : "", currentStreamFilter);
+  });
+
+  if (btnStreamB) btnStreamB.addEventListener("click", () => {
+    currentStreamFilter = "stream b";
+    renderFixturesTable(fixtureSearch ? fixtureSearch.value : "", currentStreamFilter);
+  });
+
+  if (btnClearFixture) btnClearFixture.addEventListener("click", () => {
+    currentStreamFilter = "";
+    if (fixtureSearch) fixtureSearch.value = "";
+    renderFixturesTable("", "");
+  });
+
+  const btnAllResults = $("btnAllResults");
+  const btnClearResults = $("btnClearResults");
+
+  if (btnAllResults) btnAllResults.addEventListener("click", () => {
+    if (resultSearch) resultSearch.value = "";
+    renderResultsLists("");
+  });
+
+  if (btnClearResults) btnClearResults.addEventListener("click", () => {
+    if (resultSearch) resultSearch.value = "";
+    renderResultsLists("");
+  });
+
+  // Slideshow buttons
   const prev = $("prevPhoto");
   const next = $("nextPhoto");
 
@@ -174,7 +240,6 @@ function init() {
   startAutoSlides();
 }
 
-// Runs whether script loads early or late
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
 } else {
