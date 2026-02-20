@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welverdiend Soccer League | BLFA Updates</title>
-  <meta name="description" content="Welverdiend Soccer League (WSL) under BLFA: fixtures, results, and log tables for Stream A & Stream B." />
+  <title>Welverdiend Soccer League | WSL Week 1</title>
+  <meta name="description" content="Welverdiend Soccer League (WSL) Week 1 Log Table and Results: Stream A and Stream B." />
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -12,18 +12,17 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <div class="brand">
-        <div class="logo" aria-hidden="true">⚽</div>
+        <!-- WSL LOGO -->
+        <img class="wsl-logo" src="images/wsl-logo.png" alt="WSL Logo" />
         <div class="brand-text">
-          <div class="brand-title">Welverdiend Soccer League (WSL)</div>
-          <div class="brand-subtitle">Under BLFA (Bushbuckridge Local Football Association)</div>
+          <div class="brand-title">WELVERDIEND SOCCER LEAGUE (WSL)</div>
+          <div class="brand-subtitle">Week 1 Log Table and Results • Under BLFA</div>
         </div>
       </div>
 
       <nav class="nav">
-        <a href="#fixtures">Next Matches</a>
-        <a href="#results">Results</a>
-        <a href="#standings">Log Table</a>
-        <a href="#team">Committee</a>
+        <a href="#streamA">Stream A</a>
+        <a href="#streamB">Stream B</a>
         <a href="#photos">Photos</a>
         <a class="btn btn-donate" href="#donate" title="Sponsor / Donate">💛 Donate</a>
       </nav>
@@ -34,211 +33,126 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <h1>Week 1 Log Table & Results</h1>
+          <h1>WSL Week 1 Update</h1>
           <p class="muted">
-            Updated from the official WSL Week 1 sheet. Includes Stream A and Stream B tables and results.
+            Enquiries: Senkie Nyathi (076 8062 013) • Clife Juzie (078 084 6573)
           </p>
-
-          <div class="hero-actions">
-            <a class="btn" href="#results">View Results</a>
-            <a class="btn btn-outline" href="#standings">View Log Table</a>
-          </div>
 
           <div class="quick-cards">
             <div class="card">
-              <div class="card-title">Next Match</div>
-              <div id="nextMatch" class="card-big">Loading…</div>
-              <div id="nextMatchMeta" class="muted small"></div>
-            </div>
-            <div class="card">
               <div class="card-title">Highlighted Result</div>
-              <div id="latestResult" class="card-big">Loading…</div>
-              <div id="latestResultMeta" class="muted small"></div>
+              <div class="card-big">Liverpool 2 - 0 Junior Pirates</div>
+              <div class="muted small">Stream B • Week 1</div>
             </div>
             <div class="card">
-              <div class="card-title">Streams</div>
-              <div class="card-big">A & B</div>
-              <div class="muted small">Official Week 1 update</div>
+              <div class="card-title">Top (Stream A)</div>
+              <div class="card-big">Morning Stars FC</div>
+              <div class="muted small">3 pts • GD +4</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Top (Stream B)</div>
+              <div class="card-big">Labamba FC</div>
+              <div class="muted small">3 pts • GD +6</div>
             </div>
           </div>
         </div>
 
         <div class="hero-side">
-          <div class="card card-highlight">
-            <div class="card-title">Contacts</div>
-
-            <div class="notice">
-              <span aria-hidden="true">📞</span>
-              <div>
-                <div class="notice-title">Enquiries</div>
-                <div id="contactInfo" class="muted small">Loading…</div>
-              </div>
+          <div class="card card-highlight" id="donate">
+            <div class="card-title">Sponsor / Donate</div>
+            <p class="muted">Support kits, transport, balls, and youth development.</p>
+            <a class="btn btn-donate wide" href="https://www.paypal.com/" target="_blank" rel="noopener">💛 Donate Now</a>
+            <div class="muted small" style="margin-top:10px;">
+              Replace the donate link in <code>index.html</code> (PayFast / BackaBuddy / WhatsApp / PayPal).
             </div>
-
-            <div class="notice">
-              <span aria-hidden="true">📍</span>
-              <div>
-                <div class="notice-title">Ground</div>
-                <div id="homeGround" class="muted small">Loading…</div>
-              </div>
-            </div>
-
-            <a class="btn btn-donate wide" href="#donate">💛 Sponsor / Donate</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FIXTURES -->
-    <section id="fixtures" class="section">
+    <!-- STREAM A -->
+    <section id="streamA" class="section">
       <div class="container">
         <div class="section-head">
-          <h2>Next Matches (Fixtures)</h2>
-          <div class="tools">
-            <input id="fixtureSearch" class="input" placeholder="Search team..." />
-          </div>
+          <h2>STREAM A • Log Table</h2>
         </div>
 
         <div class="table-wrap">
-          <table class="table" aria-label="Next matches">
+          <table class="table" aria-label="Stream A log table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Match</th>
-                <th>Venue</th>
-                <th>Status</th>
+                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
               </tr>
             </thead>
-            <tbody id="fixturesBody"></tbody>
+            <tbody>
+              <tr><td>1</td><td><strong>Morning Stars FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>0</td><td>4</td><td><strong>3</strong></td></tr>
+              <tr><td>2</td><td><strong>Crusaders FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td><td><strong>3</strong></td></tr>
+              <tr><td>3</td><td><strong>Royal Tigers FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td><td><strong>3</strong></td></tr>
+              <tr><td>4</td><td><strong>Highlanders FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>1</td><td>1</td><td><strong>3</strong></td></tr>
+              <tr><td>5</td><td><strong>Eastern Rangers FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>2</td><td>-1</td><td><strong>0</strong></td></tr>
+              <tr><td>6</td><td><strong>Fast Eleven FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>-2</td><td><strong>0</strong></td></tr>
+              <tr><td>7</td><td><strong>FC Wonderous</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>-2</td><td><strong>0</strong></td></tr>
+              <tr><td>8</td><td><strong>Movers FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>4</td><td>-4</td><td><strong>0</strong></td></tr>
+            </tbody>
           </table>
         </div>
 
-        <p class="muted small">Note: Week 1 sheet does not include fixtures. Add fixtures in <code>Script.js</code>.</p>
-      </div>
-    </section>
-
-    <!-- RESULTS -->
-    <section id="results" class="section alt">
-      <div class="container">
-        <div class="section-head">
-          <h2>Results (Week 1)</h2>
-          <div class="tools">
-            <input id="resultSearch" class="input" placeholder="Search team..." />
-          </div>
-        </div>
-
-        <div class="card" style="margin-bottom:12px;">
-          <div class="card-title">Stream A - Results</div>
-          <div class="table-wrap">
-            <table class="table" aria-label="Stream A results">
-              <thead>
-                <tr>
-                  <th>Match</th>
-                  <th>Score</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody id="resultsBodyA"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Stream B - Results</div>
-          <div class="table-wrap">
-            <table class="table" aria-label="Stream B results">
-              <thead>
-                <tr>
-                  <th>Match</th>
-                  <th>Score</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody id="resultsBodyB"></tbody>
-            </table>
-          </div>
+        <div class="card" style="margin-top:12px;">
+          <div class="card-title">STREAM A • Results</div>
+          <ol class="muted">
+            <li>FC Wonderous 0 - 2 Royal Tigers (W/O)</li>
+            <li>Fast 11 0 - 2 Crusaders</li>
+            <li>Highlanders 2 - 1 Eastern Rangers</li>
+            <li>Movers 0 - 4 Morning Stars</li>
+          </ol>
         </div>
       </div>
     </section>
 
-    <!-- STANDINGS -->
-    <section id="standings" class="section">
+    <!-- STREAM B -->
+    <section id="streamB" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2>Log Table (Week 1)</h2>
-          <div class="tools">
-            <button id="sortStandingsBtn" class="btn btn-outline small-btn" type="button">Sort by Points</button>
-          </div>
+          <h2>STREAM B • Log Table</h2>
         </div>
 
-        <div class="card" style="margin-bottom:12px;">
-          <div class="card-title">Stream A - Log Table</div>
-          <div class="table-wrap">
-            <table class="table" aria-label="Stream A standings">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Team</th>
-                  <th>P</th>
-                  <th>W</th>
-                  <th>D</th>
-                  <th>L</th>
-                  <th>GF</th>
-                  <th>GA</th>
-                  <th>GD</th>
-                  <th>Pts</th>
-                </tr>
-              </thead>
-              <tbody id="standingsBodyA"></tbody>
-            </table>
-          </div>
+        <div class="table-wrap">
+          <table class="table" aria-label="Stream B log table">
+            <thead>
+              <tr>
+                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td><strong>Labamba FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>7</td><td>1</td><td>6</td><td><strong>3</strong></td></tr>
+              <tr><td>2</td><td><strong>Bhubhezi FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>0</td><td>4</td><td><strong>3</strong></td></tr>
+              <tr><td>3</td><td><strong>Liverpool FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td><td><strong>3</strong></td></tr>
+              <tr><td>4</td><td><strong>Xihuhuri FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>3</td><td>1</td><td><strong>3</strong></td></tr>
+              <tr><td>5</td><td><strong>Welverdiend Masters</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>3</td><td>4</td><td>-1</td><td><strong>0</strong></td></tr>
+              <tr><td>6</td><td><strong>Junior Pirates FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>-2</td><td><strong>0</strong></td></tr>
+              <tr><td>7</td><td><strong>Real Rangers</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>4</td><td>-4</td><td><strong>0</strong></td></tr>
+              <tr><td>8</td><td><strong>City Pillars FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>7</td><td>-6</td><td><strong>0</strong></td></tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="card">
-          <div class="card-title">Stream B - Log Table</div>
-          <div class="table-wrap">
-            <table class="table" aria-label="Stream B standings">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Team</th>
-                  <th>P</th>
-                  <th>W</th>
-                  <th>D</th>
-                  <th>L</th>
-                  <th>GF</th>
-                  <th>GA</th>
-                  <th>GD</th>
-                  <th>Pts</th>
-                </tr>
-              </thead>
-              <tbody id="standingsBodyB"></tbody>
-            </table>
-          </div>
+        <div class="card" style="margin-top:12px;">
+          <div class="card-title">STREAM B • Results</div>
+          <ol class="muted">
+            <li>Liverpool 2 - 0 Junior Pirates</li>
+            <li>Labamba 7 - 1 City Pillars</li>
+            <li>Welverdiend Masters 3 - 4 Xihuhuri</li>
+            <li>Real Rangers 0 - 4 Bhubhezi</li>
+          </ol>
         </div>
 
-      </div>
-    </section>
-
-    <!-- TEAM INFO -->
-    <section id="team" class="section alt">
-      <div class="container">
-        <div class="section-head">
-          <h2>WSL Executive Committee</h2>
-        </div>
-
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title">Committee</div>
-            <ul id="execList" class="list"></ul>
-          </div>
-
-          <div id="donate" class="card card-highlight">
-            <div class="card-title">Sponsor / Donate</div>
-            <p class="muted">Support kits, transport, balls, and youth development.</p>
-            <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">💛 Donate Now</a>
-          </div>
+        <div class="card" style="margin-top:12px;">
+          <div class="card-title">WSL Executive (from sheet)</div>
+          <p class="muted small" style="line-height:1.6; margin:0;">
+            Jethro Gumede (Chairperson), Seepane Emanuel (Deputy Chair), Thabiso Ndlovu (Treasure),
+            Clife Ndlovu (Secretary), Bophelo Mogakane (H. Referee), Jomo Unisi (Marketing Director),
+            Gift Ndlovu (DC), Ripfumelo Mlambo (Media), Senkie Nyathi (Admin)
+          </p>
         </div>
       </div>
     </section>
@@ -264,7 +178,7 @@
           </div>
         </div>
 
-        <p class="muted small">Put photos in <code>images/photo1.jpg</code>, <code>images/photo2.jpg</code>, <code>images/photo3.jpg</code>.</p>
+        <p class="muted small">Add photos in <code>images/photo1.jpg</code>, <code>images/photo2.jpg</code>, <code>images/photo3.jpg</code>.</p>
       </div>
     </section>
 
@@ -276,7 +190,18 @@
     </footer>
   </main>
 
-  <!-- Match your repo filename (Script.js) -->
+  <!-- Only needed for slideshow + year -->
   <script src="Script.js"></script>
+
+  <!-- Small logo styling -->
+  <style>
+    .wsl-logo{
+      width:44px;height:44px;object-fit:contain;
+      border-radius:14px;border:1px solid rgba(243,245,255,.12);
+      background: rgba(255,255,255,.04);
+      padding:6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+  </style>
 </body>
 </html>
