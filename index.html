@@ -12,7 +12,6 @@
   <header class="topbar">
     <div class="container topbar-inner">
       <div class="brand">
-        <!-- WSL LOGO -->
         <img class="wsl-logo" src="images/wsl-logo.png" alt="WSL Logo" />
         <div class="brand-text">
           <div class="brand-title">WELVERDIEND SOCCER LEAGUE (WSL)</div>
@@ -21,6 +20,8 @@
       </div>
 
       <nav class="nav">
+        <a href="#fixtures">Next Matches</a>
+        <a href="#results">Results</a>
         <a href="#streamA">Stream A</a>
         <a href="#streamB">Stream B</a>
         <a href="#photos">Photos</a>
@@ -30,6 +31,7 @@
   </header>
 
   <main>
+    <!-- HERO -->
     <section class="hero">
       <div class="container hero-grid">
         <div>
@@ -40,19 +42,21 @@
 
           <div class="quick-cards">
             <div class="card">
+              <div class="card-title">Next Match</div>
+              <div id="nextMatch" class="card-big">No fixtures yet</div>
+              <div id="nextMatchMeta" class="muted small">Add fixtures in Script.js</div>
+            </div>
+
+            <div class="card">
               <div class="card-title">Highlighted Result</div>
-              <div class="card-big">Liverpool 2 - 0 Junior Pirates</div>
+              <div id="highlightResult" class="card-big">Liverpool 2 - 0 Junior Pirates</div>
               <div class="muted small">Stream B • Week 1</div>
             </div>
+
             <div class="card">
-              <div class="card-title">Top (Stream A)</div>
-              <div class="card-big">Morning Stars FC</div>
-              <div class="muted small">3 pts • GD +4</div>
-            </div>
-            <div class="card">
-              <div class="card-title">Top (Stream B)</div>
-              <div class="card-big">Labamba FC</div>
-              <div class="muted small">3 pts • GD +6</div>
+              <div class="card-title">Top Teams</div>
+              <div class="card-big">Stream A: Morning Stars</div>
+              <div class="muted small">Stream B: Labamba</div>
             </div>
           </div>
         </div>
@@ -61,10 +65,65 @@
           <div class="card card-highlight" id="donate">
             <div class="card-title">Sponsor / Donate</div>
             <p class="muted">Support kits, transport, balls, and youth development.</p>
-            <a class="btn btn-donate wide" href="https://www.paypal.com/" target="_blank" rel="noopener">💛 Donate Now</a>
+            <a id="donateLink" class="btn btn-donate wide" href="https://www.paypal.com/" target="_blank" rel="noopener">💛 Donate Now</a>
             <div class="muted small" style="margin-top:10px;">
-              Replace the donate link in <code>index.html</code> (PayFast / BackaBuddy / WhatsApp / PayPal).
+              Change the donate link inside <code>Script.js</code>.
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEXT MATCHES -->
+    <section id="fixtures" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Next Matches (Fixtures)</h2>
+          <div class="tools">
+            <input id="fixtureSearch" class="input" placeholder="Search team..." />
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" aria-label="Next matches">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Match</th>
+                <th>Venue</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="fixturesBody">
+              <tr><td colspan="5" class="muted">Loading fixtures…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="muted small">If you don’t have fixtures yet, the table will show “No fixtures”.</p>
+      </div>
+    </section>
+
+    <!-- RESULTS (SUMMARY) -->
+    <section id="results" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <h2>Results (Week 1)</h2>
+          <div class="tools">
+            <input id="resultSearch" class="input" placeholder="Search team..." />
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Stream A • Results</div>
+            <ol id="resultsListA" class="muted" style="margin:0; padding-left:18px;"></ol>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Stream B • Results</div>
+            <ol id="resultsListB" class="muted" style="margin:0; padding-left:18px;"></ol>
           </div>
         </div>
       </div>
@@ -96,16 +155,6 @@
             </tbody>
           </table>
         </div>
-
-        <div class="card" style="margin-top:12px;">
-          <div class="card-title">STREAM A • Results</div>
-          <ol class="muted">
-            <li>FC Wonderous 0 - 2 Royal Tigers (W/O)</li>
-            <li>Fast 11 0 - 2 Crusaders</li>
-            <li>Highlanders 2 - 1 Eastern Rangers</li>
-            <li>Movers 0 - 4 Morning Stars</li>
-          </ol>
-        </div>
       </div>
     </section>
 
@@ -134,16 +183,6 @@
               <tr><td>8</td><td><strong>City Pillars FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>7</td><td>-6</td><td><strong>0</strong></td></tr>
             </tbody>
           </table>
-        </div>
-
-        <div class="card" style="margin-top:12px;">
-          <div class="card-title">STREAM B • Results</div>
-          <ol class="muted">
-            <li>Liverpool 2 - 0 Junior Pirates</li>
-            <li>Labamba 7 - 1 City Pillars</li>
-            <li>Welverdiend Masters 3 - 4 Xihuhuri</li>
-            <li>Real Rangers 0 - 4 Bhubhezi</li>
-          </ol>
         </div>
 
         <div class="card" style="margin-top:12px;">
@@ -190,10 +229,9 @@
     </footer>
   </main>
 
-  <!-- Only needed for slideshow + year -->
+  <!-- IMPORTANT: If your file is "Script.js" keep this exactly -->
   <script src="Script.js"></script>
 
-  <!-- Small logo styling -->
   <style>
     .wsl-logo{
       width:44px;height:44px;object-fit:contain;
