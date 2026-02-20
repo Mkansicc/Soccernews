@@ -6,7 +6,6 @@
   --muted:rgba(243,245,255,.72);
   --line:rgba(243,245,255,.12);
   --accent:#ffd54a;
-  --accent2:#7cc7ff;
   --shadow: 0 10px 30px rgba(0,0,0,.35);
   --radius: 18px;
   --max: 1100px;
@@ -14,7 +13,8 @@
 }
 
 *{ box-sizing:border-box; }
-html,body{ margin:0; padding:0; font-family:var(--font); background: radial-gradient(1200px 600px at 20% -10%, rgba(124,199,255,.18), transparent 60%),
+html,body{ margin:0; padding:0; font-family:var(--font); background:
+  radial-gradient(1200px 600px at 20% -10%, rgba(124,199,255,.18), transparent 60%),
   radial-gradient(900px 500px at 80% 0%, rgba(255,213,74,.14), transparent 55%),
   var(--bg);
   color:var(--text);
