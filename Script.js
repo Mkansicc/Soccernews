@@ -17,7 +17,7 @@ const fixtures = [
   { date: "2026-02-22", time: "16:00", home: "City Pillars", away: "Liverpool", venue: "City Pillars", status: "Week 2 • Stream B" },
   { date: "2026-02-22", time: "16:00", home: "Junior Pirates", away: "Xihuhuri", venue: "Mahlale", status: "Week 2 • Stream B" },
   { date: "2026-02-22", time: "16:00", home: "Bhubhezi", away: "Labamba", venue: "Bhubezi", status: "Week 2 • Stream B" },
-  { date: "2026-02-22", time: "16:00 home: "Real Rangers", away: "W/ Masters", venue: "Real", status: "Week 2 • Stream B" }
+  { date: "2026-02-22", time: "16:00", home: "Real Rangers", away: "W/ Masters", venue: "Real", status: "Week 2 • Stream B" }
 ];
 
 // WEEK 1 RESULTS 
@@ -37,9 +37,9 @@ const resultsB = [
 
 // Slideshow photos
 const photoSlides = [
-  { src: "images/photo1.jpg", title: "Team Photo", meta: "Liverppol vs Junior Pirates" },
-  { src: "images/photo2.jpg", title: "Match Day", meta: "2024/2025 playoffs, Real soccer Field" },
-  { src: "images/photo3.jpg", title: "Match day", meta: "Rusel Mkansi 2025/2026 Best Striker nominee" }
+  { src: "images/photo1.jpg", title: "Team Photo", meta: "Welverdiend • Season" },
+  { src: "images/photo2.jpg", title: "Match Day", meta: "Players & Supporters" },
+  { src: "images/photo3.jpg", title: "Training", meta: "Fitness & Drills" }
 ];
 
 // =====================
