@@ -1,8 +1,8 @@
 "use strict";
 
-/* Script.js v13
+/* Script.js v14
   - Week 1 results kept as-is
-  - Week 2 results kept as-is
+  - Week 2 results updated (Royal Tigers 0-1 Eastern Rangers, Real Rangers 1-3 Welverdiend Masters)
   - OVERALL LOG = Week1 + Week2 combined (played matches only)
 */
 
@@ -69,19 +69,19 @@ const week1 = {
   ],
 };
 
-// WEEK 2 (your new results)
+// WEEK 2 (UPDATED with your edits)
 const week2 = {
   A: [
     { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
-    { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: null, awayGoals: null },
-    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: null, awayGoals: null },
+    { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: 0, awayGoals: 1 }, // ✅ updated
+    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: null, awayGoals: null }, // not played
     { home: "Movers FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 2 },
   ],
   B: [
     { home: "City Pillars FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 1 },
     { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 1, awayGoals: 3 },
     { home: "Bhubhezi FC", away: "Labamba FC", homeGoals: 2, awayGoals: 1 },
-    { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: null, awayGoals: null },
+    { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: 1, awayGoals: 3 }, // ✅ updated
   ],
 };
 
