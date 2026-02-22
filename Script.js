@@ -1,8 +1,8 @@
 "use strict";
 
-/* Script.js v15
+/* Script.js v13
   - Week 1 results kept as-is
-  - Week 2 results updated (Morning Stars 3-1 Fast Eleven now played)
+  - Week 2 results kept as-is
   - OVERALL LOG = Week1 + Week2 combined (played matches only)
 */
 
@@ -69,19 +69,19 @@ const week1 = {
   ],
 };
 
-// WEEK 2 (UPDATED)
+// WEEK 2 (your new results)
 const week2 = {
   A: [
     { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
-    { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: 3, awayGoals: 1 }, // ✅ updated now played
+    { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: null, awayGoals: null },
+    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: null, awayGoals: null },
     { home: "Movers FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 2 },
   ],
   B: [
     { home: "City Pillars FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 1 },
     { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 1, awayGoals: 3 },
     { home: "Bhubhezi FC", away: "Labamba FC", homeGoals: 2, awayGoals: 1 },
-    { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: 1, awayGoals: 3 },
+    { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: null, awayGoals: null },
   ],
 };
 
@@ -126,9 +126,11 @@ function renderResults(listId, data) {
   }
 }
 
+/* Calculates correct log table from any results set */
 function computeTable(streamKey, resultsSet) {
   const table = new Map();
 
+  // init all teams so even teams with 0 matches show
   for (const t of teams[streamKey]) {
     table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
   }
@@ -154,6 +156,7 @@ function computeTable(streamKey, resultsSet) {
     table.set(m.away, away);
   }
 
+  // sort: Pts, GD, GF, name
   const rows = Array.from(table.values());
   rows.sort((a, b) => {
     if (b.Pts !== a.Pts) return b.Pts - a.Pts;
@@ -182,9 +185,11 @@ function renderLog(tbodyId, rows) {
 }
 
 function bestHighlightLatestPlayed() {
+  // prefer latest week (week2 first)
   const played = [...week2.A, ...week2.B, ...week1.A, ...week1.B].filter(isPlayed);
   if (!played.length) return "No played matches yet";
 
+  // pick biggest goal difference; tie-breaker total goals
   played.sort((x, y) => {
     const dx = Math.abs(x.homeGoals - x.awayGoals);
     const dy = Math.abs(y.homeGoals - y.awayGoals);
@@ -326,12 +331,15 @@ function prevSlide() {
 document.addEventListener("DOMContentLoaded", () => {
   $("yearNow").textContent = new Date().getFullYear();
 
+  // donate link
   const d = $("donateLink");
   if (d) d.href = DONATE_URL;
 
+  // fixtures
   renderFixtures(fixtures);
   setNextMatchCard();
 
+  // results
   renderResults("resultsListA1", week1.A);
   renderResults("resultsListB1", week1.B);
   renderResults("resultsListA2", week2.A);
@@ -347,8 +355,10 @@ document.addEventListener("DOMContentLoaded", () => {
   $("leaderA").textContent = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
   $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
 
+  // highlight (prefer week2)
   $("highlightResult").textContent = bestHighlightLatestPlayed();
 
+  // result search + week toggle
   $("resultSearch").addEventListener("input", applyResultSearch);
   $("btnClearResults").addEventListener("click", () => {
     $("resultSearch").value = "";
@@ -357,15 +367,18 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnShowWeek1").addEventListener("click", showWeek1);
   $("btnShowWeek2").addEventListener("click", showWeek2);
 
+  // fixture filters
   $("fixtureSearch").addEventListener("input", applyFixtureFilters);
   $("btnStreamA").addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
   $("btnStreamB").addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
   $("btnClearFixture").addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
 
+  // slideshow
   renderSlide();
   $("nextPhoto").addEventListener("click", nextSlide);
   $("prevPhoto").addEventListener("click", prevSlide);
   setInterval(() => { if (slides.length > 1) nextSlide(); }, 7000);
 
+  // default view: Week 1 results visible
   showWeek1();
 });
