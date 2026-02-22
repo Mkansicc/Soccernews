@@ -54,7 +54,7 @@
         <div>
           <h1>WSL Match Updates</h1>
           <p class="muted">
-            Week 1 + Week 2 results are saved. Logs below are combined (cumulative) for all played matches.
+          
           </p>
 
           <div class="hero-actions">
@@ -94,7 +94,7 @@
             </a>
 
             <div class="muted small" style="margin-top:10px;">
-              <code>Replace Donate Link in Script.js</code>
+              <code></code>
             </div>
 
             <div class="sponsor-row">
@@ -147,7 +147,7 @@
         </div>
 
         <p class="muted small" style="margin-top:10px;">
-          Venue is automatically set to the Home team.
+          
         </p>
       </div>
     </section>
@@ -310,6 +310,6 @@
     </footer>
   </main>
 
-  <script src="Script.js?v=17" defer></script>
+  <script src="Script.js?v=18" defer></script>
 </body>
 </html>
