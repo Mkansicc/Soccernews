@@ -1,9 +1,11 @@
 "use strict";
 
-/* Script.js v13
-  - Week 1 results kept as-is
-  - Week 2 results kept as-is
-  - OVERALL LOG = Week1 + Week2 combined (played matches only)
+/* Script.js v12
+  - Week 1 results: kept exactly (as previous site)
+  - Week 2 results: added (your new scores)
+  - Week 1 logs: computed from Week 1 results
+  - Week 2 logs: computed from Week 2 results ONLY (❓ excluded)
+  - Result search works on whichever week is visible
 */
 
 const DONATE_URL = "https://example.com/donate"; // change if you want
@@ -53,7 +55,7 @@ const teams = {
 // RESULTS DATA
 // ===============================
 
-// WEEK 1 (unchanged)
+// ✅ WEEK 1 (DO NOT CHANGE) — kept as your previous standings/results style
 const week1 = {
   A: [
     { home: "Morning Stars FC", away: "Movers FC", homeGoals: 4, awayGoals: 0 },
@@ -69,7 +71,7 @@ const week1 = {
   ],
 };
 
-// WEEK 2 (your new results)
+// ✅ WEEK 2 (YOUR NEW SCORES)
 const week2 = {
   A: [
     { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
@@ -83,12 +85,6 @@ const week2 = {
     { home: "Bhubhezi FC", away: "Labamba FC", homeGoals: 2, awayGoals: 1 },
     { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: null, awayGoals: null },
   ],
-};
-
-// Build OVERALL results set (Week1 + Week2)
-const overall = {
-  A: [...week1.A, ...week2.A],
-  B: [...week1.B, ...week2.B],
 };
 
 // ===============================
@@ -108,9 +104,11 @@ const $ = (id) => document.getElementById(id);
 function safeText(v) {
   return String(v ?? "").replace(/[<>]/g, "");
 }
+
 function isPlayed(m) {
   return Number.isInteger(m.homeGoals) && Number.isInteger(m.awayGoals);
 }
+
 function formatScore(hg, ag) {
   if (hg === null || ag === null) return "❓ – ❓";
   return `${hg} – ${ag}`;
@@ -126,11 +124,9 @@ function renderResults(listId, data) {
   }
 }
 
-/* Calculates correct log table from any results set */
 function computeTable(streamKey, resultsSet) {
   const table = new Map();
 
-  // init all teams so even teams with 0 matches show
   for (const t of teams[streamKey]) {
     table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
   }
@@ -156,7 +152,6 @@ function computeTable(streamKey, resultsSet) {
     table.set(m.away, away);
   }
 
-  // sort: Pts, GD, GF, name
   const rows = Array.from(table.values());
   rows.sort((a, b) => {
     if (b.Pts !== a.Pts) return b.Pts - a.Pts;
@@ -184,12 +179,14 @@ function renderLog(tbodyId, rows) {
   });
 }
 
-function bestHighlightLatestPlayed() {
-  // prefer latest week (week2 first)
-  const played = [...week2.A, ...week2.B, ...week1.A, ...week1.B].filter(isPlayed);
+function bestHighlightFromLatest() {
+  const played = [
+    ...week2.A, ...week2.B, // prefer week2
+    ...week1.A, ...week1.B,
+  ].filter(isPlayed);
+
   if (!played.length) return "No played matches yet";
 
-  // pick biggest goal difference; tie-breaker total goals
   played.sort((x, y) => {
     const dx = Math.abs(x.homeGoals - x.awayGoals);
     const dy = Math.abs(y.homeGoals - y.awayGoals);
@@ -254,13 +251,15 @@ function setNextMatchCard() {
 }
 
 // ===============================
-// RESULTS SEARCH (active week only)
+// RESULT SEARCH (active week only)
 // ===============================
 function applyResultSearch() {
   const q = ($("resultSearch").value || "").toLowerCase().trim();
-  const week2Visible = $("week2Block").style.display !== "none";
+  const visibleWeek2 = $("week2Block").style.display !== "none";
 
-  const ids = week2Visible ? ["resultsListA2", "resultsListB2"] : ["resultsListA1", "resultsListB1"];
+  const ids = visibleWeek2
+    ? ["resultsListA2", "resultsListB2"]
+    : ["resultsListA1", "resultsListB1"];
 
   for (const id of ids) {
     const list = $(id);
@@ -339,31 +338,37 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFixtures(fixtures);
   setNextMatchCard();
 
-  // results
+  // results render
   renderResults("resultsListA1", week1.A);
   renderResults("resultsListB1", week1.B);
   renderResults("resultsListA2", week2.A);
   renderResults("resultsListB2", week2.B);
 
-  // ✅ OVERALL LOGS (Week1 + Week2 combined)
-  const rowsA = computeTable("A", overall);
-  const rowsB = computeTable("B", overall);
-  renderLog("logBodyA", rowsA);
-  renderLog("logBodyB", rowsB);
+  // logs (Week 1)
+  renderLog("logBodyA1", computeTable("A", week1));
+  renderLog("logBodyB1", computeTable("B", week1));
 
-  // Leaders (Overall)
-  $("leaderA").textContent = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
-  $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
+  // logs (Week 2 ONLY)
+  const rowsA2 = computeTable("A", week2);
+  const rowsB2 = computeTable("B", week2);
+  renderLog("logBodyA2", rowsA2);
+  renderLog("logBodyB2", rowsB2);
 
-  // highlight (prefer week2)
-  $("highlightResult").textContent = bestHighlightLatestPlayed();
+  // leaders (Week 2)
+  $("leaderA2").textContent = rowsA2[0]?.team ? `A: ${rowsA2[0].team} (${rowsA2[0].Pts} pts)` : "A: N/A";
+  $("leaderB2").textContent = rowsB2[0]?.team ? `B: ${rowsB2[0].team} (${rowsB2[0].Pts} pts)` : "B: N/A";
 
-  // result search + week toggle
+  // highlight (prefer Week 2)
+  $("highlightResult").textContent = bestHighlightFromLatest();
+
+  // result search
   $("resultSearch").addEventListener("input", applyResultSearch);
   $("btnClearResults").addEventListener("click", () => {
     $("resultSearch").value = "";
     applyResultSearch();
   });
+
+  // week toggle
   $("btnShowWeek1").addEventListener("click", showWeek1);
   $("btnShowWeek2").addEventListener("click", showWeek2);
 
