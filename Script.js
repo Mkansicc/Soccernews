@@ -1,26 +1,196 @@
 "use strict";
 
-/* Script.js v15
+/* Script.js v16
+  - Fixtures updated from attached PDFs:
+    Stream A fixture list (Weeks 1–14) :contentReference[oaicite:2]{index=2}
+    Stream B fixture list (Weeks 1–14) :contentReference[oaicite:3]{index=3}
   - Week 1 results kept as-is
-  - Week 2 results updated (Morning Stars 3-1 Fast Eleven now played)
+  - Week 2 results updated (Morning Stars 3-1 Fast Eleven)
   - OVERALL LOG = Week1 + Week2 combined (played matches only)
 */
 
 const DONATE_URL = "https://example.com/donate"; // change if you want
 
 // ===============================
-// FIXTURES (edit as you like)
+// FIXTURES (FROM PDFs) — Stream A + Stream B
+// Date format kept readable for your table
+// Time/Venue not provided in PDFs → set to TBC
+// Status: Week 1–2 Played, Week 3–14 Scheduled
 // ===============================
 const fixtures = [
-  { stream: "A", date: "TBC", time: "TBC", home: "Crusaders FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
-  { stream: "A", date: "TBC", time: "TBC", home: "FC Wondrous", away: "Movers FC", venue: "TBC", status: "Scheduled" },
-  { stream: "A", date: "TBC", time: "TBC", home: "Royal Tigers FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
-  { stream: "A", date: "TBC", time: "TBC", home: "Morning Stars FC", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
+  // ---------------------------
+  // STREAM A
+  // ---------------------------
+  // WEEK 1 — Saturday 14 Feb 2026
+  { stream: "A", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "FC Wondrous", away: "Royal Tigers FC", venue: "TBC", status: "Played" },
+  { stream: "A", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "Fast Eleven FC", away: "Crusaders FC", venue: "TBC", status: "Played" },
+  { stream: "A", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "Highlanders FC", away: "Eastern Rangers FC", venue: "TBC", status: "Played" },
+  { stream: "A", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "Movers FC", away: "Morning Stars FC", venue: "TBC", status: "Played" },
 
-  { stream: "B", date: "TBC", time: "TBC", home: "Liverpool FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
-  { stream: "B", date: "TBC", time: "TBC", home: "Labamba FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
-  { stream: "B", date: "TBC", time: "TBC", home: "Junior Pirates FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
-  { stream: "B", date: "TBC", time: "TBC", home: "Real Rangers FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+  // WEEK 2 — Sunday 22 Feb 2026
+  { stream: "A", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "Crusaders FC", away: "FC Wondrous", venue: "TBC", status: "Played" },
+  { stream: "A", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "Royal Tigers FC", away: "Eastern Rangers FC", venue: "TBC", status: "Played" },
+  { stream: "A", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "Morning Stars FC", away: "Fast Eleven FC", venue: "TBC", status: "Played" },
+  { stream: "A", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "Movers FC", away: "Highlanders FC", venue: "TBC", status: "Played" },
+
+  // WEEK 3 — Friday 27 Feb 2026
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Eastern Rangers FC", away: "FC Wondrous", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Crusaders FC", away: "Morning Stars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Royal Tigers FC", away: "Movers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Highlanders FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 4 — Sunday 8 March 2026
+  { stream: "A", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "FC Wondrous", away: "Morning Stars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "Movers FC", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "Highlanders FC", away: "Crusaders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "Fast Eleven FC", away: "Royal Tigers FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 5 — Saturday 14 March 2026
+  { stream: "A", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "FC Wondrous", away: "Movers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "Morning Stars FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "Eastern Rangers FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "Royal Tigers FC", away: "Crusaders FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 6 — Sunday 22 March 2026
+  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "Highlanders FC", away: "FC Wondrous", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "Movers FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "Morning Stars FC", away: "Royal Tigers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "Crusaders FC", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 7 — Saturday 28 March 2026
+  { stream: "A", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Fast Eleven FC", away: "FC Wondrous", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Royal Tigers FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Movers FC", away: "Crusaders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Eastern Rangers FC", away: "Morning Stars FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 8 — Monday 6 April 2026
+  { stream: "A", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "Royal Tigers FC", away: "FC Wondrous", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "Crusaders FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "Eastern Rangers FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "Morning Stars FC", away: "Movers FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 9 — Saturday 11 April 2026
+  { stream: "A", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "FC Wondrous", away: "Crusaders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "Eastern Rangers FC", away: "Royal Tigers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "Fast Eleven FC", away: "Morning Stars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "Highlanders FC", away: "Movers FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 10 — Sunday 19 April 2026
+  { stream: "A", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "FC Wondrous", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "Morning Stars FC", away: "Crusaders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "Movers FC", away: "Royal Tigers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "Fast Eleven FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 11 — Saturday 25 April 2026
+  { stream: "A", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Morning Stars FC", away: "FC Wondrous", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Eastern Rangers FC", away: "Movers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Crusaders FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Royal Tigers FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 12 — Sunday 3 May 2026
+  { stream: "A", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "Movers FC", away: "FC Wondrous", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "Highlanders FC", away: "Morning Stars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "Fast Eleven FC", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "Crusaders FC", away: "Royal Tigers FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 13 — Saturday 9 May 2026
+  { stream: "A", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "FC Wondrous", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "Fast Eleven FC", away: "Movers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "Royal Tigers FC", away: "Morning Stars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "Eastern Rangers FC", away: "Crusaders FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 14 — Sunday 17 May 2026
+  { stream: "A", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "FC Wondrous", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "Highlanders FC", away: "Royal Tigers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "Crusaders FC", away: "Movers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "A", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "Morning Stars FC", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
+
+  // ---------------------------
+  // STREAM B
+  // ---------------------------
+  // WEEK 1 — Saturday 14 Feb 2026
+  { stream: "B", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "Liverpool FC", away: "Junior Pirates FC", venue: "TBC", status: "Played" },
+  { stream: "B", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "Labamba FC", away: "City Pillars FC", venue: "TBC", status: "Played" },
+  { stream: "B", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "Welverdiend Masters FC", away: "Xihuhuri FC", venue: "TBC", status: "Played" },
+  { stream: "B", week: 1, date: "Sat 14 Feb 2026", time: "TBC", home: "Real Rangers FC", away: "Bhubhezi FC", venue: "TBC", status: "Played" },
+
+  // WEEK 2 — Sunday 22 Feb 2026
+  { stream: "B", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "City Pillars FC", away: "Liverpool FC", venue: "TBC", status: "Played" },
+  { stream: "B", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "Junior Pirates FC", away: "Xihuhuri FC", venue: "TBC", status: "Played" },
+  { stream: "B", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "Bhubhezi FC", away: "Labamba FC", venue: "TBC", status: "Played" },
+  { stream: "B", week: 2, date: "Sun 22 Feb 2026", time: "TBC", home: "Real Rangers FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Played" },
+
+  // WEEK 3 — Friday 27 Feb 2026
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Xihuhuri FC", away: "Liverpool FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "City Pillars FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Real Rangers FC", away: "Junior Pirates FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Welverdiend Masters FC", away: "Labamba FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 4 — Sunday 8 March 2026
+  { stream: "B", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "Liverpool FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "Xihuhuri FC", away: "Real Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "City Pillars FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 4, date: "Sun 08 Mar 2026", time: "TBC", home: "Labamba FC", away: "Junior Pirates FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 5 — Saturday 14 March 2026
+  { stream: "B", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "Real Rangers FC", away: "Liverpool FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "Bhubhezi FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "Xihuhuri FC", away: "Labamba FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 5, date: "Sat 14 Mar 2026", time: "TBC", home: "Junior Pirates FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 6 — Sunday 22 March 2026
+  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "Welverdiend Masters FC", away: "Liverpool FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "Labamba FC", away: "Real Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "Bhubhezi FC", away: "Junior Pirates FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "TBC", home: "City Pillars FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 7 — Saturday 28 March 2026
+  { stream: "B", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Liverpool FC", away: "Labamba FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Junior Pirates FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Real Rangers FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 7, date: "Sat 28 Mar 2026", time: "TBC", home: "Xihuhuri FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 8 — Monday 6 April 2026
+  { stream: "B", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "Junior Pirates FC", away: "Liverpool FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "City Pillars FC", away: "Labamba FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "Xihuhuri FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 8, date: "Mon 06 Apr 2026", time: "TBC", home: "Bhubhezi FC", away: "Real Rangers FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 9 — Saturday 11 April 2026
+  { stream: "B", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "Liverpool FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "Xihuhuri FC", away: "Junior Pirates FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "Labamba FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 9, date: "Sat 11 Apr 2026", time: "TBC", home: "Welverdiend Masters FC", away: "Real Rangers FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 10 — Sunday 19 April 2026
+  { stream: "B", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "Liverpool FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "Bhubhezi FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "Junior Pirates FC", away: "Real Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 10, date: "Sun 19 Apr 2026", time: "TBC", home: "Labamba FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 11 — Saturday 25 April 2026
+  { stream: "B", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Bhubhezi FC", away: "Liverpool FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Real Rangers FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Welverdiend Masters FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 11, date: "Sat 25 Apr 2026", time: "TBC", home: "Junior Pirates FC", away: "Labamba FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 12 — Sunday 3 May 2026
+  { stream: "B", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "Liverpool FC", away: "Real Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "Welverdiend Masters FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "Labamba FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 12, date: "Sun 03 May 2026", time: "TBC", home: "City Pillars FC", away: "Junior Pirates FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 13 — Saturday 9 May 2026
+  { stream: "B", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "Liverpool FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "Real Rangers FC", away: "Labamba FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "Junior Pirates FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 13, date: "Sat 09 May 2026", time: "TBC", home: "Xihuhuri FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
+
+  // WEEK 14 — Sunday 17 May 2026
+  { stream: "B", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "Labamba FC", away: "Liverpool FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "Welverdiend Masters FC", away: "Junior Pirates FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "City Pillars FC", away: "Real Rangers FC", venue: "TBC", status: "Scheduled" },
+  { stream: "B", week: 14, date: "Sun 17 May 2026", time: "TBC", home: "Bhubhezi FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
 ];
 
 // ===============================
@@ -69,12 +239,12 @@ const week1 = {
   ],
 };
 
-// WEEK 2 (UPDATED)
+// WEEK 2 (as last edited by you)
 const week2 = {
   A: [
     { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
     { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: 3, awayGoals: 1 }, // ✅ updated now played
+    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: 3, awayGoals: 1 },
     { home: "Movers FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 2 },
   ],
   B: [
@@ -85,7 +255,7 @@ const week2 = {
   ],
 };
 
-// Build OVERALL results set (Week1 + Week2)
+// Overall results set (Week1 + Week2)
 const overall = {
   A: [...week1.A, ...week2.A],
   B: [...week1.B, ...week2.B],
@@ -128,7 +298,6 @@ function renderResults(listId, data) {
 
 function computeTable(streamKey, resultsSet) {
   const table = new Map();
-
   for (const t of teams[streamKey]) {
     table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
   }
@@ -214,7 +383,7 @@ function renderFixtures(list) {
   for (const f of list) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${safeText(f.date)}</td>
+      <td>${safeText(f.date)} <span class="pill small-pill">W${safeText(f.week)}</span></td>
       <td>${safeText(f.time)}</td>
       <td><strong>${safeText(f.home)}</strong> vs ${safeText(f.away)} <span class="pill small-pill">Stream ${safeText(f.stream)}</span></td>
       <td>${safeText(f.venue)}</td>
@@ -230,7 +399,7 @@ function applyFixtureFilters() {
   const filtered = fixtures.filter((f) => {
     if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
     if (!q) return true;
-    const hay = `${f.home} ${f.away} ${f.venue} ${f.stream}`.toLowerCase();
+    const hay = `${f.home} ${f.away} ${f.venue} ${f.stream} week ${f.week} ${f.date}`.toLowerCase();
     return hay.includes(q);
   });
 
@@ -238,14 +407,15 @@ function applyFixtureFilters() {
 }
 
 function setNextMatchCard() {
-  const f = fixtures[0];
+  // pick first Scheduled match
+  const f = fixtures.find(x => x.status === "Scheduled") || fixtures[0];
   if (!f) {
     $("nextMatch").textContent = "No fixtures set";
     $("nextMatchMeta").textContent = "";
     return;
   }
   $("nextMatch").textContent = `${f.home} vs ${f.away}`;
-  $("nextMatchMeta").textContent = `Stream ${f.stream} • ${f.date} ${f.time} • ${f.venue}`;
+  $("nextMatchMeta").textContent = `Stream ${f.stream} • Week ${f.week} • ${f.date} ${f.time} • ${f.venue}`;
 }
 
 // ===============================
@@ -329,26 +499,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const d = $("donateLink");
   if (d) d.href = DONATE_URL;
 
+  // fixtures
   renderFixtures(fixtures);
   setNextMatchCard();
 
+  // results
   renderResults("resultsListA1", week1.A);
   renderResults("resultsListB1", week1.B);
   renderResults("resultsListA2", week2.A);
   renderResults("resultsListB2", week2.B);
 
-  // ✅ OVERALL LOGS (Week1 + Week2 combined)
+  // overall logs
   const rowsA = computeTable("A", overall);
   const rowsB = computeTable("B", overall);
   renderLog("logBodyA", rowsA);
   renderLog("logBodyB", rowsB);
 
-  // Leaders (Overall)
+  // leaders
   $("leaderA").textContent = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
   $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
 
   $("highlightResult").textContent = bestHighlightLatestPlayed();
 
+  // result search + week toggle
   $("resultSearch").addEventListener("input", applyResultSearch);
   $("btnClearResults").addEventListener("click", () => {
     $("resultSearch").value = "";
@@ -357,11 +530,13 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnShowWeek1").addEventListener("click", showWeek1);
   $("btnShowWeek2").addEventListener("click", showWeek2);
 
+  // fixture filters
   $("fixtureSearch").addEventListener("input", applyFixtureFilters);
   $("btnStreamA").addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
   $("btnStreamB").addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
   $("btnClearFixture").addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
 
+  // slideshow
   renderSlide();
   $("nextPhoto").addEventListener("click", nextSlide);
   $("prevPhoto").addEventListener("click", prevSlide);
