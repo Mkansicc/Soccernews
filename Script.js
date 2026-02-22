@@ -1,27 +1,40 @@
 "use strict";
 
-/* Script.js v15
-  - Week 1 results kept as-is
-  - Week 2 results updated (Morning Stars 3-1 Fast Eleven now played)
+/* Script.js v16
+  ✅ Week 3 fixtures updated (Fri 27 Feb 2026)
+  ✅ Venue/Location ALWAYS = Home team (auto-enforced)
+  - Week 1 results kept
+  - Week 2 results kept
   - OVERALL LOG = Week1 + Week2 combined (played matches only)
 */
 
 const DONATE_URL = "https://example.com/donate"; // change if you want
 
 // ===============================
-// FIXTURES (edit as you like)
+// FIXTURES (Week 3 Correct)
+//  - Home team = location/venue field
 // ===============================
 const fixtures = [
-  { stream: "A", date: "TBC", time: "TBC", home: "Crusaders FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
-  { stream: "A", date: "TBC", time: "TBC", home: "FC Wondrous", away: "Movers FC", venue: "TBC", status: "Scheduled" },
-  { stream: "A", date: "TBC", time: "TBC", home: "Royal Tigers FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
-  { stream: "A", date: "TBC", time: "TBC", home: "Morning Stars FC", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
+  // STREAM B — Week 3 (Friday 27 Feb 2026)
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Xihuhuri FC", away: "Liverpool FC", venue: "", status: "Scheduled" },
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "City Pillars FC", away: "Bhubhezi FC", venue: "", status: "Scheduled" },
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Real Rangers FC", away: "Junior Pirates FC", venue: "", status: "Scheduled" },
+  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Welverdiend Masters FC", away: "Labamba FC", venue: "", status: "Scheduled" },
 
-  { stream: "B", date: "TBC", time: "TBC", home: "Liverpool FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
-  { stream: "B", date: "TBC", time: "TBC", home: "Labamba FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
-  { stream: "B", date: "TBC", time: "TBC", home: "Junior Pirates FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
-  { stream: "B", date: "TBC", time: "TBC", home: "Real Rangers FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
+  // STREAM A — Week 3 (Friday 27 Feb 2026)
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Eastern Rangers FC", away: "FC Wondrous", venue: "", status: "Scheduled" },
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Crusaders FC", away: "Morning Stars FC", venue: "", status: "Scheduled" },
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Royal Tigers FC", away: "Movers FC", venue: "", status: "Scheduled" },
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "TBC", home: "Highlanders FC", away: "Fast Eleven FC", venue: "", status: "Scheduled" },
 ];
+
+// ✅ Enforce: venue/location ALWAYS equals Home team
+function normalizeFixturesVenue(list) {
+  return list.map((f) => ({
+    ...f,
+    venue: (f.home || "TBC")
+  }));
+}
 
 // ===============================
 // TEAMS (for log tables)
@@ -69,12 +82,12 @@ const week1 = {
   ],
 };
 
-// WEEK 2 (UPDATED)
+// WEEK 2 (as previously updated)
 const week2 = {
   A: [
     { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
     { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: 3, awayGoals: 1 }, // ✅ updated now played
+    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: 3, awayGoals: 1 },
     { home: "Movers FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 2 },
   ],
   B: [
@@ -216,7 +229,10 @@ function renderFixtures(list) {
     tr.innerHTML = `
       <td>${safeText(f.date)}</td>
       <td>${safeText(f.time)}</td>
-      <td><strong>${safeText(f.home)}</strong> vs ${safeText(f.away)} <span class="pill small-pill">Stream ${safeText(f.stream)}</span></td>
+      <td>
+        <strong>${safeText(f.home)}</strong> vs ${safeText(f.away)}
+        <span class="pill small-pill">Stream ${safeText(f.stream)}</span>
+      </td>
       <td>${safeText(f.venue)}</td>
       <td>${safeText(f.status)}</td>
     `;
@@ -227,7 +243,7 @@ function renderFixtures(list) {
 function applyFixtureFilters() {
   const q = ($("fixtureSearch").value || "").toLowerCase().trim();
 
-  const filtered = fixtures.filter((f) => {
+  const filtered = normalizedFixtures.filter((f) => {
     if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
     if (!q) return true;
     const hay = `${f.home} ${f.away} ${f.venue} ${f.stream}`.toLowerCase();
@@ -238,7 +254,7 @@ function applyFixtureFilters() {
 }
 
 function setNextMatchCard() {
-  const f = fixtures[0];
+  const f = normalizedFixtures[0];
   if (!f) {
     $("nextMatch").textContent = "No fixtures set";
     $("nextMatchMeta").textContent = "";
@@ -323,13 +339,15 @@ function prevSlide() {
 // ===============================
 // INIT
 // ===============================
+const normalizedFixtures = normalizeFixturesVenue(fixtures);
+
 document.addEventListener("DOMContentLoaded", () => {
   $("yearNow").textContent = new Date().getFullYear();
 
   const d = $("donateLink");
   if (d) d.href = DONATE_URL;
 
-  renderFixtures(fixtures);
+  renderFixtures(normalizedFixtures);
   setNextMatchCard();
 
   renderResults("resultsListA1", week1.A);
