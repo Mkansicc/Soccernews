@@ -1,34 +1,78 @@
-/* Script.js (v11) - WSL Updates
-   - Auto renders: fixtures, results, highlight, leaders, log tables
-   - Filters: fixtures/results search + stream filters
-*/
-
 "use strict";
 
-// ===============================
-// EDIT THESE (YOUR DATA)
-// ===============================
+/* Script.js v12
+  - Week 1 results: kept exactly (as previous site)
+  - Week 2 results: added (your new scores)
+  - Week 1 logs: computed from Week 1 results
+  - Week 2 logs: computed from Week 2 results ONLY (❓ excluded)
+  - Result search works on whichever week is visible
+*/
 
-// Donate link (optional)
-const DONATE_URL = "https://example.com/donate";
+const DONATE_URL = "https://example.com/donate"; // change if you want
 
-// Week 2 Fixtures (edit as you like)
-const fixturesWeek2 = [
-  // Stream A
+// ===============================
+// FIXTURES (edit as you like)
+// ===============================
+const fixtures = [
   { stream: "A", date: "TBC", time: "TBC", home: "Crusaders FC", away: "Highlanders FC", venue: "TBC", status: "Scheduled" },
   { stream: "A", date: "TBC", time: "TBC", home: "FC Wondrous", away: "Movers FC", venue: "TBC", status: "Scheduled" },
   { stream: "A", date: "TBC", time: "TBC", home: "Royal Tigers FC", away: "Fast Eleven FC", venue: "TBC", status: "Scheduled" },
   { stream: "A", date: "TBC", time: "TBC", home: "Morning Stars FC", away: "Eastern Rangers FC", venue: "TBC", status: "Scheduled" },
 
-  // Stream B
   { stream: "B", date: "TBC", time: "TBC", home: "Liverpool FC", away: "Xihuhuri FC", venue: "TBC", status: "Scheduled" },
   { stream: "B", date: "TBC", time: "TBC", home: "Labamba FC", away: "City Pillars FC", venue: "TBC", status: "Scheduled" },
   { stream: "B", date: "TBC", time: "TBC", home: "Junior Pirates FC", away: "Welverdiend Masters FC", venue: "TBC", status: "Scheduled" },
   { stream: "B", date: "TBC", time: "TBC", home: "Real Rangers FC", away: "Bhubhezi FC", venue: "TBC", status: "Scheduled" },
 ];
 
-// Week 1 Results (YOUR LATEST INPUT)
-const resultsWeek1 = {
+// ===============================
+// TEAMS (for log tables)
+// ===============================
+const teams = {
+  A: [
+    "Morning Stars FC",
+    "Crusaders FC",
+    "Royal Tigers FC",
+    "Highlanders FC",
+    "Eastern Rangers FC",
+    "Fast Eleven FC",
+    "FC Wondrous",
+    "Movers FC",
+  ],
+  B: [
+    "Labamba FC",
+    "Bhubhezi FC",
+    "Liverpool FC",
+    "Xihuhuri FC",
+    "Welverdiend Masters FC",
+    "Junior Pirates FC",
+    "Real Rangers FC",
+    "City Pillars FC",
+  ],
+};
+
+// ===============================
+// RESULTS DATA
+// ===============================
+
+// ✅ WEEK 1 (DO NOT CHANGE) — kept as your previous standings/results style
+const week1 = {
+  A: [
+    { home: "Morning Stars FC", away: "Movers FC", homeGoals: 4, awayGoals: 0 },
+    { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 2, awayGoals: 0 },
+    { home: "Royal Tigers FC", away: "Fast Eleven FC", homeGoals: 2, awayGoals: 0 },
+    { home: "Highlanders FC", away: "Eastern Rangers FC", homeGoals: 2, awayGoals: 1 },
+  ],
+  B: [
+    { home: "Labamba FC", away: "City Pillars FC", homeGoals: 7, awayGoals: 1 },
+    { home: "Bhubhezi FC", away: "Real Rangers FC", homeGoals: 4, awayGoals: 0 },
+    { home: "Liverpool FC", away: "Junior Pirates FC", homeGoals: 2, awayGoals: 0 },
+    { home: "Xihuhuri FC", away: "Welverdiend Masters FC", homeGoals: 4, awayGoals: 3 },
+  ],
+};
+
+// ✅ WEEK 2 (YOUR NEW SCORES)
+const week2 = {
   A: [
     { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
     { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: null, awayGoals: null },
@@ -43,31 +87,9 @@ const resultsWeek1 = {
   ],
 };
 
-// Team lists (needed so unknown results still show in table)
-const teams = {
-  A: [
-    "Crusaders FC",
-    "FC Wondrous",
-    "Royal Tigers FC",
-    "Eastern Rangers FC",
-    "Morning Stars FC",
-    "Fast Eleven FC",
-    "Movers FC",
-    "Highlanders FC",
-  ],
-  B: [
-    "Liverpool FC",
-    "City Pillars FC",
-    "Junior Pirates FC",
-    "Xihuhuri FC",
-    "Bhubhezi FC",
-    "Labamba FC",
-    "Real Rangers FC",
-    "Welverdiend Masters FC",
-  ],
-};
-
-// Slideshow photos (put files inside /images)
+// ===============================
+// SLIDESHOW
+// ===============================
 const slides = [
   { src: "images/photo1.jpg", title: "WSL Action", meta: "Welverdiend Soccer League" },
   { src: "images/photo2.jpg", title: "Match Day", meta: "Stream A & Stream B" },
@@ -77,11 +99,14 @@ const slides = [
 // ===============================
 // HELPERS
 // ===============================
-
 const $ = (id) => document.getElementById(id);
 
 function safeText(v) {
   return String(v ?? "").replace(/[<>]/g, "");
+}
+
+function isPlayed(m) {
+  return Number.isInteger(m.homeGoals) && Number.isInteger(m.awayGoals);
 }
 
 function formatScore(hg, ag) {
@@ -89,23 +114,24 @@ function formatScore(hg, ag) {
   return `${hg} – ${ag}`;
 }
 
-function matchLine(m) {
-  return `${m.home} ${formatScore(m.homeGoals, m.awayGoals)} ${m.away}`;
+function renderResults(listId, data) {
+  const el = $(listId);
+  el.innerHTML = "";
+  for (const m of data) {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${safeText(m.home)}</strong> ${formatScore(m.homeGoals, m.awayGoals)} ${safeText(m.away)}`;
+    el.appendChild(li);
+  }
 }
 
-function isPlayed(m) {
-  return Number.isInteger(m.homeGoals) && Number.isInteger(m.awayGoals);
-}
-
-function computeTable(streamKey) {
-  // init
+function computeTable(streamKey, resultsSet) {
   const table = new Map();
+
   for (const t of teams[streamKey]) {
     table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
   }
 
-  // apply results (only played)
-  for (const m of resultsWeek1[streamKey]) {
+  for (const m of resultsSet[streamKey]) {
     if (!isPlayed(m)) continue;
 
     const home = table.get(m.home) || { team: m.home, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
@@ -115,16 +141,9 @@ function computeTable(streamKey) {
     home.GF += m.homeGoals; home.GA += m.awayGoals;
     away.GF += m.awayGoals; away.GA += m.homeGoals;
 
-    if (m.homeGoals > m.awayGoals) {
-      home.W += 1; home.Pts += 3;
-      away.L += 1;
-    } else if (m.homeGoals < m.awayGoals) {
-      away.W += 1; away.Pts += 3;
-      home.L += 1;
-    } else {
-      home.D += 1; away.D += 1;
-      home.Pts += 1; away.Pts += 1;
-    }
+    if (m.homeGoals > m.awayGoals) { home.W += 1; home.Pts += 3; away.L += 1; }
+    else if (m.homeGoals < m.awayGoals) { away.W += 1; away.Pts += 3; home.L += 1; }
+    else { home.D += 1; away.D += 1; home.Pts += 1; away.Pts += 1; }
 
     home.GD = home.GF - home.GA;
     away.GD = away.GF - away.GA;
@@ -133,7 +152,6 @@ function computeTable(streamKey) {
     table.set(m.away, away);
   }
 
-  // sort
   const rows = Array.from(table.values());
   rows.sort((a, b) => {
     if (b.Pts !== a.Pts) return b.Pts - a.Pts;
@@ -145,11 +163,9 @@ function computeTable(streamKey) {
   return rows;
 }
 
-function renderLog(streamKey, tbodyId) {
-  const rows = computeTable(streamKey);
+function renderLog(tbodyId, rows) {
   const body = $(tbodyId);
   body.innerHTML = "";
-
   rows.forEach((r, i) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -161,42 +177,17 @@ function renderLog(streamKey, tbodyId) {
     `;
     body.appendChild(tr);
   });
-
-  return rows;
 }
 
-function renderResults() {
-  const listA = $("resultsListA");
-  const listB = $("resultsListB");
-  listA.innerHTML = "";
-  listB.innerHTML = "";
+function bestHighlightFromLatest() {
+  const played = [
+    ...week2.A, ...week2.B, // prefer week2
+    ...week1.A, ...week1.B,
+  ].filter(isPlayed);
 
-  for (const m of resultsWeek1.A) {
-    const li = document.createElement("li");
-    li.innerHTML = `<strong>${safeText(m.home)}</strong> ${formatScore(m.homeGoals, m.awayGoals)} ${safeText(m.away)}`;
-    listA.appendChild(li);
-  }
+  if (!played.length) return "No played matches yet";
 
-  for (const m of resultsWeek1.B) {
-    const li = document.createElement("li");
-    // make away winner bold when played (nice touch)
-    if (isPlayed(m) && m.awayGoals > m.homeGoals) {
-      li.innerHTML = `${safeText(m.home)} ${formatScore(m.homeGoals, m.awayGoals)} <strong>${safeText(m.away)}</strong>`;
-    } else if (isPlayed(m) && m.homeGoals > m.awayGoals) {
-      li.innerHTML = `<strong>${safeText(m.home)}</strong> ${formatScore(m.homeGoals, m.awayGoals)} ${safeText(m.away)}`;
-    } else {
-      li.innerHTML = `<strong>${safeText(m.home)}</strong> ${formatScore(m.homeGoals, m.awayGoals)} ${safeText(m.away)}`;
-    }
-    listB.appendChild(li);
-  }
-}
-
-function bestHighlight() {
-  // pick match with largest goal difference (played only)
-  const all = [...resultsWeek1.A, ...resultsWeek1.B].filter(isPlayed);
-  if (!all.length) return "No played matches yet";
-
-  all.sort((x, y) => {
+  played.sort((x, y) => {
     const dx = Math.abs(x.homeGoals - x.awayGoals);
     const dy = Math.abs(y.homeGoals - y.awayGoals);
     if (dy !== dx) return dy - dx;
@@ -205,21 +196,18 @@ function bestHighlight() {
     return ty - tx;
   });
 
-  const m = all[0];
-  return matchLine(m);
+  const m = played[0];
+  return `${m.home} ${m.homeGoals} – ${m.awayGoals} ${m.away}`;
 }
 
-function setLeaders(rowsA, rowsB) {
-  const leaderA = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
-  const leaderB = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
-  $("leaderA").textContent = leaderA;
-  $("leaderB").textContent = leaderB;
-}
+// ===============================
+// FIXTURE UI
+// ===============================
+let fixtureStreamFilter = null;
 
 function renderFixtures(list) {
   const body = $("fixturesBody");
   body.innerHTML = "";
-
   if (!list.length) {
     body.innerHTML = `<tr><td colspan="5" class="muted">No fixtures found.</td></tr>`;
     return;
@@ -238,25 +226,10 @@ function renderFixtures(list) {
   }
 }
 
-function getNextMatch() {
-  // first fixture in list (you can improve by sorting date)
-  const f = fixturesWeek2[0];
-  if (!f) return { title: "No fixtures set", meta: "" };
-  return {
-    title: `${f.home} vs ${f.away}`,
-    meta: `Stream ${f.stream} • ${f.date} ${f.time} • ${f.venue}`,
-  };
-}
-
-// ===============================
-// SEARCH / FILTER UI
-// ===============================
-
-let fixtureStreamFilter = null; // "A" | "B" | null
 function applyFixtureFilters() {
   const q = ($("fixtureSearch").value || "").toLowerCase().trim();
 
-  const filtered = fixturesWeek2.filter((f) => {
+  const filtered = fixtures.filter((f) => {
     if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
     if (!q) return true;
     const hay = `${f.home} ${f.away} ${f.venue} ${f.stream}`.toLowerCase();
@@ -266,29 +239,58 @@ function applyFixtureFilters() {
   renderFixtures(filtered);
 }
 
-let resultQuery = "";
+function setNextMatchCard() {
+  const f = fixtures[0];
+  if (!f) {
+    $("nextMatch").textContent = "No fixtures set";
+    $("nextMatchMeta").textContent = "";
+    return;
+  }
+  $("nextMatch").textContent = `${f.home} vs ${f.away}`;
+  $("nextMatchMeta").textContent = `Stream ${f.stream} • ${f.date} ${f.time} • ${f.venue}`;
+}
+
+// ===============================
+// RESULT SEARCH (active week only)
+// ===============================
 function applyResultSearch() {
-  resultQuery = ($("resultSearch").value || "").toLowerCase().trim();
+  const q = ($("resultSearch").value || "").toLowerCase().trim();
+  const visibleWeek2 = $("week2Block").style.display !== "none";
 
-  const listA = $("resultsListA");
-  const listB = $("resultsListB");
+  const ids = visibleWeek2
+    ? ["resultsListA2", "resultsListB2"]
+    : ["resultsListA1", "resultsListB1"];
 
-  // show/hide li by search
-  for (const li of listA.querySelectorAll("li")) {
-    const t = li.textContent.toLowerCase();
-    li.style.display = !resultQuery || t.includes(resultQuery) ? "" : "none";
+  for (const id of ids) {
+    const list = $(id);
+    for (const li of list.querySelectorAll("li")) {
+      const t = li.textContent.toLowerCase();
+      li.style.display = !q || t.includes(q) ? "" : "none";
+    }
   }
-  for (const li of listB.querySelectorAll("li")) {
-    const t = li.textContent.toLowerCase();
-    li.style.display = !resultQuery || t.includes(resultQuery) ? "" : "none";
-  }
+}
+
+// ===============================
+// WEEK TOGGLE
+// ===============================
+function showWeek1() {
+  $("week1Block").style.display = "";
+  $("week2Block").style.display = "none";
+  $("resultSearch").value = "";
+  applyResultSearch();
+}
+function showWeek2() {
+  $("week1Block").style.display = "none";
+  $("week2Block").style.display = "";
+  $("resultSearch").value = "";
+  applyResultSearch();
 }
 
 // ===============================
 // SLIDESHOW
 // ===============================
-
 let slideIndex = 0;
+
 function renderSlide() {
   const img = $("slideImage");
   const title = $("slideTitle");
@@ -325,9 +327,7 @@ function prevSlide() {
 // ===============================
 // INIT
 // ===============================
-
 document.addEventListener("DOMContentLoaded", () => {
-  // footer year
   $("yearNow").textContent = new Date().getFullYear();
 
   // donate link
@@ -335,37 +335,55 @@ document.addEventListener("DOMContentLoaded", () => {
   if (d) d.href = DONATE_URL;
 
   // fixtures
-  renderFixtures(fixturesWeek2);
-  const nm = getNextMatch();
-  $("nextMatch").textContent = nm.title;
-  $("nextMatchMeta").textContent = nm.meta;
+  renderFixtures(fixtures);
+  setNextMatchCard();
 
-  // results
-  renderResults();
-  $("highlightResult").textContent = bestHighlight();
+  // results render
+  renderResults("resultsListA1", week1.A);
+  renderResults("resultsListB1", week1.B);
+  renderResults("resultsListA2", week2.A);
+  renderResults("resultsListB2", week2.B);
 
-  // logs + leaders
-  const rowsA = renderLog("A", "logBodyA");
-  const rowsB = renderLog("B", "logBodyB");
-  setLeaders(rowsA, rowsB);
+  // logs (Week 1)
+  renderLog("logBodyA1", computeTable("A", week1));
+  renderLog("logBodyB1", computeTable("B", week1));
 
-  // search hooks
+  // logs (Week 2 ONLY)
+  const rowsA2 = computeTable("A", week2);
+  const rowsB2 = computeTable("B", week2);
+  renderLog("logBodyA2", rowsA2);
+  renderLog("logBodyB2", rowsB2);
+
+  // leaders (Week 2)
+  $("leaderA2").textContent = rowsA2[0]?.team ? `A: ${rowsA2[0].team} (${rowsA2[0].Pts} pts)` : "A: N/A";
+  $("leaderB2").textContent = rowsB2[0]?.team ? `B: ${rowsB2[0].team} (${rowsB2[0].Pts} pts)` : "B: N/A";
+
+  // highlight (prefer Week 2)
+  $("highlightResult").textContent = bestHighlightFromLatest();
+
+  // result search
+  $("resultSearch").addEventListener("input", applyResultSearch);
+  $("btnClearResults").addEventListener("click", () => {
+    $("resultSearch").value = "";
+    applyResultSearch();
+  });
+
+  // week toggle
+  $("btnShowWeek1").addEventListener("click", showWeek1);
+  $("btnShowWeek2").addEventListener("click", showWeek2);
+
+  // fixture filters
   $("fixtureSearch").addEventListener("input", applyFixtureFilters);
   $("btnStreamA").addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
   $("btnStreamB").addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
   $("btnClearFixture").addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
 
-  $("resultSearch").addEventListener("input", applyResultSearch);
-  $("btnAllResults").addEventListener("click", () => { $("resultSearch").value = ""; applyResultSearch(); });
-  $("btnClearResults").addEventListener("click", () => { $("resultSearch").value = ""; applyResultSearch(); });
-
   // slideshow
   renderSlide();
   $("nextPhoto").addEventListener("click", nextSlide);
   $("prevPhoto").addEventListener("click", prevSlide);
+  setInterval(() => { if (slides.length > 1) nextSlide(); }, 7000);
 
-  // auto slideshow (optional)
-  setInterval(() => {
-    if (slides.length > 1) nextSlide();
-  }, 7000);
+  // default view: Week 1 results visible
+  showWeek1();
 });
