@@ -54,12 +54,12 @@
         <div>
           <h1>WSL Match Updates</h1>
           <p class="muted">
-            Latest Week 1 results & standings. Search fixtures/results by team name.
+            Week 1 results remain unchanged. Week 2 results + Week 2 logs added.
           </p>
 
           <div class="hero-actions">
-            <a class="btn" href="#fixtures"><i class="fa-solid fa-bolt"></i> View Week 2 Fixtures</a>
-            <a class="btn btn-outline" href="#results"><i class="fa-solid fa-trophy"></i> View Week 1 Results</a>
+            <a class="btn" href="#fixtures"><i class="fa-solid fa-bolt"></i> View Fixtures</a>
+            <a class="btn btn-outline" href="#results"><i class="fa-solid fa-trophy"></i> View Results</a>
           </div>
 
           <div class="quick-cards">
@@ -72,13 +72,13 @@
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
               <div id="highlightResult" class="card-big">Loading…</div>
-              <div class="muted small">Week 1</div>
+              <div class="muted small">Latest played match</div>
             </div>
 
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-crown"></i> Leaders</div>
-              <div id="leaderA" class="card-big">A: Loading…</div>
-              <div id="leaderB" class="card-big">B: Loading…</div>
+              <div class="card-title"><i class="fa-solid fa-crown"></i> Leaders (Week 2)</div>
+              <div id="leaderA2" class="card-big">A: Loading…</div>
+              <div id="leaderB2" class="card-big">B: Loading…</div>
             </div>
           </div>
 
@@ -107,11 +107,11 @@
       </div>
     </section>
 
-    <!-- NEXT MATCHES -->
+    <!-- NEXT MATCHES / FIXTURES -->
     <section id="fixtures" class="section">
       <div class="container">
         <div class="section-head">
-          <h2><i class="fa-solid fa-calendar-days"></i> Next Matches (Week 2 Fixtures)</h2>
+          <h2><i class="fa-solid fa-calendar-days"></i> Fixtures</h2>
           <div class="tools">
             <input id="fixtureSearch" class="input" placeholder="Search team..." />
           </div>
@@ -145,6 +145,7 @@
             </tbody>
           </table>
         </div>
+
         <p class="muted small" style="margin-top:10px;">Edit fixtures inside <code>Script.js</code>.</p>
       </div>
     </section>
@@ -153,30 +154,53 @@
     <section id="results" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2><i class="fa-solid fa-trophy"></i> Results (Week 1)</h2>
+          <h2><i class="fa-solid fa-trophy"></i> Results</h2>
           <div class="tools">
             <input id="resultSearch" class="input" placeholder="Search team..." />
           </div>
         </div>
 
         <div class="search-actions">
-          <button class="btn btn-outline small-btn" type="button" id="btnAllResults">
-            <i class="fa-solid fa-layer-group"></i> All
+          <button class="btn btn-outline small-btn" type="button" id="btnShowWeek1">
+            <i class="fa-solid fa-1"></i> Week 1
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnShowWeek2">
+            <i class="fa-solid fa-2"></i> Week 2
           </button>
           <button class="btn btn-outline small-btn" type="button" id="btnClearResults">
-            <i class="fa-solid fa-eraser"></i> Clear
+            <i class="fa-solid fa-eraser"></i> Clear Search
           </button>
         </div>
 
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
-            <ol id="resultsListA" class="muted list-ol"></ol>
-          </div>
+        <!-- WEEK 1 (UNCHANGED DATA) -->
+        <div id="week1Block">
+          <h3 class="subhead"><i class="fa-solid fa-circle-check"></i> Week 1</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <ol id="resultsListA1" class="muted list-ol"></ol>
+            </div>
 
-          <div class="card">
-            <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
-            <ol id="resultsListB" class="muted list-ol"></ol>
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <ol id="resultsListB1" class="muted list-ol"></ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEEK 2 (YOUR NEW SCORES) -->
+        <div id="week2Block" style="display:none; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-fire"></i> Week 2</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <ol id="resultsListA2" class="muted list-ol"></ol>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <ol id="resultsListB2" class="muted list-ol"></ol>
+            </div>
           </div>
         </div>
 
@@ -194,46 +218,90 @@
       </div>
     </section>
 
-    <!-- STREAM A LOG -->
+    <!-- STREAM A LOGS -->
     <section id="streamA" class="section">
       <div class="container">
         <div class="section-head">
-          <h2><i class="fa-solid fa-table-list"></i> Stream A • Log Table (Week 1)</h2>
+          <h2><i class="fa-solid fa-table-list"></i> Stream A • Log Tables</h2>
         </div>
 
-        <div class="table-wrap">
-          <table class="table" aria-label="Stream A log table">
-            <thead>
-              <tr>
-                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
-              </tr>
-            </thead>
-            <tbody id="logBodyA">
-              <tr><td colspan="10" class="muted">Loading log…</td></tr>
-            </tbody>
-          </table>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-1"></i> Week 1 Log</div>
+            <div class="table-wrap">
+              <table class="table" aria-label="Stream A log table week 1">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody id="logBodyA1">
+                  <tr><td colspan="10" class="muted">Loading Week 1 log…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-2"></i> Week 2 Log</div>
+            <div class="table-wrap">
+              <table class="table" aria-label="Stream A log table week 2">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody id="logBodyA2">
+                  <tr><td colspan="10" class="muted">Loading Week 2 log…</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="muted small" style="margin:10px 0 0;">Week 2 log counts only played matches (❓ games excluded).</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- STREAM B LOG -->
+    <!-- STREAM B LOGS -->
     <section id="streamB" class="section alt">
       <div class="container">
         <div class="section-head">
-          <h2><i class="fa-solid fa-table-list"></i> Stream B • Log Table (Week 1)</h2>
+          <h2><i class="fa-solid fa-table-list"></i> Stream B • Log Tables</h2>
         </div>
 
-        <div class="table-wrap">
-          <table class="table" aria-label="Stream B log table">
-            <thead>
-              <tr>
-                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
-              </tr>
-            </thead>
-            <tbody id="logBodyB">
-              <tr><td colspan="10" class="muted">Loading log…</td></tr>
-            </tbody>
-          </table>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-1"></i> Week 1 Log</div>
+            <div class="table-wrap">
+              <table class="table" aria-label="Stream B log table week 1">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody id="logBodyB1">
+                  <tr><td colspan="10" class="muted">Loading Week 1 log…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="fa-solid fa-2"></i> Week 2 Log</div>
+            <div class="table-wrap">
+              <table class="table" aria-label="Stream B log table week 2">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+                  </tr>
+                </thead>
+                <tbody id="logBodyB2">
+                  <tr><td colspan="10" class="muted">Loading Week 2 log…</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="muted small" style="margin:10px 0 0;">Week 2 log counts only played matches (❓ games excluded).</p>
+          </div>
         </div>
 
         <div class="card" style="margin-top:12px;">
@@ -280,7 +348,6 @@
     </footer>
   </main>
 
-  <!-- IMPORTANT: If your file name is Script.js keep this exact -->
-  <script src="Script.js?v=11" defer></script>
+  <script src="Script.js?v=12" defer></script>
 </body>
 </html>
