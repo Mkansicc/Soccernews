@@ -32,7 +32,7 @@
         <img class="wsl-logo" src="images/wsl-logo.png" alt="WSL Logo" onerror="this.style.display='none'">
         <div class="brand-text">
           <div class="brand-title">WELVERDIEND SOCCER LEAGUE (WSL)</div>
-          <div class="brand-subtitle">  Fixtures • Results • Logs</div>
+          <div class="brand-subtitle">Fixtures • Results • Logs</div>
         </div>
       </div>
 
@@ -54,7 +54,7 @@
         <div>
           <h1>WSL Match Updates</h1>
           <p class="muted">
-           
+            Latest Week 1 results & standings. Search fixtures/results by team name.
           </p>
 
           <div class="hero-actions">
@@ -72,15 +72,17 @@
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
               <div id="highlightResult" class="card-big">Loading…</div>
-              <div class="muted small">Week 1 • Stream B</div>
+              <div class="muted small">Week 1</div>
             </div>
 
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-crown"></i> Leaders</div>
-              <div class="card-big">A: Morning Stars</div>
-              <div class="card-big">B: Labamba</div>
+              <div id="leaderA" class="card-big">A: Loading…</div>
+              <div id="leaderB" class="card-big">B: Loading…</div>
             </div>
           </div>
+
+        </div>
 
         <div class="hero-side">
           <div class="card card-highlight" id="donate">
@@ -92,7 +94,7 @@
             </a>
 
             <div class="muted small" style="margin-top:10px;">
-             <code></code>.
+              <code>Replace Donate Link in Script.js</code>
             </div>
 
             <div class="sponsor-row">
@@ -143,6 +145,7 @@
             </tbody>
           </table>
         </div>
+        <p class="muted small" style="margin-top:10px;">Edit fixtures inside <code>Script.js</code>.</p>
       </div>
     </section>
 
@@ -205,15 +208,8 @@
                 <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
               </tr>
             </thead>
-            <tbody>
-              <tr><td>1</td><td><strong>Morning Stars FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>0</td><td>4</td><td><strong>3</strong></td></tr>
-              <tr><td>2</td><td><strong>Crusaders FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td><td><strong>3</strong></td></tr>
-              <tr><td>3</td><td><strong>Royal Tigers FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td><td><strong>3</strong></td></tr>
-              <tr><td>4</td><td><strong>Highlanders FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>1</td><td>1</td><td><strong>3</strong></td></tr>
-              <tr><td>5</td><td><strong>Eastern Rangers FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>2</td><td>-1</td><td><strong>0</strong></td></tr>
-              <tr><td>6</td><td><strong>Fast Eleven FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>-2</td><td><strong>0</strong></td></tr>
-              <tr><td>7</td><td><strong>FC Wonderous</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>-2</td><td><strong>0</strong></td></tr>
-              <tr><td>8</td><td><strong>Movers FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>4</td><td>-4</td><td><strong>0</strong></td></tr>
+            <tbody id="logBodyA">
+              <tr><td colspan="10" class="muted">Loading log…</td></tr>
             </tbody>
           </table>
         </div>
@@ -234,22 +230,14 @@
                 <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
               </tr>
             </thead>
-            <tbody>
-              <tr><td>1</td><td><strong>Labamba FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>7</td><td>1</td><td>6</td><td><strong>3</strong></td></tr>
-              <tr><td>2</td><td><strong>Bhubhezi FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>0</td><td>4</td><td><strong>3</strong></td></tr>
-              <tr><td>3</td><td><strong>Liverpool FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>0</td><td>2</td><td><strong>3</strong></td></tr>
-              <tr><td>4</td><td><strong>Xihuhuri FC</strong></td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>3</td><td>1</td><td><strong>3</strong></td></tr>
-              <tr><td>5</td><td><strong>Welverdiend Masters</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>3</td><td>4</td><td>-1</td><td><strong>0</strong></td></tr>
-              <tr><td>6</td><td><strong>Junior Pirates FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>2</td><td>-2</td><td><strong>0</strong></td></tr>
-              <tr><td>7</td><td><strong>Real Rangers</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>4</td><td>-4</td><td><strong>0</strong></td></tr>
-              <tr><td>8</td><td><strong>City Pillars FC</strong></td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>7
-</td><td>-6</td><td><strong>0</strong></td></tr>
+            <tbody id="logBodyB">
+              <tr><td colspan="10" class="muted">Loading log…</td></tr>
             </tbody>
           </table>
         </div>
 
         <div class="card" style="margin-top:12px;">
-          <div class="card-title"><i class="fa-solid fa-users"></i> WSL Executive </div>
+          <div class="card-title"><i class="fa-solid fa-users"></i> WSL Executive</div>
           <p class="muted small" style="line-height:1.6; margin:0;">
             Jethro Gumede (Chairperson), Seepane Emanuel (Deputy Chair), Thabiso Ndlovu (Treasure),
             Clife Ndlovu (Secretary), Bophelo Mogakane (H. Referee), Jomo Unisi (Marketing Director),
@@ -263,7 +251,7 @@
     <section id="photos" class="section">
       <div class="container">
         <div class="section-head">
-          <h2><i class="fa-solid fa-image"></i> </h2>
+          <h2><i class="fa-solid fa-image"></i> Photos</h2>
           <div class="tools">
             <button class="btn btn-outline small-btn" type="button" id="prevPhoto"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="btn btn-outline small-btn" type="button" id="nextPhoto"><i class="fa-solid fa-chevron-right"></i></button>
@@ -286,13 +274,13 @@
 
     <footer class="footer">
       <div class="container footer-inner">
-        <div class="muted small">© <span id="yearNow"></span> Welverdiend Soccer League </div>
-        <div class="muted small"> Designed by CC Mkansi              Built for GitHub Pages</div>
+        <div class="muted small">© <span id="yearNow"></span> Welverdiend Soccer League</div>
+        <div class="muted small">Designed by CC Mkansi • Built for GitHub Pages</div>
       </div>
     </footer>
   </main>
 
   <!-- IMPORTANT: If your file name is Script.js keep this exact -->
-  <script src="Script.js?v=10" defer></script>
+  <script src="Script.js?v=11" defer></script>
 </body>
 </html>
