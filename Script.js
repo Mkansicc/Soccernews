@@ -15,7 +15,7 @@ const DONATE_URL = "https://example.com/donate"; // change if you want
 // ===============================
 const fixtures = [
   // STREAM A — WEEK 3 (Friday 27 Feb 2026)
-  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Easteern Rangers", away: "FC Wonderous", venue: "", status: "Scheduled" },
+  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Eastern Rangers", away: "FC Wonderous", venue: "", status: "Scheduled" },
   { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Crusaders", away: "Morning Stars", venue: "", status: "Scheduled" },
   { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Royal Tigers", away: "Movers", venue: "", status: "Scheduled" },
   { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Highlanders", away: "Fast 11", venue: "", status: "Scheduled" },
