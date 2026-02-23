@@ -7,7 +7,7 @@
   ✅ Auto-enforce venue/location = Home team
 */
 
-const DONATE_URL = "https://example.com/donate"; // change if you want
+const DONATE_URL ="https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR"; 
 
 // ===============================
 // FIXTURES (WEEK 3 - EXACT AS IMAGE)
