@@ -1,4 +1,3 @@
-/* style.css */
 :root{
   --bg:#0b1220;
   --card:#0f1b2e;
@@ -176,6 +175,14 @@ code{ background:rgba(255,255,255,.08); padding:.15rem .35rem; border-radius:10p
 
 .list-ol{ margin:0; padding-left: 20px; }
 .list-ol li{ padding: 6px 0; }
+
+/* nicer divider inside lists (for Goals & Discipline) */
+.list-ol hr{
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.12);
+  margin: 10px 0;
+  opacity: .6;
+}
 
 .search-actions{
   display:flex; gap:10px; flex-wrap:wrap;
