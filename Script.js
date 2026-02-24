@@ -1,13 +1,13 @@
-// Script.js
 "use strict";
 
-/* Script.js v19
+/* Script.js v20
   ✅ Week 3 fixtures as per images
   ✅ Auto-enforce time = 16:00 for every fixture (even future ones)
   ✅ Auto-enforce venue/location = Home team
+  ✅ Added Goals & Discipline tabs: Top Scorers / Red / Yellow
 */
 
-const DONATE_URL ="https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR"; 
+const DONATE_URL ="https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
 
 // ===============================
 // FIXTURES (WEEK 3 - EXACT AS IMAGE)
@@ -106,6 +106,121 @@ const slides = [
   { src: "images/photo2.jpg", title: "Match Day", meta: "Stream A & Stream B" },
   { src: "images/photo3.jpg", title: "Team Spirit", meta: "BLFA Updates" },
 ];
+
+// ===============================
+// GOALS & DISCIPLINE DATA
+// ===============================
+const disciplineData = {
+  goals: [
+    "🥇 4 Goals",
+    "Invite – Xihuhuri FC (4)",
+    "—",
+    "🥈 3 Goals",
+    "Luthando – Crusaders FC (3)",
+    "—",
+    "🥉 2 Goals",
+    "Charny – Crusaders FC (2)",
+    "Brave – Bhubezi FC (2)",
+    "Sgonondo – Welverdiend Masters FC (2)",
+    "Aubrey – Xihuhuri FC (2)",
+    "Kgome – Highlanders FC (2)",
+    "Condry – Welverdiend Masters FC (2)",
+    "Ian – Highlanders FC (2)",
+    "Musa – Morning Stars FC (2)",
+    "—",
+    "⚽ 1 Goal Scorers",
+    "Puse – Labamba FC (1)",
+    "Buda – Labamba FC (1)",
+    "Masure – Labamba FC (1)",
+    "Reply – Labamba FC (1)",
+    "Ruse – Labamba FC (1)",
+    "Kgose – Labamba FC (1)",
+    "Levy – Labamba FC (1)",
+    "Tower – City Pillars FC (1)",
+    "Thomas – Xihuhuri FC (1)",
+    "Zinto – Welverdiend Masters FC (1)",
+    "Cosner – Liverpool FC (1)",
+    "Shongwe – Liverpool FC (1)",
+    "Alpha – Liverpool FC (1)",
+    "Dala – Morning Stars FC (1)",
+    "Nhlari – Morning Stars FC (1)",
+    "Bella – Morning Stars FC (1)",
+    "Thabang – Morning Stars FC (1)",
+    "Trust – Morning Stars FC (1)",
+    "Gift – Eastern Rangers FC (1)",
+    "Jabu Zuma – Eastern Rangers FC (1)",
+    "Potential – Bhubezi FC (1)",
+    "Bee – Bhubezi FC (1)",
+    "Bright – Bhubezi FC (1)",
+    "Snenhlahla – Bhubezi FC (1)",
+    "Samu – Real Rangers FC (1)",
+    "Phoo – Welverdiend Masters FC (1)",
+    "Nkosinathi – FC Wondrous (1)",
+    "Wisdom – FC Wondrous (1)",
+    "Liberty – Movers FC (1)",
+    "Brandon – Fast XI FC (1)",
+    "Protect – Junior Pirates FC (1)"
+  ],
+  red: [
+    "🟥 SUSPENSIONS (Red Cards)",
+    "Jeepers – Highlanders FC",
+    "Dalos – Labamba FC"
+  ],
+  yellow: [
+    "🟨 YELLOW CARDS",
+    "—",
+    "🔸 2 Yellow Cards",
+    "Levis Mashaba – Movers FC (2)",
+    "Clenthon – Crusaders FC (2)",
+    "—",
+    "🔸 1 Yellow Card",
+    "Sipho – Liverpool FC",
+    "Cosner – Liverpool FC",
+    "Tito – Liverpool FC",
+    "Tsetsa – Liverpool FC",
+    "Aubrey – Xihuhuri FC",
+    "Theo – Xihuhuri FC",
+    "Dumazi – Crusaders FC",
+    "Forestance – Crusaders FC",
+    "Fumani – Crusaders FC",
+    "Bee – Bhubezi FC",
+    "Muzi – Real Rangers FC",
+    "Robert – FC Wondrous",
+    "Matimu – Highlanders FC",
+    "Mpomo – Eastern Rangers FC",
+    "Jabu – Eastern Rangers FC",
+    "Storo – Eastern Rangers FC",
+    "Njojo – Royal Tigers",
+    "Vuyo – Bhubezi FC",
+    "Bongani – Bhubezi FC",
+    "Palmer – Bhubezi FC",
+    "Potential – Bhubezi FC",
+    "Bophelo – Labamba FC",
+    "Combine – Labamba FC",
+    "Ruse – Labamba FC",
+    "Leon – Morning Stars FC",
+    "Loyiso – Fast Eleven FC"
+  ]
+};
+
+function renderDiscipline(type) {
+  const list = document.getElementById("disciplineContent");
+  if (!list) return;
+
+  list.innerHTML = "";
+  const items = disciplineData[type] || [];
+
+  for (const item of items) {
+    if (item === "—") {
+      const hr = document.createElement("hr");
+      list.appendChild(hr);
+      continue;
+    }
+    const li = document.createElement("li");
+    li.textContent = item;
+    list.appendChild(li);
+  }
+}
 
 // ===============================
 // HELPERS
@@ -336,6 +451,18 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnStreamA").addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
   $("btnStreamB").addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
   $("btnClearFixture").addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
+
+  // ✅ Discipline tabs
+  const btnGoals = $("btnTabGoals");
+  const btnRed = $("btnTabRed");
+  const btnYellow = $("btnTabYellow");
+
+  if (btnGoals) btnGoals.addEventListener("click", () => renderDiscipline("goals"));
+  if (btnRed) btnRed.addEventListener("click", () => renderDiscipline("red"));
+  if (btnYellow) btnYellow.addEventListener("click", () => renderDiscipline("yellow"));
+
+  // Default tab
+  renderDiscipline("goals");
 
   renderSlide();
   $("nextPhoto").addEventListener("click", nextSlide);
