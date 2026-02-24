@@ -219,27 +219,40 @@
       </div>
     </section>
 
-    <!-- ✅ GOALS & DISCIPLINE -->
+    <!-- ✅ GOALS & DISCIPLINE (Excel-slicer style) -->
     <section id="discipline" class="section">
       <div class="container">
         <div class="section-head">
           <h2><i class="fa-solid fa-futbol"></i> Goals & Discipline</h2>
+          <div class="tools">
+            <select id="teamSlicer" class="select"></select>
+          </div>
         </div>
 
         <div class="search-actions">
-          <button class="btn btn-outline small-btn" type="button" id="btnTabGoals">
-            ⚽ Top Goal Scorers
-          </button>
-          <button class="btn btn-outline small-btn" type="button" id="btnTabRed">
-            🟥 Red Cards
-          </button>
-          <button class="btn btn-outline small-btn" type="button" id="btnTabYellow">
-            🟨 Yellow Cards
-          </button>
+          <button class="btn btn-outline small-btn" type="button" id="tabGoals">⚽ Top Goals</button>
+          <button class="btn btn-outline small-btn" type="button" id="tabYellow">🟨 Yellow Cards</button>
+          <button class="btn btn-outline small-btn" type="button" id="tabRed">🟥 Red Cards</button>
+          <button class="btn btn-outline small-btn" type="button" id="tabClear">🧹 Clear (All)</button>
         </div>
 
-        <div class="card">
-          <ol id="disciplineContent" class="muted list-ol"></ol>
+        <div class="table-wrap">
+          <table class="table" aria-label="Goals and cards table">
+            <thead>
+              <tr>
+                <th style="width:34%;">Team</th>
+                <th style="width:38%;">Player</th>
+                <th id="statHeader" style="width:28%;">Stat</th>
+              </tr>
+            </thead>
+            <tbody id="disciplineBody">
+              <tr><td colspan="3" class="muted">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="muted small" style="margin-top:10px;">
+          Tip: Choose a team in the slicer to view only that team (like Excel).
         </div>
       </div>
     </section>
@@ -263,8 +276,6 @@
             </tbody>
           </table>
         </div>
-
-        <p class="muted small" style="margin-top:10px;"></p>
       </div>
     </section>
 
@@ -287,8 +298,6 @@
             </tbody>
           </table>
         </div>
-
-        <p class="muted small" style="margin-top:10px;"></p>
 
         <div class="card" style="margin-top:12px;">
           <div class="card-title"><i class="fa-solid fa-users"></i> WSL Executive</div>
@@ -321,8 +330,6 @@
             <div id="slideMeta" class="muted small"></div>
           </div>
         </div>
-
-        <p class="muted small"> <code></code>, <code></code>, <code></code>.</p>
       </div>
     </section>
 
@@ -334,6 +341,6 @@
     </footer>
   </main>
 
-  <script src="Script.js?v=20" defer></script>
+  <script src="Script.js?v=21" defer></script>
 </body>
 </html>
