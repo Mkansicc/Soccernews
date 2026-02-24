@@ -1,17 +1,17 @@
 "use strict";
 
-/* Script.js v20
-  ✅ Week 3 fixtures as per images
-  ✅ Auto-enforce time = 16:00 for every fixture (even future ones)
-  ✅ Auto-enforce venue/location = Home team
-  ✅ Added Goals & Discipline tabs: Top Scorers / Red / Yellow
+/* Script.js v21
+  ✅ Existing site kept
+  ✅ Added Excel-like slicer + table for:
+     - Top Goals (sorted by team, then goals desc)
+     - Yellow Cards (sorted by team, then count desc)
+     - Red Cards (sorted by team)
 */
 
 const DONATE_URL ="https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
 
 // ===============================
 // FIXTURES (WEEK 3 - EXACT AS IMAGE)
-// (time & venue will be auto-enforced by normalize function below)
 // ===============================
 const fixtures = [
   // STREAM A — WEEK 3 (Friday 27 Feb 2026)
@@ -27,12 +27,11 @@ const fixtures = [
   { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "", home: "W/ Masters", away: "Labamba", venue: "", status: "Scheduled" },
 ];
 
-// ✅ Enforce: venue/home + time 16:00 ALWAYS
 function normalizeFixtures(list) {
   return list.map((f) => ({
     ...f,
-    time: "16:00",            // force time always
-    venue: (f.home || "TBC"), // venue always home
+    time: "16:00",
+    venue: (f.home || "TBC"),
   }));
 }
 const normalizedFixtures = normalizeFixtures(fixtures);
@@ -64,7 +63,7 @@ const teams = {
 };
 
 // ===============================
-// RESULTS DATA (kept)
+// RESULTS DATA
 // ===============================
 const week1 = {
   A: [
@@ -108,118 +107,235 @@ const slides = [
 ];
 
 // ===============================
-// GOALS & DISCIPLINE DATA
+// GOALS & DISCIPLINE (Excel slicer style)
 // ===============================
-const disciplineData = {
+const statsData = {
   goals: [
-    "🥇 4 Goals",
-    "Invite – Xihuhuri FC (4)",
-    "—",
-    "🥈 3 Goals",
-    "Luthando – Crusaders FC (3)",
-    "—",
-    "🥉 2 Goals",
-    "Charny – Crusaders FC (2)",
-    "Brave – Bhubezi FC (2)",
-    "Sgonondo – Welverdiend Masters FC (2)",
-    "Aubrey – Xihuhuri FC (2)",
-    "Kgome – Highlanders FC (2)",
-    "Condry – Welverdiend Masters FC (2)",
-    "Ian – Highlanders FC (2)",
-    "Musa – Morning Stars FC (2)",
-    "—",
-    "⚽ 1 Goal Scorers",
-    "Puse – Labamba FC (1)",
-    "Buda – Labamba FC (1)",
-    "Masure – Labamba FC (1)",
-    "Reply – Labamba FC (1)",
-    "Ruse – Labamba FC (1)",
-    "Kgose – Labamba FC (1)",
-    "Levy – Labamba FC (1)",
-    "Tower – City Pillars FC (1)",
-    "Thomas – Xihuhuri FC (1)",
-    "Zinto – Welverdiend Masters FC (1)",
-    "Cosner – Liverpool FC (1)",
-    "Shongwe – Liverpool FC (1)",
-    "Alpha – Liverpool FC (1)",
-    "Dala – Morning Stars FC (1)",
-    "Nhlari – Morning Stars FC (1)",
-    "Bella – Morning Stars FC (1)",
-    "Thabang – Morning Stars FC (1)",
-    "Trust – Morning Stars FC (1)",
-    "Gift – Eastern Rangers FC (1)",
-    "Jabu Zuma – Eastern Rangers FC (1)",
-    "Potential – Bhubezi FC (1)",
-    "Bee – Bhubezi FC (1)",
-    "Bright – Bhubezi FC (1)",
-    "Snenhlahla – Bhubezi FC (1)",
-    "Samu – Real Rangers FC (1)",
-    "Phoo – Welverdiend Masters FC (1)",
-    "Nkosinathi – FC Wondrous (1)",
-    "Wisdom – FC Wondrous (1)",
-    "Liberty – Movers FC (1)",
-    "Brandon – Fast XI FC (1)",
-    "Protect – Junior Pirates FC (1)"
+    { team: "Xihuhuri FC", player: "Invite", stat: 4 },
+    { team: "Crusaders FC", player: "Luthando", stat: 3 },
+
+    { team: "Crusaders FC", player: "Charny", stat: 2 },
+    { team: "Bhubezi FC", player: "Brave", stat: 2 },
+    { team: "Welverdiend Masters FC", player: "Sgonondo", stat: 2 },
+    { team: "Xihuhuri FC", player: "Aubrey", stat: 2 },
+    { team: "Highlanders FC", player: "Kgome", stat: 2 },
+    { team: "Welverdiend Masters FC", player: "Condry", stat: 2 },
+    { team: "Highlanders FC", player: "Ian", stat: 2 },
+    { team: "Morning Stars FC", player: "Musa", stat: 2 },
+
+    { team: "Labamba FC", player: "Puse", stat: 1 },
+    { team: "Labamba FC", player: "Buda", stat: 1 },
+    { team: "Labamba FC", player: "Masure", stat: 1 },
+    { team: "Labamba FC", player: "Reply", stat: 1 },
+    { team: "Labamba FC", player: "Ruse", stat: 1 },
+    { team: "Labamba FC", player: "Kgose", stat: 1 },
+    { team: "Labamba FC", player: "Levy", stat: 1 },
+    { team: "City Pillars FC", player: "Tower", stat: 1 },
+    { team: "Xihuhuri FC", player: "Thomas", stat: 1 },
+    { team: "Welverdiend Masters FC", player: "Zinto", stat: 1 },
+    { team: "Liverpool FC", player: "Cosner", stat: 1 },
+    { team: "Liverpool FC", player: "Shongwe", stat: 1 },
+    { team: "Liverpool FC", player: "Alpha", stat: 1 },
+    { team: "Morning Stars FC", player: "Dala", stat: 1 },
+    { team: "Morning Stars FC", player: "Nhlari", stat: 1 },
+    { team: "Morning Stars FC", player: "Bella", stat: 1 },
+    { team: "Morning Stars FC", player: "Thabang", stat: 1 },
+    { team: "Morning Stars FC", player: "Trust", stat: 1 },
+    { team: "Eastern Rangers FC", player: "Gift", stat: 1 },
+    { team: "Eastern Rangers FC", player: "Jabu Zuma", stat: 1 },
+    { team: "Bhubezi FC", player: "Potential", stat: 1 },
+    { team: "Bhubezi FC", player: "Bee", stat: 1 },
+    { team: "Bhubezi FC", player: "Bright", stat: 1 },
+    { team: "Bhubezi FC", player: "Snenhlahla", stat: 1 },
+    { team: "Real Rangers FC", player: "Samu", stat: 1 },
+    { team: "Welverdiend Masters FC", player: "Phoo", stat: 1 },
+    { team: "FC Wondrous", player: "Nkosinathi", stat: 1 },
+    { team: "FC Wondrous", player: "Wisdom", stat: 1 },
+    { team: "Movers FC", player: "Liberty", stat: 1 },
+    { team: "Fast XI FC", player: "Brandon", stat: 1 },
+    { team: "Junior Pirates FC", player: "Protect", stat: 1 },
   ],
-  red: [
-    "🟥 SUSPENSIONS (Red Cards)",
-    "Jeepers – Highlanders FC",
-    "Dalos – Labamba FC"
-  ],
+
   yellow: [
-    "🟨 YELLOW CARDS",
-    "—",
-    "🔸 2 Yellow Cards",
-    "Levis Mashaba – Movers FC (2)",
-    "Clenthon – Crusaders FC (2)",
-    "—",
-    "🔸 1 Yellow Card",
-    "Sipho – Liverpool FC",
-    "Cosner – Liverpool FC",
-    "Tito – Liverpool FC",
-    "Tsetsa – Liverpool FC",
-    "Aubrey – Xihuhuri FC",
-    "Theo – Xihuhuri FC",
-    "Dumazi – Crusaders FC",
-    "Forestance – Crusaders FC",
-    "Fumani – Crusaders FC",
-    "Bee – Bhubezi FC",
-    "Muzi – Real Rangers FC",
-    "Robert – FC Wondrous",
-    "Matimu – Highlanders FC",
-    "Mpomo – Eastern Rangers FC",
-    "Jabu – Eastern Rangers FC",
-    "Storo – Eastern Rangers FC",
-    "Njojo – Royal Tigers",
-    "Vuyo – Bhubezi FC",
-    "Bongani – Bhubezi FC",
-    "Palmer – Bhubezi FC",
-    "Potential – Bhubezi FC",
-    "Bophelo – Labamba FC",
-    "Combine – Labamba FC",
-    "Ruse – Labamba FC",
-    "Leon – Morning Stars FC",
-    "Loyiso – Fast Eleven FC"
+    { team: "Movers FC", player: "Levis Mashaba", stat: 2 },
+    { team: "Crusaders FC", player: "Clenthon", stat: 2 },
+
+    { team: "Liverpool FC", player: "Sipho", stat: 1 },
+    { team: "Liverpool FC", player: "Cosner", stat: 1 },
+    { team: "Liverpool FC", player: "Tito", stat: 1 },
+    { team: "Liverpool FC", player: "Tsetsa", stat: 1 },
+
+    { team: "Xihuhuri FC", player: "Aubrey", stat: 1 },
+    { team: "Xihuhuri FC", player: "Theo", stat: 1 },
+
+    { team: "Crusaders FC", player: "Dumazi", stat: 1 },
+    { team: "Crusaders FC", player: "Forestance", stat: 1 },
+    { team: "Crusaders FC", player: "Fumani", stat: 1 },
+
+    { team: "Bhubezi FC", player: "Bee", stat: 1 },
+    { team: "Real Rangers FC", player: "Muzi", stat: 1 },
+    { team: "FC Wondrous", player: "Robert", stat: 1 },
+    { team: "Highlanders FC", player: "Matimu", stat: 1 },
+
+    { team: "Eastern Rangers FC", player: "Mpomo", stat: 1 },
+    { team: "Eastern Rangers FC", player: "Jabu", stat: 1 },
+    { team: "Eastern Rangers FC", player: "Storo", stat: 1 },
+
+    { team: "Royal Tigers", player: "Njojo", stat: 1 },
+
+    { team: "Bhubezi FC", player: "Vuyo", stat: 1 },
+    { team: "Bhubezi FC", player: "Bongani", stat: 1 },
+    { team: "Bhubezi FC", player: "Palmer", stat: 1 },
+    { team: "Bhubezi FC", player: "Potential", stat: 1 },
+
+    { team: "Labamba FC", player: "Bophelo", stat: 1 },
+    { team: "Labamba FC", player: "Combine", stat: 1 },
+    { team: "Labamba FC", player: "Ruse", stat: 1 },
+
+    { team: "Morning Stars FC", player: "Leon", stat: 1 },
+    { team: "Fast Eleven FC", player: "Loyiso", stat: 1 },
+  ],
+
+  red: [
+    { team: "Highlanders FC", player: "Jeepers", stat: 1 },
+    { team: "Labamba FC", player: "Dalos", stat: 1 },
   ]
 };
 
-function renderDiscipline(type) {
-  const list = document.getElementById("disciplineContent");
-  if (!list) return;
+const statLabels = {
+  goals: "Goals",
+  yellow: "Yellow Cards",
+  red: "Red Cards"
+};
 
-  list.innerHTML = "";
-  const items = disciplineData[type] || [];
+let currentStatType = "goals";     // goals | yellow | red
+let currentTeamFilter = "ALL";     // ALL or team name
 
-  for (const item of items) {
-    if (item === "—") {
-      const hr = document.createElement("hr");
-      list.appendChild(hr);
-      continue;
-    }
-    const li = document.createElement("li");
-    li.textContent = item;
-    list.appendChild(li);
+function uniqueTeamsFrom(type) {
+  const set = new Set((statsData[type] || []).map(x => x.team));
+  return Array.from(set).sort((a,b)=>a.localeCompare(b));
+}
+
+function buildTeamSlicer(type) {
+  const slicer = document.getElementById("teamSlicer");
+  if (!slicer) return;
+
+  const teams = uniqueTeamsFrom(type);
+  slicer.innerHTML = "";
+
+  const optAll = document.createElement("option");
+  optAll.value = "ALL";
+  optAll.textContent = "All Teams";
+  slicer.appendChild(optAll);
+
+  teams.forEach(t => {
+    const o = document.createElement("option");
+    o.value = t;
+    o.textContent = t;
+    slicer.appendChild(o);
+  });
+
+  slicer.value = "ALL";
+  currentTeamFilter = "ALL";
+}
+
+function sortStats(type, arr) {
+  if (type === "goals") {
+    return arr.slice().sort((a,b) =>
+      a.team.localeCompare(b.team) ||
+      (b.stat - a.stat) ||
+      a.player.localeCompare(b.player)
+    );
   }
+  if (type === "yellow") {
+    return arr.slice().sort((a,b) =>
+      a.team.localeCompare(b.team) ||
+      (b.stat - a.stat) ||
+      a.player.localeCompare(b.player)
+    );
+  }
+  // red
+  return arr.slice().sort((a,b) =>
+    a.team.localeCompare(b.team) ||
+    a.player.localeCompare(b.player)
+  );
+}
+
+function renderStatsTable() {
+  const body = document.getElementById("disciplineBody");
+  const header = document.getElementById("statHeader");
+  if (!body || !header) return;
+
+  header.textContent = statLabels[currentStatType] || "Stat";
+
+  const raw = statsData[currentStatType] || [];
+  const filtered = currentTeamFilter === "ALL"
+    ? raw
+    : raw.filter(x => x.team === currentTeamFilter);
+
+  const rows = sortStats(currentStatType, filtered);
+
+  body.innerHTML = "";
+  if (!rows.length) {
+    body.innerHTML = `<tr><td colspan="3" class="muted">No data found.</td></tr>`;
+    return;
+  }
+
+  // If ALL, show grouped like Excel (Team header + rows + totals)
+  if (currentTeamFilter === "ALL") {
+    let currentTeam = null;
+    let teamTotal = 0;
+
+    const flushTotal = () => {
+      if (!currentTeam) return;
+      const trT = document.createElement("tr");
+      trT.className = "row-total";
+      trT.innerHTML = `<td colspan="2">Total (${currentTeam})</td><td>${teamTotal}</td>`;
+      body.appendChild(trT);
+      teamTotal = 0;
+    };
+
+    rows.forEach(r => {
+      if (r.team !== currentTeam) {
+        flushTotal();
+        currentTeam = r.team;
+
+        const trG = document.createElement("tr");
+        trG.className = "row-group";
+        trG.innerHTML = `<td colspan="3">${currentTeam}</td>`;
+        body.appendChild(trG);
+      }
+
+      teamTotal += Number(r.stat) || 0;
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${r.team}</td><td><strong>${r.player}</strong></td><td>${r.stat}</td>`;
+      body.appendChild(tr);
+    });
+
+    flushTotal();
+    return;
+  }
+
+  // Single team view (simple table)
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${r.team}</td><td><strong>${r.player}</strong></td><td>${r.stat}</td>`;
+    body.appendChild(tr);
+  });
+
+  // Team total row
+  const total = rows.reduce((s,x)=> s + (Number(x.stat)||0), 0);
+  const trTotal = document.createElement("tr");
+  trTotal.className = "row-total";
+  trTotal.innerHTML = `<td colspan="2">Total (${currentTeamFilter})</td><td>${total}</td>`;
+  body.appendChild(trTotal);
+}
+
+function setStatType(type) {
+  currentStatType = type;
+  buildTeamSlicer(type);
+  renderStatsTable();
 }
 
 // ===============================
@@ -288,7 +404,7 @@ function renderLog(tbodyId, rows) {
       <td><strong>${safeText(r.team)}</strong></td>
       <td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td>
       <td>${r.GF}</td><td>${r.GA}</td><td>${r.GD >= 0 ? "+" : ""}${r.GD}</td>
-      <td><strong>${r.Pts}</strong></td>
+      <td><strong>${safeText(r.Pts)}</strong></td>
     `;
     body.appendChild(tr);
   });
@@ -452,21 +568,33 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnStreamB").addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
   $("btnClearFixture").addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
 
-  // ✅ Discipline tabs
-  const btnGoals = $("btnTabGoals");
-  const btnRed = $("btnTabRed");
-  const btnYellow = $("btnTabYellow");
+  // ✅ Excel-style slicer + tabs
+  const slicer = $("teamSlicer");
+  if (slicer) {
+    slicer.addEventListener("change", () => {
+      currentTeamFilter = slicer.value || "ALL";
+      renderStatsTable();
+    });
+  }
 
-  if (btnGoals) btnGoals.addEventListener("click", () => renderDiscipline("goals"));
-  if (btnRed) btnRed.addEventListener("click", () => renderDiscipline("red"));
-  if (btnYellow) btnYellow.addEventListener("click", () => renderDiscipline("yellow"));
+  $("tabGoals")?.addEventListener("click", () => setStatType("goals"));
+  $("tabYellow")?.addEventListener("click", () => setStatType("yellow"));
+  $("tabRed")?.addEventListener("click", () => setStatType("red"));
 
-  // Default tab
-  renderDiscipline("goals");
+  $("tabClear")?.addEventListener("click", () => {
+    currentTeamFilter = "ALL";
+    const s = $("teamSlicer");
+    if (s) s.value = "ALL";
+    renderStatsTable();
+  });
+
+  // Default: Goals
+  buildTeamSlicer("goals");
+  renderStatsTable();
 
   renderSlide();
-  $("nextPhoto").addEventListener("click", nextSlide);
-  $("prevPhoto").addEventListener("click", prevSlide);
+  $("nextPhoto")?.addEventListener("click", nextSlide);
+  $("prevPhoto")?.addEventListener("click", prevSlide);
   setInterval(() => { if (slides.length > 1) nextSlide(); }, 7000);
 
   showWeek1();
