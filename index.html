@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -40,6 +39,7 @@
       <nav class="nav">
         <a href="#fixtures"><i class="fa-solid fa-calendar-days"></i> Next Matches</a>
         <a href="#results"><i class="fa-solid fa-trophy"></i> Results</a>
+        <a href="#discipline"><i class="fa-solid fa-futbol"></i> Goals & Cards</a>
         <a href="#streamA"><i class="fa-solid fa-table-list"></i> Stream A Log</a>
         <a href="#streamB"><i class="fa-solid fa-table-list"></i> Stream B Log</a>
         <a href="#photos"><i class="fa-solid fa-image"></i> Photos</a>
@@ -54,9 +54,7 @@
       <div class="container hero-grid">
         <div>
           <h1>WSL Match Updates</h1>
-          <p class="muted">
-            
-          </p>
+          <p class="muted"></p>
 
           <div class="hero-actions">
             <a class="btn" href="#fixtures"><i class="fa-solid fa-bolt"></i> View Fixtures</a>
@@ -221,6 +219,31 @@
       </div>
     </section>
 
+    <!-- ✅ GOALS & DISCIPLINE -->
+    <section id="discipline" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2><i class="fa-solid fa-futbol"></i> Goals & Discipline</h2>
+        </div>
+
+        <div class="search-actions">
+          <button class="btn btn-outline small-btn" type="button" id="btnTabGoals">
+            ⚽ Top Goal Scorers
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnTabRed">
+            🟥 Red Cards
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnTabYellow">
+            🟨 Yellow Cards
+          </button>
+        </div>
+
+        <div class="card">
+          <ol id="disciplineContent" class="muted list-ol"></ol>
+        </div>
+      </div>
+    </section>
+
     <!-- STREAM A OVERALL LOG -->
     <section id="streamA" class="section">
       <div class="container">
@@ -311,6 +334,6 @@
     </footer>
   </main>
 
-  <script src="Script.js?v=19" defer></script>
+  <script src="Script.js?v=20" defer></script>
 </body>
 </html>
