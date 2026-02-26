@@ -6,12 +6,14 @@
      - Top Goals (sorted by team, then goals desc)
      - Yellow Cards (sorted by team, then count desc)
      - Red Cards (sorted by team)
+  ✅ Week 2 results updated to match image (Junior Pirates 2-0 Xihuhuri)
+  ✅ Logo handled in HTML via images/wsl-logo.png
 */
 
 const DONATE_URL ="https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
 
 // ===============================
-// FIXTURES (WEEK 3 - EXACT AS IMAGE)
+// FIXTURES (WEEK 3)
 // ===============================
 const fixtures = [
   // STREAM A — WEEK 3 (Friday 27 Feb 2026)
@@ -89,7 +91,10 @@ const week2 = {
   ],
   B: [
     { home: "City Pillars FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 1, awayGoals: 3 },
+
+    // ✅ FIXED to match your image: Junior Pirates 2 - 0 Xihuhuri
+    { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 2, awayGoals: 0 },
+
     { home: "Bhubhezi FC", away: "Labamba FC", homeGoals: 2, awayGoals: 1 },
     { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: 1, awayGoals: 3 },
   ],
@@ -103,7 +108,7 @@ const overall = { A: [...week1.A, ...week2.A], B: [...week1.B, ...week2.B] };
 const slides = [
   { src: "images/photo1.jpg", title: "WSL Action", meta: "Welverdiend Soccer League" },
   { src: "images/photo2.jpg", title: "Match Day", meta: "Stream A & Stream B" },
-  { src: "images/photo3.jpg", title: "Team Spirit", meta: "BLFA Updates" },
+  { src: "images/photo3.jpg", title: "Team Spirit", meta: "WSL Updates" },
 ];
 
 // ===============================
@@ -152,7 +157,7 @@ const statsData = {
     { team: "FC Wondrous", player: "Nkosinathi", stat: 1 },
     { team: "FC Wondrous", player: "Wisdom", stat: 1 },
     { team: "Movers FC", player: "Liberty", stat: 1 },
-    { team: "Fast XI FC", player: "Brandon", stat: 1 },
+    { team: "Fast Eleven FC", player: "Brandon", stat: 1 },
     { team: "Junior Pirates FC", player: "Protect", stat: 1 },
   ],
 
@@ -181,7 +186,7 @@ const statsData = {
     { team: "Eastern Rangers FC", player: "Jabu", stat: 1 },
     { team: "Eastern Rangers FC", player: "Storo", stat: 1 },
 
-    { team: "Royal Tigers", player: "Njojo", stat: 1 },
+    { team: "Royal Tigers FC", player: "Njojo", stat: 1 },
 
     { team: "Bhubezi FC", player: "Vuyo", stat: 1 },
     { team: "Bhubezi FC", player: "Bongani", stat: 1 },
@@ -220,7 +225,7 @@ function buildTeamSlicer(type) {
   const slicer = document.getElementById("teamSlicer");
   if (!slicer) return;
 
-  const teams = uniqueTeamsFrom(type);
+  const ts = uniqueTeamsFrom(type);
   slicer.innerHTML = "";
 
   const optAll = document.createElement("option");
@@ -228,7 +233,7 @@ function buildTeamSlicer(type) {
   optAll.textContent = "All Teams";
   slicer.appendChild(optAll);
 
-  teams.forEach(t => {
+  ts.forEach(t => {
     const o = document.createElement("option");
     o.value = t;
     o.textContent = t;
@@ -240,14 +245,7 @@ function buildTeamSlicer(type) {
 }
 
 function sortStats(type, arr) {
-  if (type === "goals") {
-    return arr.slice().sort((a,b) =>
-      a.team.localeCompare(b.team) ||
-      (b.stat - a.stat) ||
-      a.player.localeCompare(b.player)
-    );
-  }
-  if (type === "yellow") {
+  if (type === "goals" || type === "yellow") {
     return arr.slice().sort((a,b) =>
       a.team.localeCompare(b.team) ||
       (b.stat - a.stat) ||
@@ -309,7 +307,7 @@ function renderStatsTable() {
       teamTotal += Number(r.stat) || 0;
 
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${r.team}</td><td><strong>${r.player}</strong></td><td>${r.stat}</td>`;
+      tr.innerHTML = `<td>${safeText(r.team)}</td><td><strong>${safeText(r.player)}</strong></td><td>${safeText(r.stat)}</td>`;
       body.appendChild(tr);
     });
 
@@ -320,7 +318,7 @@ function renderStatsTable() {
   // Single team view (simple table)
   rows.forEach(r => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${r.team}</td><td><strong>${r.player}</strong></td><td>${r.stat}</td>`;
+    tr.innerHTML = `<td>${safeText(r.team)}</td><td><strong>${safeText(r.player)}</strong></td><td>${safeText(r.stat)}</td>`;
     body.appendChild(tr);
   });
 
@@ -328,7 +326,7 @@ function renderStatsTable() {
   const total = rows.reduce((s,x)=> s + (Number(x.stat)||0), 0);
   const trTotal = document.createElement("tr");
   trTotal.className = "row-total";
-  trTotal.innerHTML = `<td colspan="2">Total (${currentTeamFilter})</td><td>${total}</td>`;
+  trTotal.innerHTML = `<td colspan="2">Total (${safeText(currentTeamFilter)})</td><td>${total}</td>`;
   body.appendChild(trTotal);
 }
 
@@ -356,6 +354,7 @@ function formatScore(hg, ag) {
 
 function renderResults(listId, data) {
   const el = $(listId);
+  if (!el) return;
   el.innerHTML = "";
   for (const m of data) {
     const li = document.createElement("li");
@@ -396,6 +395,8 @@ function computeTable(streamKey, resultsSet) {
 
 function renderLog(tbodyId, rows) {
   const body = $(tbodyId);
+  if (!body) return;
+
   body.innerHTML = "";
   rows.forEach((r, i) => {
     const tr = document.createElement("tr");
@@ -413,7 +414,10 @@ function renderLog(tbodyId, rows) {
 function bestHighlightLatestPlayed() {
   const played = [...week2.A, ...week2.B, ...week1.A, ...week1.B].filter(isPlayed);
   if (!played.length) return "No played matches yet";
-  played.sort((x, y) => (Math.abs(y.homeGoals - y.awayGoals) - Math.abs(x.homeGoals - x.awayGoals)) || ((y.homeGoals + y.awayGoals) - (x.homeGoals + x.awayGoals)));
+  played.sort((x, y) =>
+    (Math.abs(y.homeGoals - y.awayGoals) - Math.abs(x.homeGoals - x.awayGoals)) ||
+    ((y.homeGoals + y.awayGoals) - (x.homeGoals + x.awayGoals))
+  );
   const m = played[0];
   return `${m.home} ${m.homeGoals} – ${m.awayGoals} ${m.away}`;
 }
@@ -425,6 +429,8 @@ let fixtureStreamFilter = null;
 
 function renderFixtures(list) {
   const body = $("fixturesBody");
+  if (!body) return;
+
   body.innerHTML = "";
   if (!list.length) {
     body.innerHTML = `<tr><td colspan="5" class="muted">No fixtures found.</td></tr>`;
@@ -448,7 +454,7 @@ function renderFixtures(list) {
 }
 
 function applyFixtureFilters() {
-  const q = ($("fixtureSearch").value || "").toLowerCase().trim();
+  const q = ($("fixtureSearch")?.value || "").toLowerCase().trim();
 
   const filtered = normalizedFixtures.filter((f) => {
     if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
@@ -475,12 +481,13 @@ function setNextMatchCard() {
 // RESULTS SEARCH + WEEK TOGGLE
 // ===============================
 function applyResultSearch() {
-  const q = ($("resultSearch").value || "").toLowerCase().trim();
-  const week2Visible = $("week2Block").style.display !== "none";
+  const q = ($("resultSearch")?.value || "").toLowerCase().trim();
+  const week2Visible = $("week2Block")?.style.display !== "none";
   const ids = week2Visible ? ["resultsListA2", "resultsListB2"] : ["resultsListA1", "resultsListB1"];
 
   for (const id of ids) {
     const list = $(id);
+    if (!list) continue;
     for (const li of list.querySelectorAll("li")) {
       const t = li.textContent.toLowerCase();
       li.style.display = !q || t.includes(q) ? "" : "none";
@@ -536,7 +543,8 @@ function prevSlide() { slideIndex = (slideIndex - 1 + slides.length) % slides.le
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  $("yearNow").textContent = new Date().getFullYear();
+  const yearNow = $("yearNow");
+  if (yearNow) yearNow.textContent = new Date().getFullYear();
 
   const d = $("donateLink");
   if (d) d.href = DONATE_URL;
@@ -558,15 +566,15 @@ document.addEventListener("DOMContentLoaded", () => {
   $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
   $("highlightResult").textContent = bestHighlightLatestPlayed();
 
-  $("resultSearch").addEventListener("input", applyResultSearch);
-  $("btnClearResults").addEventListener("click", () => { $("resultSearch").value = ""; applyResultSearch(); });
-  $("btnShowWeek1").addEventListener("click", showWeek1);
-  $("btnShowWeek2").addEventListener("click", showWeek2);
+  $("resultSearch")?.addEventListener("input", applyResultSearch);
+  $("btnClearResults")?.addEventListener("click", () => { $("resultSearch").value = ""; applyResultSearch(); });
+  $("btnShowWeek1")?.addEventListener("click", showWeek1);
+  $("btnShowWeek2")?.addEventListener("click", showWeek2);
 
-  $("fixtureSearch").addEventListener("input", applyFixtureFilters);
-  $("btnStreamA").addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
-  $("btnStreamB").addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
-  $("btnClearFixture").addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
+  $("fixtureSearch")?.addEventListener("input", applyFixtureFilters);
+  $("btnStreamA")?.addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
+  $("btnStreamB")?.addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
+  $("btnClearFixture")?.addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
 
   // ✅ Excel-style slicer + tabs
   const slicer = $("teamSlicer");
