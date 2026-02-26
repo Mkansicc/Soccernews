@@ -95,7 +95,7 @@ const week2 = {
   ],
   B: [
     { home: "City Pillars FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 1, awayGoals: 3 },
+    { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 2, awayGoals: 0 },
     { home: "Bhubhezi FC", away: "Labamba FC", homeGoals: 2, awayGoals: 1 },
     { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: 1, awayGoals: 3 },
   ],
