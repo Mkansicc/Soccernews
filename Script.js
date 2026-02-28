@@ -8,14 +8,15 @@
   ✅ Fixtures search + filters
   ✅ Results Week 1/Week 2/Week 3 toggle + search
   ✅ Overall log tables (Week1 + Week2 + Week3)
-  ✅ Photo slideshow updated: photo1.jpg → photo16.jpg
+  ✅ Slideshow: photo1.jpg → photo16.jpg
+  ✅ Auto-skip missing photos
   ✅ Donate button links to PayPal (mkansicc@gmail.com)
 */
 
 const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
 
 // ===============================
-// FIXTURES (WEEK 4 ONLY) ✅
+// FIXTURES (WEEK 4 ONLY)
 // ===============================
 const fixtures = [
   // STREAM A — WEEK 4 (Sunday 8 Mar 2026)
@@ -118,7 +119,7 @@ const week3 = {
 const overall = { A: [...week1.A, ...week2.A, ...week3.A], B: [...week1.B, ...week2.B, ...week3.B] };
 
 // ===============================
-// ✅ SLIDESHOW (photo1.jpg -> photo16.jpg)
+// ✅ SLIDESHOW (photo1.jpg → photo16.jpg)
 // ===============================
 const slides = Array.from({ length: 16 }, (_, i) => {
   const n = i + 1;
@@ -330,7 +331,7 @@ function showWeek3() {
 }
 
 // ===============================
-// SLIDESHOW LOGIC (auto-skip missing images)
+// SLIDESHOW (auto-skip missing images)
 // ===============================
 let slideIndex = 0;
 
@@ -344,7 +345,6 @@ function renderSlide() {
   if (!s) return;
 
   img.onerror = () => {
-    // if an image is missing, skip to next
     slideIndex = (slideIndex + 1) % slides.length;
     renderSlide();
   };
