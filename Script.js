@@ -1,7 +1,7 @@
 "use strict";
 
-/* Script.js v25
-  ✅ Fixtures: WEEK 4 ONLY (Stream A + Stream B)
+/* Script.js v26
+  ✅ Fixtures: WEEK 4 ONLY (NO 27 Feb fixtures)
   ✅ Stream filter buttons (A/B) + Active highlight
   ✅ Auto-enforce time = 16:00 for ALL fixtures
   ✅ Auto-enforce venue/location = Home team
@@ -15,7 +15,7 @@
 const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
 
 // ===============================
-// FIXTURES (WEEK 4 ONLY)
+// FIXTURES (WEEK 4 ONLY) ✅
 // ===============================
 const fixtures = [
   // STREAM A — WEEK 4 (Sunday 8 Mar 2026)
@@ -157,7 +157,7 @@ function computeTable(streamKey, resultsSet) {
     const away = table.get(m.away) || { team: m.away, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
 
     home.P++; away.P++;
-    home.GF += m.homeGoals; home.GA += m.awayGoals;
+    home.GF += m.homeGoals; home.GA += m.awyGoals ?? m.awayGoals; // safety
     away.GF += m.awayGoals; away.GA += m.homeGoals;
 
     if (m.homeGoals > m.awayGoals) { home.W++; home.Pts += 3; away.L++; }
@@ -364,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("yearNow").textContent = new Date().getFullYear();
   $("donateLink").href = DONATE_URL;
 
-  // Fixtures
+  // Fixtures (Week 4 only)
   renderFixtures(normalizedFixtures);
   setNextMatchCard(normalizedFixtures);
   syncFixtureButtonActive();
