@@ -1,400 +1,335 @@
-"use strict";
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welverdiend Soccer League (WSL) | Updates</title>
+  <meta name="description" content="Welverdiend Soccer League updates: fixtures, results, log tables, photos, donations." />
 
-/* Script.js v22 (Week 3 Results + Overall Log)
-  ✅ Week 3 fixtures (as per images)
-  ✅ Auto-enforce time = 16:00 for ALL fixtures (even future ones)
-  ✅ Auto-enforce venue/location = Home team
-  ✅ Fixtures search + Stream filter
-  ✅ Results Week 1/Week 2/Week 3 toggle + search
-  ✅ Overall log tables (Week1 + Week2 + Week3)
-  ✅ Simple photo slideshow
-  ✅ Donate button links to PayPal (mkansicc@gmail.com)
-*/
+  <link rel="stylesheet" href="style.css" />
 
-// ✅ Your PayPal donation link (mkansicc@gmail.com)
-const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-// ===============================
-// FIXTURES (Week 3 - Correct)
-// NOTE: time/venue are auto-forced below
-// ===============================
-const fixtures = [
-  // STREAM A — WEEK 3 (Friday 27 Feb 2026)
-  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Eastern Rangers", away: "FC Wonderous", venue: "", status: "Scheduled" },
-  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Crusaders", away: "Morning Stars", venue: "", status: "Scheduled" },
-  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Royal Tigers", away: "Movers", venue: "", status: "Scheduled" },
-  { stream: "A", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Highlanders", away: "Fast 11", venue: "", status: "Scheduled" },
+  <!-- Google AdSense (replace ca-pub-XXXX with your publisher ID after approval) -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
+</head>
 
-  // STREAM B — WEEK 3 (Friday 27 Feb 2026)
-  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Xihuhuri", away: "Liverpool", venue: "", status: "Scheduled" },
-  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "", home: "City Pillars", away: "Bhubhezi", venue: "", status: "Scheduled" },
-  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "", home: "Real Rangers", away: "Junior Pirates", venue: "", status: "Scheduled" },
-  { stream: "B", week: 3, date: "Fri 27 Feb 2026", time: "", home: "W/ Masters", away: "Labamba", venue: "", status: "Scheduled" },
-];
+<body>
+  <!-- Animated background -->
+  <div class="bg-anim" aria-hidden="true">
+    <div class="glow"></div>
+    <div class="ball"></div>
+    <div class="ball ball2"></div>
+    <div class="ball ball3"></div>
+  </div>
 
-// ✅ Enforce: time + venue ALWAYS
-function normalizeFixtures(list) {
-  return list.map((f) => ({
-    ...f,
-    time: "16:00",            // force time always
-    venue: (f.home || "TBC"), // venue always home
-  }));
-}
-const normalizedFixtures = normalizeFixtures(fixtures);
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <img class="wsl-logo" src="images/wsl-logo.png" alt="WSL Logo" onerror="this.style.display='none'">
+        <div class="brand-text">
+          <div class="brand-title">WELVERDIEND SOCCER LEAGUE (WSL)</div>
+          <div class="brand-subtitle">Fixtures • Results • Logs</div>
+        </div>
+      </div>
 
-// ===============================
-// TEAMS (for log tables)
-// ===============================
-const teams = {
-  A: [
-    "Morning Stars FC",
-    "Crusaders FC",
-    "Royal Tigers FC",
-    "Highlanders FC",
-    "Eastern Rangers FC",
-    "Fast Eleven FC",
-    "FC Wondrous",
-    "Movers FC",
-  ],
-  B: [
-    "Labamba FC",
-    "Bhubhezi FC",
-    "Liverpool FC",
-    "Xihuhuri FC",
-    "Welverdiend Masters FC",
-    "Junior Pirates FC",
-    "Real Rangers FC",
-    "City Pillars FC",
-  ],
-};
+      <nav class="nav">
+        <a href="#fixtures"><i class="fa-solid fa-calendar-days"></i> Next Matches</a>
+        <a href="#results"><i class="fa-solid fa-trophy"></i> Results</a>
+        <a href="#streamA"><i class="fa-solid fa-table-list"></i> Stream A Log</a>
+        <a href="#streamB"><i class="fa-solid fa-table-list"></i> Stream B Log</a>
+        <a href="#photos"><i class="fa-solid fa-image"></i> Photos</a>
+        <a class="btn btn-donate" href="#donate"><i class="fa-solid fa-heart"></i> Donate</a>
+      </nav>
+    </div>
+  </header>
 
-// ===============================
-// RESULTS (Week 1 + Week 2 + Week 3)
-// ===============================
-const week1 = {
-  A: [
-    { home: "Morning Stars FC", away: "Movers FC", homeGoals: 4, awayGoals: 0 },
-    { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 2, awayGoals: 0 },
-    { home: "Royal Tigers FC", away: "Fast Eleven FC", homeGoals: 2, awayGoals: 0 },
-    { home: "Highlanders FC", away: "Eastern Rangers FC", homeGoals: 2, awayGoals: 1 },
-  ],
-  B: [
-    { home: "Labamba FC", away: "City Pillars FC", homeGoals: 7, awayGoals: 1 },
-    { home: "Bhubhezi FC", away: "Real Rangers FC", homeGoals: 4, awayGoals: 0 },
-    { home: "Liverpool FC", away: "Junior Pirates FC", homeGoals: 2, awayGoals: 0 },
-    { home: "Xihuhuri FC", away: "Welverdiend Masters FC", homeGoals: 4, awayGoals: 3 },
-  ],
-};
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <h1>WSL Match Updates</h1>
+          <p class="muted">
+            Week 1 + Week 2 + Week 3 results are saved. Logs below are combined (cumulative) for all played matches.
+          </p>
 
-const week2 = {
-  A: [
-    { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
-    { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: 3, awayGoals: 1 },
-    { home: "Movers FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 2 },
-  ],
-  B: [
-    { home: "City Pillars FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 1 },
-    // ✅ Week 2 updated: Xihuhuri 0 : 2 Junior Pirates (home Junior Pirates)
-    { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 2, awayGoals: 0 },
-    { home: "Bhubhezi FC", away: "Labamba FC", homeGoals: 2, awayGoals: 1 },
-    { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: 1, awayGoals: 3 },
-  ],
-};
+          <div class="hero-actions">
+            <a class="btn" href="#fixtures"><i class="fa-solid fa-bolt"></i> View Fixtures</a>
+            <a class="btn btn-outline" href="#results"><i class="fa-solid fa-trophy"></i> View Results</a>
+          </div>
 
-// ✅ Week 3 – Friday, 27 February 2026
-const week3 = {
-  A: [
-    { home: "Eastern Rangers FC", away: "FC Wondrous", homeGoals: 1, awayGoals: 2 },
-    { home: "Crusaders FC", away: "Morning Stars FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Royal Tigers FC", away: "Movers FC", homeGoals: 4, awayGoals: 2 },
-    { home: "Highlanders FC", away: "Fast Eleven FC", homeGoals: 4, awayGoals: 1 },
-  ],
-  B: [
-    { home: "Xihuhuri FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 0 },
-    { home: "City Pillars FC", away: "Bhubhezi FC", homeGoals: 1, awayGoals: 2 },
-    { home: "Real Rangers FC", away: "Junior Pirates FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Welverdiend Masters FC", away: "Labamba FC", homeGoals: 0, awayGoals: 0 },
-  ],
-};
+          <div class="quick-cards">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Next Match</div>
+              <div id="nextMatch" class="card-big">Loading…</div>
+              <div id="nextMatchMeta" class="muted small"></div>
+            </div>
 
-// ✅ Overall (cumulative log)
-const overall = { A: [...week1.A, ...week2.A, ...week3.A], B: [...week1.B, ...week2.B, ...week3.B] };
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
+              <div id="highlightResult" class="card-big">Loading…</div>
+              <div class="muted small">Latest played match</div>
+            </div>
 
-// ===============================
-// SLIDESHOW
-// ===============================
-const slides = [
-  { src: "images/photo1.jpg", title: "WSL Action", meta: "Welverdiend Soccer League" },
-  { src: "images/photo2.jpg", title: "Match Day", meta: "Stream A & Stream B" },
-  { src: "images/photo3.jpg", title: "Team Spirit", meta: "BLFA Updates" },
-];
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-crown"></i> Leaders (Overall)</div>
+              <div id="leaderA" class="card-big">A: Loading…</div>
+              <div id="leaderB" class="card-big">B: Loading…</div>
+            </div>
+          </div>
 
-// ===============================
-// HELPERS
-// ===============================
-const $ = (id) => document.getElementById(id);
+        </div>
 
-function safeText(v) { return String(v ?? "").replace(/[<>]/g, ""); }
-function isPlayed(m) { return Number.isInteger(m.homeGoals) && Number.isInteger(m.awayGoals); }
-function formatScore(hg, ag) { return (hg === null || ag === null) ? "❓ – ❓" : `${hg} – ${ag}`; }
+        <div class="hero-side">
+          <div class="card card-highlight" id="donate">
+            <div class="card-title"><i class="fa-solid fa-hand-holding-heart"></i> Sponsor / Donate</div>
+            <p class="muted">Support kits, transport, balls, and youth development.</p>
 
-function renderResults(listId, data) {
-  const el = $(listId);
-  if (!el) return;
-  el.innerHTML = "";
-  for (const m of data) {
-    const li = document.createElement("li");
-    li.innerHTML = `<strong>${safeText(m.home)}</strong> ${formatScore(m.homeGoals, m.awayGoals)} ${safeText(m.away)}`;
-    el.appendChild(li);
-  }
-}
+            <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">
+              <i class="fa-solid fa-heart"></i> Donate Now
+            </a>
 
-function computeTable(streamKey, resultsSet) {
-  const table = new Map();
-  for (const t of teams[streamKey]) table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
+            <div class="muted small" style="margin-top:10px;">
+              <code>Replace Donate Link in Script.js</code>
+            </div>
 
-  for (const m of resultsSet[streamKey]) {
-    if (!isPlayed(m)) continue;
+            <div class="sponsor-row">
+              <span class="pill"><i class="fa-solid fa-shirt"></i> Kits</span>
+              <span class="pill"><i class="fa-solid fa-bus"></i> Transport</span>
+              <span class="pill"><i class="fa-solid fa-futbol"></i> Balls</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    const home = table.get(m.home) || { team: m.home, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
-    const away = table.get(m.away) || { team: m.away, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
+    <!-- FIXTURES -->
+    <section id="fixtures" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2><i class="fa-solid fa-calendar-days"></i> Fixtures</h2>
+          <div class="tools">
+            <input id="fixtureSearch" class="input" placeholder="Search team..." />
+          </div>
+        </div>
 
-    home.P++; away.P++;
-    home.GF += m.homeGoals; home.GA += m.awayGoals;
-    away.GF += m.awayGoals; away.GA += m.homeGoals;
+        <div class="search-actions">
+          <button class="btn btn-outline small-btn" type="button" id="btnStreamA">
+            <i class="fa-solid fa-filter"></i> Stream A
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnStreamB">
+            <i class="fa-solid fa-filter"></i> Stream B
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnClearFixture">
+            <i class="fa-solid fa-eraser"></i> Clear
+          </button>
+        </div>
 
-    if (m.homeGoals > m.awayGoals) { home.W++; home.Pts += 3; away.L++; }
-    else if (m.homeGoals < m.awayGoals) { away.W++; away.Pts += 3; home.L++; }
-    else { home.D++; away.D++; home.Pts++; away.Pts++; }
+        <div class="table-wrap">
+          <table class="table" aria-label="Next matches">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Match</th>
+                <th>Venue (Home)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="fixturesBody">
+              <tr><td colspan="5" class="muted">Loading fixtures…</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-    home.GD = home.GF - home.GA;
-    away.GD = away.GF - away.GA;
+        <p class="muted small" style="margin-top:10px;">
+          Venue is automatically set to the Home team and time is forced to 16:00.
+        </p>
+      </div>
+    </section>
 
-    table.set(m.home, home);
-    table.set(m.away, away);
-  }
+    <!-- RESULTS -->
+    <section id="results" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <h2><i class="fa-solid fa-trophy"></i> Results</h2>
+          <div class="tools">
+            <input id="resultSearch" class="input" placeholder="Search team..." />
+          </div>
+        </div>
 
-  const rows = Array.from(table.values());
-  rows.sort((a, b) => (b.Pts - a.Pts) || (b.GD - a.GD) || (b.GF - a.GF) || a.team.localeCompare(b.team));
-  return rows;
-}
+        <div class="search-actions">
+          <button class="btn btn-outline small-btn" type="button" id="btnShowWeek1">
+            <i class="fa-solid fa-1"></i> Week 1
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnShowWeek2">
+            <i class="fa-solid fa-2"></i> Week 2
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnShowWeek3">
+            <i class="fa-solid fa-3"></i> Week 3
+          </button>
+          <button class="btn btn-outline small-btn" type="button" id="btnClearResults">
+            <i class="fa-solid fa-eraser"></i> Clear Search
+          </button>
+        </div>
 
-function renderLog(tbodyId, rows) {
-  const body = $(tbodyId);
-  if (!body) return;
-  body.innerHTML = "";
-  rows.forEach((r, i) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i + 1}</td>
-      <td><strong>${safeText(r.team)}</strong></td>
-      <td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td>
-      <td>${r.GF}</td><td>${r.GA}</td><td>${r.GD >= 0 ? "+" : ""}${r.GD}</td>
-      <td><strong>${r.Pts}</strong></td>
-    `;
-    body.appendChild(tr);
-  });
-}
+        <!-- WEEK 1 -->
+        <div id="week1Block">
+          <h3 class="subhead"><i class="fa-solid fa-circle-check"></i> Week 1</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <ol id="resultsListA1" class="muted list-ol"></ol>
+            </div>
 
-function bestHighlightLatestPlayed() {
-  const played = [...week3.A, ...week3.B, ...week2.A, ...week2.B, ...week1.A, ...week1.B].filter(isPlayed);
-  if (!played.length) return "No played matches yet";
-  played.sort((x, y) =>
-    (Math.abs(y.homeGoals - y.awayGoals) - Math.abs(x.homeGoals - x.awayGoals)) ||
-    ((y.homeGoals + y.awayGoals) - (x.homeGoals + y.awayGoals))
-  );
-  const m = played[0];
-  return `${m.home} ${m.homeGoals} – ${m.awayGoals} ${m.away}`;
-}
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <ol id="resultsListB1" class="muted list-ol"></ol>
+            </div>
+          </div>
+        </div>
 
-// ===============================
-// FIXTURES UI
-// ===============================
-let fixtureStreamFilter = null;
+        <!-- WEEK 2 -->
+        <div id="week2Block" style="display:none; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-fire"></i> Week 2</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <ol id="resultsListA2" class="muted list-ol"></ol>
+            </div>
 
-function renderFixtures(list) {
-  const body = $("fixturesBody");
-  if (!body) return;
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <ol id="resultsListB2" class="muted list-ol"></ol>
+            </div>
+          </div>
+        </div>
 
-  body.innerHTML = "";
-  if (!list.length) {
-    body.innerHTML = `<tr><td colspan="5" class="muted">No fixtures found.</td></tr>`;
-    return;
-  }
+        <!-- WEEK 3 -->
+        <div id="week3Block" style="display:none; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-bolt"></i> Week 3 • Friday, 27 February 2026</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <ol id="resultsListA3" class="muted list-ol"></ol>
+            </div>
 
-  for (const f of list) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${safeText(f.date)}</td>
-      <td>${safeText(f.time)}</td>
-      <td>
-        <strong>${safeText(f.home)}</strong> vs ${safeText(f.away)}
-        <span class="pill small-pill">Stream ${safeText(f.stream)}</span>
-      </td>
-      <td>${safeText(f.venue)}</td>
-      <td>${safeText(f.status)}</td>
-    `;
-    body.appendChild(tr);
-  }
-}
+            <div class="card">
+              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <ol id="resultsListB3" class="muted list-ol"></ol>
+            </div>
+          </div>
+        </div>
 
-function applyFixtureFilters() {
-  const q = (($("fixtureSearch")?.value) || "").toLowerCase().trim();
+        <!-- Ad block -->
+        <div class="ad-box">
+          <div class="muted small">Advertisement</div>
+          <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+            data-ad-slot="1234567890"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+      </div>
+    </section>
 
-  const filtered = normalizedFixtures.filter((f) => {
-    if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
-    if (!q) return true;
-    const hay = `${f.home} ${f.away} ${f.venue} ${f.stream}`.toLowerCase();
-    return hay.includes(q);
-  });
+    <!-- STREAM A OVERALL LOG -->
+    <section id="streamA" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2><i class="fa-solid fa-table-list"></i> Stream A • Log Table (Overall)</h2>
+        </div>
 
-  renderFixtures(filtered);
-}
+        <div class="table-wrap">
+          <table class="table" aria-label="Stream A overall log table">
+            <thead>
+              <tr>
+                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+              </tr>
+            </thead>
+            <tbody id="logBodyA">
+              <tr><td colspan="10" class="muted">Loading log…</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-function setNextMatchCard() {
-  const f = normalizedFixtures[0];
-  const nm = $("nextMatch");
-  const meta = $("nextMatchMeta");
-  if (!nm || !meta) return;
+        <p class="muted small" style="margin-top:10px;">.</p>
+      </div>
+    </section>
 
-  if (!f) {
-    nm.textContent = "No fixtures set";
-    meta.textContent = "";
-    return;
-  }
-  nm.textContent = `${f.home} vs ${f.away}`;
-  meta.textContent = `Stream ${f.stream} • ${f.date} ${f.time} • ${f.venue}`;
-}
+    <!-- STREAM B OVERALL LOG -->
+    <section id="streamB" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <h2><i class="fa-solid fa-table-list"></i> Stream B • Log Table (Overall)</h2>
+        </div>
 
-// ===============================
-// RESULTS SEARCH + WEEK TOGGLE
-// ===============================
-function applyResultSearch() {
-  const q = (($("resultSearch")?.value) || "").toLowerCase().trim();
+        <div class="table-wrap">
+          <table class="table" aria-label="Stream B overall log table">
+            <thead>
+              <tr>
+                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+              </tr>
+            </thead>
+            <tbody id="logBodyB">
+              <tr><td colspan="10" class="muted">Loading log…</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-  const isW1 = ($("week1Block")?.style.display || "") !== "none";
-  const isW2 = ($("week2Block")?.style.display || "none") !== "none";
-  const isW3 = ($("week3Block")?.style.display || "none") !== "none";
+        <p class="muted small" style="margin-top:10px;"></p>
 
-  const ids = isW3 ? ["resultsListA3", "resultsListB3"]
-          : isW2 ? ["resultsListA2", "resultsListB2"]
-          : isW1 ? ["resultsListA1", "resultsListB1"]
-          : ["resultsListA1", "resultsListB1"];
+        <div class="card" style="margin-top:12px;">
+          <div class="card-title"><i class="fa-solid fa-users"></i> WSL Executive</div>
+          <p class="muted small" style="line-height:1.6; margin:0;">
+            Jethro Gumede (Chairperson), Seepane Emanuel (Deputy Chair), Thabiso Ndlovu (Treasure),
+            Clife Ndlovu (Secretary), Bophelo Mogakane (H. Referee), Jomo Ubisi (Marketing Director),
+            Gift Ndlovu (DC), Ripfumelo Mlambo (Media), Senkie Nyathi (Admin)
+          </p>
+        </div>
+      </div>
+    </section>
 
-  for (const id of ids) {
-    const list = $(id);
-    if (!list) continue;
-    for (const li of list.querySelectorAll("li")) {
-      const t = li.textContent.toLowerCase();
-      li.style.display = !q || t.includes(q) ? "" : "none";
-    }
-  }
-}
+    <!-- PHOTOS -->
+    <section id="photos" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2><i class="fa-solid fa-image"></i> Photos</h2>
+          <div class="tools">
+            <button class="btn btn-outline small-btn" type="button" id="prevPhoto"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="btn btn-outline small-btn" type="button" id="nextPhoto"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
 
-function showWeek1() {
-  if ($("week1Block")) $("week1Block").style.display = "";
-  if ($("week2Block")) $("week2Block").style.display = "none";
-  if ($("week3Block")) $("week3Block").style.display = "none";
-  if ($("resultSearch")) $("resultSearch").value = "";
-  applyResultSearch();
-}
-function showWeek2() {
-  if ($("week1Block")) $("week1Block").style.display = "none";
-  if ($("week2Block")) $("week2Block").style.display = "";
-  if ($("week3Block")) $("week3Block").style.display = "none";
-  if ($("resultSearch")) $("resultSearch").value = "";
-  applyResultSearch();
-}
-function showWeek3() {
-  if ($("week1Block")) $("week1Block").style.display = "none";
-  if ($("week2Block")) $("week2Block").style.display = "none";
-  if ($("week3Block")) $("week3Block").style.display = "";
-  if ($("resultSearch")) $("resultSearch").value = "";
-  applyResultSearch();
-}
+        <div class="slideshow card">
+          <div class="slide-frame">
+            <img id="slideImage" alt="Team photo slideshow" />
+          </div>
+          <div class="slide-caption">
+            <div id="slideTitle" class="slide-title">Loading…</div>
+            <div id="slideMeta" class="muted small"></div>
+          </div>
+        </div>
 
-// ===============================
-// SLIDESHOW
-// ===============================
-let slideIndex = 0;
+        <p class="muted small">Add photos in <code>images/photo1.jpg</code>, <code>images/photo2.jpg</code>, <code>images/photo3.jpg</code>.</p>
+      </div>
+    </section>
 
-function renderSlide() {
-  const img = $("slideImage");
-  const title = $("slideTitle");
-  const meta = $("slideMeta");
-  if (!img || !title || !meta) return;
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="muted small">© <span id="yearNow"></span> Welverdiend Soccer League</div>
+        <div class="muted small">Designed by CC Mkansi • Built for GitHub Pages</div>
+      </div>
+    </footer>
+  </main>
 
-  const s = slides[slideIndex] || slides[0];
-  if (!s) {
-    title.textContent = "Add photos to /images";
-    meta.textContent = "photo1.jpg, photo2.jpg, photo3.jpg";
-    return;
-  }
-
-  img.onerror = () => {
-    img.src = "";
-    title.textContent = "Photo not found";
-    meta.textContent = "Add images in /images folder";
-  };
-
-  img.src = s.src;
-  title.textContent = s.title;
-  meta.textContent = s.meta;
-}
-
-function nextSlide() { slideIndex = (slideIndex + 1) % slides.length; renderSlide(); }
-function prevSlide() { slideIndex = (slideIndex - 1 + slides.length) % slides.length; renderSlide(); }
-
-// ===============================
-// INIT
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-  if ($("yearNow")) $("yearNow").textContent = new Date().getFullYear();
-
-  const donate = $("donateLink");
-  if (donate) donate.href = DONATE_URL;
-
-  renderFixtures(normalizedFixtures);
-  setNextMatchCard();
-
-  // Render results (Week 1-3)
-  renderResults("resultsListA1", week1.A);
-  renderResults("resultsListB1", week1.B);
-  renderResults("resultsListA2", week2.A);
-  renderResults("resultsListB2", week2.B);
-  renderResults("resultsListA3", week3.A);
-  renderResults("resultsListB3", week3.B);
-
-  // Logs (Overall)
-  const rowsA = computeTable("A", overall);
-  const rowsB = computeTable("B", overall);
-  renderLog("logBodyA", rowsA);
-  renderLog("logBodyB", rowsB);
-
-  if ($("leaderA")) $("leaderA").textContent = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
-  if ($("leaderB")) $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
-  if ($("highlightResult")) $("highlightResult").textContent = bestHighlightLatestPlayed();
-
-  // Result search + buttons
-  $("resultSearch")?.addEventListener("input", applyResultSearch);
-  $("btnClearResults")?.addEventListener("click", () => { $("resultSearch").value = ""; applyResultSearch(); });
-  $("btnShowWeek1")?.addEventListener("click", showWeek1);
-  $("btnShowWeek2")?.addEventListener("click", showWeek2);
-  $("btnShowWeek3")?.addEventListener("click", showWeek3);
-
-  // Fixture search + filters
-  $("fixtureSearch")?.addEventListener("input", applyFixtureFilters);
-  $("btnStreamA")?.addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
-  $("btnStreamB")?.addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
-  $("btnClearFixture")?.addEventListener("click", () => { fixtureStreamFilter = null; $("fixtureSearch").value = ""; applyFixtureFilters(); });
-
-  // Slideshow
-  renderSlide();
-  $("nextPhoto")?.addEventListener("click", nextSlide);
-  $("prevPhoto")?.addEventListener("click", prevSlide);
-  setInterval(() => { if (slides.length > 1) nextSlide(); }, 7000);
-
-  // Default view
-  showWeek1();
-});
+  <script src="Script.js?v=22" defer></script>
+</body>
+</html>
