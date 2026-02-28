@@ -98,6 +98,13 @@ code{ background:rgba(255,255,255,.08); padding:.15rem .35rem; border-radius:10p
 }
 .btn-donate:hover{ background: linear-gradient(180deg, rgba(34,197,94,.28), rgba(34,197,94,.10)); }
 
+/* Active filter button (Stream A/B) */
+.btn.active{
+  border-color: rgba(34,197,94,.55);
+  background: linear-gradient(180deg, rgba(34,197,94,.28), rgba(34,197,94,.10));
+  box-shadow: 0 14px 40px rgba(34,197,94,.12);
+}
+
 .wide{ width:100%; }
 .section{ padding: 28px 0 34px; }
 .section.alt{ background: rgba(255,255,255,.02); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
