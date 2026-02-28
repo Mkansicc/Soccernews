@@ -1,6 +1,6 @@
 "use strict";
 
-/* Script.js v26
+/* Script.js v27
   ✅ Fixtures: WEEK 4 ONLY (NO 27 Feb fixtures)
   ✅ Stream filter buttons (A/B) + Active highlight
   ✅ Auto-enforce time = 16:00 for ALL fixtures
@@ -8,7 +8,7 @@
   ✅ Fixtures search + filters
   ✅ Results Week 1/Week 2/Week 3 toggle + search
   ✅ Overall log tables (Week1 + Week2 + Week3)
-  ✅ Simple photo slideshow
+  ✅ Photo slideshow updated: photo1.jpg → photo16.jpg
   ✅ Donate button links to PayPal (mkansicc@gmail.com)
 */
 
@@ -118,13 +118,16 @@ const week3 = {
 const overall = { A: [...week1.A, ...week2.A, ...week3.A], B: [...week1.B, ...week2.B, ...week3.B] };
 
 // ===============================
-// SLIDESHOW
+// ✅ SLIDESHOW (photo1.jpg -> photo16.jpg)
 // ===============================
-const slides = [
-  { src: "images/photo1.jpg", title: "WSL Action", meta: "Welverdiend Soccer League" },
-  { src: "images/photo2.jpg", title: "Match Day", meta: "Stream A & Stream B" },
-  { src: "images/photo3.jpg", title: "Team Spirit", meta: "BLFA Updates" },
-];
+const slides = Array.from({ length: 16 }, (_, i) => {
+  const n = i + 1;
+  return {
+    src: `images/photo${n}.jpg`,
+    title: `WSL Photo ${n}`,
+    meta: "Welverdiend Soccer League",
+  };
+});
 
 // ===============================
 // HELPERS
@@ -157,7 +160,7 @@ function computeTable(streamKey, resultsSet) {
     const away = table.get(m.away) || { team: m.away, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
 
     home.P++; away.P++;
-    home.GF += m.homeGoals; home.GA += m.awyGoals ?? m.awayGoals; // safety
+    home.GF += m.homeGoals; home.GA += m.awayGoals;
     away.GF += m.awayGoals; away.GA += m.homeGoals;
 
     if (m.homeGoals > m.awayGoals) { home.W++; home.Pts += 3; away.L++; }
@@ -213,7 +216,6 @@ function setActive(el, on) {
   if (!el) return;
   el.classList.toggle("active", !!on);
 }
-
 function syncFixtureButtonActive() {
   setActive($("btnStreamA"), fixtureStreamFilter === "A");
   setActive($("btnStreamB"), fixtureStreamFilter === "B");
@@ -221,11 +223,9 @@ function syncFixtureButtonActive() {
 
 function getFilteredFixtures() {
   const q = (($("fixtureSearch")?.value) || "").toLowerCase().trim();
-
   return normalizedFixtures.filter((f) => {
     if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
     if (!q) return true;
-
     const hay = `${f.home} ${f.away} ${f.venue} ${f.stream} week${f.week} ${f.date}`.toLowerCase();
     return hay.includes(q);
   });
@@ -330,7 +330,7 @@ function showWeek3() {
 }
 
 // ===============================
-// SLIDESHOW
+// SLIDESHOW LOGIC (auto-skip missing images)
 // ===============================
 let slideIndex = 0;
 
@@ -344,9 +344,9 @@ function renderSlide() {
   if (!s) return;
 
   img.onerror = () => {
-    img.src = "";
-    title.textContent = "Photo not found";
-    meta.textContent = "Add images in /images folder";
+    // if an image is missing, skip to next
+    slideIndex = (slideIndex + 1) % slides.length;
+    renderSlide();
   };
 
   img.src = s.src;
@@ -364,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("yearNow").textContent = new Date().getFullYear();
   $("donateLink").href = DONATE_URL;
 
-  // Fixtures (Week 4 only)
+  // Fixtures
   renderFixtures(normalizedFixtures);
   setNextMatchCard(normalizedFixtures);
   syncFixtureButtonActive();
@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderSlide();
   $("nextPhoto").addEventListener("click", nextSlide);
   $("prevPhoto").addEventListener("click", prevSlide);
-  setInterval(() => { if (slides.length > 1) nextSlide(); }, 7000);
+  setInterval(() => { if (slides.length > 1) nextSlide(); }, 6000);
 
   // Default results view
   showWeek1();
