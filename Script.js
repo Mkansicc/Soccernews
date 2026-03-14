@@ -1,573 +1,66 @@
-"use strict";
-
-/* Script.js v29
-  ✅ Week 4 results updated
-  ✅ Postponed fixtures supported in results
-  ✅ Week 5 tab added
-  ✅ Week 6 fixtures added
-  ✅ Next fixture now uses Week 6
-  ✅ Overall logs update from played matches only
-  ✅ Results Week 1 / Week 2 / Week 3 / Week 4 / Week 5 toggle + search
-  ✅ Stream filter buttons (A/B) + Active highlight
-  ✅ Auto-enforce time = 16:00 for ALL fixtures
-  ✅ Auto-enforce venue/location = Home team
-  ✅ Fixtures search + filters
-  ✅ Slideshow: photo1.jpg → photo16.jpg
-  ✅ Auto-skip missing photos
-  ✅ Donate button links to PayPal (mkansicc@gmail.com)
-*/
-
-const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
-
-// ===============================
-// FIXTURES (WEEK 6)
-// ===============================
-const fixtures = [
-  // STREAM A — WEEK 6 (Sunday 22 Mar 2026)
-  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "", home: "Highlanders", away: "FC Wonderous", venue: "", status: "Scheduled" },
-  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "", home: "Movers", away: "Fast 11", venue: "", status: "Scheduled" },
-  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "", home: "Morning Stars", away: "Royal Tigers", venue: "", status: "Scheduled" },
-  { stream: "A", week: 6, date: "Sun 22 Mar 2026", time: "", home: "Crusaders", away: "Eastern Rangers", venue: "", status: "Scheduled" },
-
-  // STREAM B — WEEK 6 (Sunday 22 Mar 2026)
-  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "", home: "W/ Masters", away: "Liverpool", venue: "", status: "Scheduled" },
-  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "", home: "Labamba", away: "Real Rangers", venue: "", status: "Scheduled" },
-  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "", home: "Bhubhezi", away: "Junior Pirates", venue: "", status: "Scheduled" },
-  { stream: "B", week: 6, date: "Sun 22 Mar 2026", time: "", home: "City Pillars", away: "Xihuhuri", venue: "", status: "Scheduled" },
-];
-
-// ✅ Enforce: time + venue ALWAYS
-function normalizeFixtures(list) {
-  return list.map((f) => ({
-    ...f,
-    time: "16:00",
-    venue: (f.home || "TBC"),
-  }));
-}
-const normalizedFixtures = normalizeFixtures(fixtures);
-
-// ===============================
-// TEAMS (for log tables)
-// ===============================
-const teams = {
-  A: [
-    "Morning Stars FC",
-    "Crusaders FC",
-    "Royal Tigers FC",
-    "Highlanders FC",
-    "Eastern Rangers FC",
-    "Fast Eleven FC",
-    "FC Wondrous",
-    "Movers FC",
-  ],
-  B: [
-    "Labamba FC",
-    "Bhubhezi FC",
-    "Liverpool FC",
-    "Xihuhuri FC",
-    "Welverdiend Masters FC",
-    "Junior Pirates FC",
-    "Real Rangers FC",
-    "City Pillars FC",
-  ],
-};
-
-// ===============================
-// RESULTS
-// ===============================
-const week1 = {
-  A: [
-    { home: "Morning Stars FC", away: "Movers FC", homeGoals: 4, awayGoals: 0 },
-    { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 2, awayGoals: 0 },
-    { home: "Royal Tigers FC", away: "Fast Eleven FC", homeGoals: 2, awayGoals: 0 },
-    { home: "Highlanders FC", away: "Eastern Rangers FC", homeGoals: 2, awayGoals: 1 },
-  ],
-  B: [
-    { home: "Labamba FC", away: "City Pillars FC", homeGoals: 7, awayGoals: 1 },
-    { home: "Bhubhezi FC", away: "Real Rangers FC", homeGoals: 4, awayGoals: 0 },
-    { home: "Liverpool FC", away: "Junior Pirates FC", homeGoals: 2, awayGoals: 0 },
-    { home: "Xihuhuri FC", away: "Welverdiend Masters FC", homeGoals: 4, awayGoals: 3 },
-  ],
-};
-
-const week2 = {
-  A: [
-    { home: "Crusaders FC", away: "FC Wondrous", homeGoals: 3, awayGoals: 2 },
-    { home: "Royal Tigers FC", away: "Eastern Rangers FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Morning Stars FC", away: "Fast Eleven FC", homeGoals: 3, awayGoals: 1 },
-    { home: "Movers FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 2 },
-  ],
-  B: [
-    { home: "City Pillars FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Junior Pirates FC", away: "Xihuhuri FC", homeGoals: 2, awayGoals: 0 },
-    { home: "Bhubhezi FC", away: "Labamba FC", homeGoals: 2, awayGoals: 1 },
-    { home: "Real Rangers FC", away: "Welverdiend Masters FC", homeGoals: 1, awayGoals: 3 },
-  ],
-};
-
-const week3 = {
-  A: [
-    { home: "Eastern Rangers FC", away: "FC Wondrous", homeGoals: 1, awayGoals: 2 },
-    { home: "Crusaders FC", away: "Morning Stars FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Royal Tigers FC", away: "Movers FC", homeGoals: 4, awayGoals: 2 },
-    { home: "Highlanders FC", away: "Fast Eleven FC", homeGoals: 4, awayGoals: 1 },
-  ],
-  B: [
-    { home: "Xihuhuri FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 0 },
-    { home: "City Pillars FC", away: "Bhubhezi FC", homeGoals: 1, awayGoals: 2 },
-    { home: "Real Rangers FC", away: "Junior Pirates FC", homeGoals: 0, awayGoals: 1 },
-    { home: "Welverdiend Masters FC", away: "Labamba FC", homeGoals: 0, awayGoals: 0 },
-  ],
-};
-
-const week4 = {
-  A: [
-    { home: "Royal Tigers FC", away: "Crusaders FC", homeGoals: 1, awayGoals: 3 },
-    { home: "FC Wondrous", away: "Movers FC", homeGoals: null, awayGoals: null, status: "Postponed" },
-    { home: "Morning Stars FC", away: "Highlanders FC", homeGoals: null, awayGoals: null, status: "Postponed" },
-    { home: "Eastern Rangers FC", away: "Fast Eleven FC", homeGoals: null, awayGoals: null, status: "Postponed" },
-  ],
-  B: [
-    { home: "Real Rangers FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 7 },
-    { home: "Bhubhezi FC", away: "Welverdiend Masters FC", homeGoals: 2, awayGoals: 2 },
-    { home: "Xihuhuri FC", away: "Labamba FC", homeGoals: 0, awayGoals: 4 },
-    { home: "Junior Pirates FC", away: "City Pillars FC", homeGoals: 3, awayGoals: 2 },
-  ],
-};
-
-const week5 = {
-  A: [],
-  B: [],
-};
-
-const overall = {
-  A: [...week1.A, ...week2.A, ...week3.A, ...week4.A, ...week5.A],
-  B: [...week1.B, ...week2.B, ...week3.B, ...week4.B, ...week5.B],
-};
-
-// ===============================
-// SLIDESHOW
-// ===============================
-const slides = Array.from({ length: 16 }, (_, i) => {
-  const n = i + 1;
-  return {
-    src: `images/photo${n}.jpg`,
-    title: `WSL Photo ${n}`,
-    meta: "Welverdiend Soccer League",
-  };
-});
-
-// ===============================
-// HELPERS
-// ===============================
-const $ = (id) => document.getElementById(id);
-
-function safeText(v) {
-  return String(v ?? "").replace(/[<>]/g, "");
-}
-
-function isPlayed(m) {
-  return Number.isInteger(m.homeGoals) && Number.isInteger(m.awayGoals);
-}
-
-function isPostponed(m) {
-  return (m.status || "").toLowerCase() === "postponed";
-}
-
-function formatScore(hg, ag) {
-  return (hg === null || ag === null) ? "❓ – ❓" : `${hg} – ${ag}`;
-}
-
-function renderResults(listId, data) {
-  const el = $(listId);
-  if (!el) return;
-
-  el.innerHTML = "";
-
-  if (!data.length) {
-    const li = document.createElement("li");
-    li.innerHTML = `<span class="muted">No results yet.</span>`;
-    el.appendChild(li);
-    return;
-  }
-
-  for (const m of data) {
-    const li = document.createElement("li");
-
-    if (isPostponed(m)) {
-      li.innerHTML = `<strong>${safeText(m.home)}</strong> vs ${safeText(m.away)} <span class="pill small-pill">Postponed</span>`;
-    } else {
-      li.innerHTML = `<strong>${safeText(m.home)}</strong> ${formatScore(m.homeGoals, m.awayGoals)} ${safeText(m.away)}`;
-    }
-
-    el.appendChild(li);
-  }
-}
-
-function computeTable(streamKey, resultsSet) {
-  const table = new Map();
-
-  for (const t of teams[streamKey]) {
-    table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
-  }
-
-  for (const m of resultsSet[streamKey]) {
-    if (!isPlayed(m)) continue;
-
-    const home = table.get(m.home) || { team: m.home, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
-    const away = table.get(m.away) || { team: m.away, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
-
-    home.P++;
-    away.P++;
-
-    home.GF += m.homeGoals;
-    home.GA += m.awayGoals;
-
-    away.GF += m.awayGoals;
-    away.GA += m.homeGoals;
-
-    if (m.homeGoals > m.awayGoals) {
-      home.W++;
-      home.Pts += 3;
-      away.L++;
-    } else if (m.homeGoals < m.awayGoals) {
-      away.W++;
-      away.Pts += 3;
-      home.L++;
-    } else {
-      home.D++;
-      away.D++;
-      home.Pts++;
-      away.Pts++;
-    }
-
-    home.GD = home.GF - home.GA;
-    away.GD = away.GF - away.GA;
-
-    table.set(m.home, home);
-    table.set(m.away, away);
-  }
-
-  const rows = Array.from(table.values());
-  rows.sort((a, b) =>
-    (b.Pts - a.Pts) ||
-    (b.GD - a.GD) ||
-    (b.GF - a.GF) ||
-    a.team.localeCompare(b.team)
-  );
-
-  return rows;
-}
-
-function renderLog(tbodyId, rows) {
-  const body = $(tbodyId);
-  if (!body) return;
-
-  body.innerHTML = "";
-  rows.forEach((r, i) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i + 1}</td>
-      <td><strong>${safeText(r.team)}</strong></td>
-      <td>${r.P}</td>
-      <td>${r.W}</td>
-      <td>${r.D}</td>
-      <td>${r.L}</td>
-      <td>${r.GF}</td>
-      <td>${r.GA}</td>
-      <td>${r.GD >= 0 ? "+" : ""}${r.GD}</td>
-      <td><strong>${r.Pts}</strong></td>
-    `;
-    body.appendChild(tr);
-  });
-}
-
-function bestHighlightLatestPlayed() {
-  const played = [
-    ...week5.A, ...week5.B,
-    ...week4.A, ...week4.B,
-    ...week3.A, ...week3.B,
-    ...week2.A, ...week2.B,
-    ...week1.A, ...week1.B
-  ].filter(isPlayed);
-
-  if (!played.length) return "No played matches yet";
-
-  played.sort((x, y) =>
-    (Math.abs(y.homeGoals - y.awayGoals) - Math.abs(x.homeGoals - x.awayGoals)) ||
-    ((y.homeGoals + y.awayGoals) - (x.homeGoals + x.awayGoals))
-  );
-
-  const m = played[0];
-  return `${m.home} ${m.homeGoals} – ${m.awayGoals} ${m.away}`;
-}
-
-// ===============================
-// FIXTURES UI
-// ===============================
-let fixtureStreamFilter = null;
-
-function setActive(el, on) {
-  if (!el) return;
-  el.classList.toggle("active", !!on);
-}
-
-function syncFixtureButtonActive() {
-  setActive($("btnStreamA"), fixtureStreamFilter === "A");
-  setActive($("btnStreamB"), fixtureStreamFilter === "B");
-}
-
-function getFilteredFixtures() {
-  const q = (($("fixtureSearch")?.value) || "").toLowerCase().trim();
-
-  return normalizedFixtures.filter((f) => {
-    if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
-    if (!q) return true;
-
-    const hay = `${f.home} ${f.away} ${f.venue} ${f.stream} week${f.week} ${f.date}`.toLowerCase();
-    return hay.includes(q);
-  });
-}
-
-function renderFixtures(list) {
-  const body = $("fixturesBody");
-  if (!body) return;
-
-  body.innerHTML = "";
-  if (!list.length) {
-    body.innerHTML = `<tr><td colspan="5" class="muted">No fixtures found.</td></tr>`;
-    return;
-  }
-
-  for (const f of list) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${safeText(f.date)}</td>
-      <td>${safeText(f.time)}</td>
-      <td>
-        <strong>${safeText(f.home)}</strong> vs ${safeText(f.away)}
-        <span class="pill small-pill">Stream ${safeText(f.stream)}</span>
-        <span class="pill small-pill">Week ${safeText(f.week)}</span>
-      </td>
-      <td>${safeText(f.venue)}</td>
-      <td>${safeText(f.status)}</td>
-    `;
-    body.appendChild(tr);
-  }
-}
-
-function setNextMatchCard(filteredList = null) {
-  const list = Array.isArray(filteredList) ? filteredList : getFilteredFixtures();
-  const f = list[0] || normalizedFixtures[0];
-
-  const nm = $("nextMatch");
-  const meta = $("nextMatchMeta");
-  if (!nm || !meta) return;
-
-  if (!f) {
-    nm.textContent = "No fixtures set";
-    meta.textContent = "";
-    return;
-  }
-
-  nm.textContent = `${f.home} vs ${f.away}`;
-  meta.textContent = `Stream ${f.stream} • Week ${f.week} • ${f.date} ${f.time} • ${f.venue}`;
-}
-
-function applyFixtureFilters() {
-  const filtered = getFilteredFixtures();
-  renderFixtures(filtered);
-  setNextMatchCard(filtered);
-  syncFixtureButtonActive();
-}
-
-// ===============================
-// RESULTS SEARCH + WEEK TOGGLE
-// ===============================
-function applyResultSearch() {
-  const q = (($("resultSearch")?.value) || "").toLowerCase().trim();
-
-  const isW1 = ($("week1Block")?.style.display || "") !== "none";
-  const isW2 = ($("week2Block")?.style.display || "none") !== "none";
-  const isW3 = ($("week3Block")?.style.display || "none") !== "none";
-  const isW4 = ($("week4Block")?.style.display || "none") !== "none";
-  const isW5 = ($("week5Block")?.style.display || "none") !== "none";
-
-  const ids = isW5 ? ["resultsListA5", "resultsListB5"]
-          : isW4 ? ["resultsListA4", "resultsListB4"]
-          : isW3 ? ["resultsListA3", "resultsListB3"]
-          : isW2 ? ["resultsListA2", "resultsListB2"]
-          : isW1 ? ["resultsListA1", "resultsListB1"]
-          : ["resultsListA1", "resultsListB1"];
-
-  for (const id of ids) {
-    const list = $(id);
-    if (!list) continue;
-
-    for (const li of list.querySelectorAll("li")) {
-      const t = li.textContent.toLowerCase();
-      li.style.display = !q || t.includes(q) ? "" : "none";
-    }
-  }
-}
-
-function showWeek1() {
-  $("week1Block").style.display = "";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
-}
-
-function showWeek2() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
-}
-
-function showWeek3() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
-}
-
-function showWeek4() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
-}
-
-function showWeek5() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "";
-  $("resultSearch").value = "";
-  applyResultSearch();
-}
-
-// ===============================
-// SLIDESHOW
-// ===============================
-let slideIndex = 0;
-
-function renderSlide() {
-  const img = $("slideImage");
-  const title = $("slideTitle");
-  const meta = $("slideMeta");
-  if (!img || !title || !meta) return;
-
-  const s = slides[slideIndex] || slides[0];
-  if (!s) return;
-
-  img.onerror = () => {
-    slideIndex = (slideIndex + 1) % slides.length;
-    renderSlide();
-  };
-
-  img.src = s.src;
-  title.textContent = s.title;
-  meta.textContent = s.meta;
-}
-
-function nextSlide() {
-  slideIndex = (slideIndex + 1) % slides.length;
-  renderSlide();
-}
-
-function prevSlide() {
-  slideIndex = (slideIndex - 1 + slides.length) % slides.length;
-  renderSlide();
-}
-
-// ===============================
-// INIT
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-  if ($("yearNow")) $("yearNow").textContent = new Date().getFullYear();
-  if ($("donateLink")) $("donateLink").href = DONATE_URL;
-
-  // Fixtures
-  renderFixtures(normalizedFixtures);
-  setNextMatchCard(normalizedFixtures);
-  syncFixtureButtonActive();
-
-  // Results
-  renderResults("resultsListA1", week1.A);
-  renderResults("resultsListB1", week1.B);
-  renderResults("resultsListA2", week2.A);
-  renderResults("resultsListB2", week2.B);
-  renderResults("resultsListA3", week3.A);
-  renderResults("resultsListB3", week3.B);
-  renderResults("resultsListA4", week4.A);
-  renderResults("resultsListB4", week4.B);
-  renderResults("resultsListA5", week5.A);
-  renderResults("resultsListB5", week5.B);
-
-  // Logs
-  const rowsA = computeTable("A", overall);
-  const rowsB = computeTable("B", overall);
-  renderLog("logBodyA", rowsA);
-  renderLog("logBodyB", rowsB);
-
-  if ($("leaderA")) $("leaderA").textContent = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
-  if ($("leaderB")) $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
-  if ($("highlightResult")) $("highlightResult").textContent = bestHighlightLatestPlayed();
-
-  // Results buttons
-  if ($("resultSearch")) $("resultSearch").addEventListener("input", applyResultSearch);
-  if ($("btnClearResults")) $("btnClearResults").addEventListener("click", () => {
-    $("resultSearch").value = "";
-    applyResultSearch();
-  });
-
-  if ($("btnShowWeek1")) $("btnShowWeek1").addEventListener("click", showWeek1);
-  if ($("btnShowWeek2")) $("btnShowWeek2").addEventListener("click", showWeek2);
-  if ($("btnShowWeek3")) $("btnShowWeek3").addEventListener("click", showWeek3);
-  if ($("btnShowWeek4")) $("btnShowWeek4").addEventListener("click", showWeek4);
-  if ($("btnShowWeek5")) $("btnShowWeek5").addEventListener("click", showWeek5);
-
-  // Fixtures search + stream buttons
-  if ($("fixtureSearch")) $("fixtureSearch").addEventListener("input", applyFixtureFilters);
-  if ($("btnStreamA")) $("btnStreamA").addEventListener("click", () => {
-    fixtureStreamFilter = "A";
-    applyFixtureFilters();
-  });
-  if ($("btnStreamB")) $("btnStreamB").addEventListener("click", () => {
-    fixtureStreamFilter = "B";
-    applyFixtureFilters();
-  });
-
-  // Clear fixtures filters
-  if ($("btnClearFixture")) $("btnClearFixture").addEventListener("click", () => {
-    fixtureStreamFilter = null;
-    $("fixtureSearch").value = "";
-    applyFixtureFilters();
-  });
-
-  // Slideshow
-  renderSlide();
-  if ($("nextPhoto")) $("nextPhoto").addEventListener("click", nextSlide);
-  if ($("prevPhoto")) $("prevPhoto").addEventListener("click", prevSlide);
-  setInterval(() => {
-    if (slides.length > 1) nextSlide();
-  }, 6000);
-
-  // Default results view
-  showWeek1();
-});
+<section id="results" class="section">
+  <div class="container">
+    <h2>Results</h2>
+
+    <div class="toolbar">
+      <button id="btnShowWeek1" type="button">Week 1</button>
+      <button id="btnShowWeek2" type="button">Week 2</button>
+      <button id="btnShowWeek3" type="button">Week 3</button>
+      <button id="btnShowWeek4" type="button">Week 4</button>
+      <button id="btnShowWeek5" type="button">Week 5</button>
+
+      <input
+        type="text"
+        id="resultSearch"
+        placeholder="Search results..."
+        aria-label="Search results"
+      />
+      <button id="btnClearResults" type="button">Clear</button>
+    </div>
+
+    <!-- WEEK 1 -->
+    <div id="week1Block">
+      <h3>Stream A</h3>
+      <ul id="resultsListA1"></ul>
+
+      <h3>Stream B</h3>
+      <ul id="resultsListB1"></ul>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div id="week2Block" style="display:none;">
+      <h3>Stream A</h3>
+      <ul id="resultsListA2"></ul>
+
+      <h3>Stream B</h3>
+      <ul id="resultsListB2"></ul>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div id="week3Block" style="display:none;">
+      <h3>Stream A</h3>
+      <ul id="resultsListA3"></ul>
+
+      <h3>Stream B</h3>
+      <ul id="resultsListB3"></ul>
+    </div>
+
+    <!-- WEEK 4 -->
+    <div id="week4Block" style="display:none;">
+      <h3>Stream A</h3>
+      <ul id="resultsListA4"></ul>
+
+      <h3>Stream B</h3>
+      <ul id="resultsListB4"></ul>
+    </div>
+
+    <!-- WEEK 5 -->
+    <div id="week5Block" style="display:none;">
+      <h3>Stream A</h3>
+      <ul id="resultsListA5"></ul>
+
+      <h3>Stream B</h3>
+      <ul id="resultsListB5"></ul>
+    </div>
+  </div>
+</section>
