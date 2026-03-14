@@ -1,13 +1,15 @@
 "use strict";
 
-/* Script.js v27
-  ✅ Fixtures: WEEK 4 ONLY (NO 27 Feb fixtures)
+/* Script.js v28
+  ✅ Fixtures: WEEK 4 ONLY
+  ✅ Added Week 4 Results
+  ✅ Updated overall logs with Week 4
+  ✅ Results Week 1 / Week 2 / Week 3 / Week 4 toggle + search
   ✅ Stream filter buttons (A/B) + Active highlight
   ✅ Auto-enforce time = 16:00 for ALL fixtures
   ✅ Auto-enforce venue/location = Home team
   ✅ Fixtures search + filters
-  ✅ Results Week 1/Week 2/Week 3 toggle + search
-  ✅ Overall log tables (Week1 + Week2 + Week3)
+  ✅ Overall log tables (Week1 + Week2 + Week3 + Week4)
   ✅ Slideshow: photo1.jpg → photo16.jpg
   ✅ Auto-skip missing photos
   ✅ Donate button links to PayPal (mkansicc@gmail.com)
@@ -19,13 +21,13 @@ const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&c
 // FIXTURES (WEEK 4 ONLY)
 // ===============================
 const fixtures = [
-  // STREAM A — WEEK 4 (Sunday 8 Mar 2026)
+  // STREAM A — WEEK 4
   { stream: "A", week: 4, date: "Sun 8 Mar 2026", time: "", home: "FC Wonderous", away: "Morning Stars", venue: "", status: "Scheduled" },
   { stream: "A", week: 4, date: "Sun 8 Mar 2026", time: "", home: "Movers", away: "Eastern Rangers", venue: "", status: "Scheduled" },
   { stream: "A", week: 4, date: "Sun 8 Mar 2026", time: "", home: "Highlanders", away: "Crusaders", venue: "", status: "Scheduled" },
   { stream: "A", week: 4, date: "Sun 8 Mar 2026", time: "", home: "Fast 11", away: "Royal Tigers", venue: "", status: "Scheduled" },
 
-  // STREAM B — WEEK 4 (Sunday 8 Mar 2026)
+  // STREAM B — WEEK 4
   { stream: "B", week: 4, date: "Sun 8 Mar 2026", time: "", home: "Liverpool", away: "Bhubhezi", venue: "", status: "Scheduled" },
   { stream: "B", week: 4, date: "Sun 8 Mar 2026", time: "", home: "Xihuhuri", away: "Real Rangers", venue: "", status: "Scheduled" },
   { stream: "B", week: 4, date: "Sun 8 Mar 2026", time: "", home: "City Pillars", away: "W/ Masters", venue: "", status: "Scheduled" },
@@ -69,7 +71,7 @@ const teams = {
 };
 
 // ===============================
-// RESULTS (Week 1 + Week 2 + Week 3)
+// RESULTS (Week 1 + Week 2 + Week 3 + Week 4)
 // ===============================
 const week1 = {
   A: [
@@ -116,7 +118,25 @@ const week3 = {
   ],
 };
 
-const overall = { A: [...week1.A, ...week2.A, ...week3.A], B: [...week1.B, ...week2.B, ...week3.B] };
+const week4 = {
+  A: [
+    { home: "Royal Tigers FC", away: "Crusaders FC", homeGoals: 1, awayGoals: 3 },
+    { home: "FC Wondrous", away: "Movers FC", homeGoals: null, awayGoals: null },
+    { home: "Morning Stars FC", away: "Highlanders FC", homeGoals: null, awayGoals: null },
+    { home: "Eastern Rangers FC", away: "Fast Eleven FC", homeGoals: null, awayGoals: null },
+  ],
+  B: [
+    { home: "Real Rangers FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 7 },
+    { home: "Bhubhezi FC", away: "Welverdiend Masters FC", homeGoals: 2, awayGoals: 2 },
+    { home: "Xihuhuri FC", away: "Labamba FC", homeGoals: 0, awayGoals: 4 },
+    { home: "Junior Pirates FC", away: "City Pillars FC", homeGoals: 3, awayGoals: 2 },
+  ],
+};
+
+const overall = {
+  A: [...week1.A, ...week2.A, ...week3.A, ...week4.A],
+  B: [...week1.B, ...week2.B, ...week3.B, ...week4.B]
+};
 
 // ===============================
 // ✅ SLIDESHOW (photo1.jpg → photo16.jpg)
@@ -135,13 +155,22 @@ const slides = Array.from({ length: 16 }, (_, i) => {
 // ===============================
 const $ = (id) => document.getElementById(id);
 
-function safeText(v) { return String(v ?? "").replace(/[<>]/g, ""); }
-function isPlayed(m) { return Number.isInteger(m.homeGoals) && Number.isInteger(m.awayGoals); }
-function formatScore(hg, ag) { return (hg === null || ag === null) ? "❓ – ❓" : `${hg} – ${ag}`; }
+function safeText(v) {
+  return String(v ?? "").replace(/[<>]/g, "");
+}
+
+function isPlayed(m) {
+  return Number.isInteger(m.homeGoals) && Number.isInteger(m.awayGoals);
+}
+
+function formatScore(hg, ag) {
+  return (hg === null || ag === null) ? "❓ – ❓" : `${hg} – ${ag}`;
+}
 
 function renderResults(listId, data) {
   const el = $(listId);
   if (!el) return;
+
   el.innerHTML = "";
   for (const m of data) {
     const li = document.createElement("li");
@@ -152,7 +181,10 @@ function renderResults(listId, data) {
 
 function computeTable(streamKey, resultsSet) {
   const table = new Map();
-  for (const t of teams[streamKey]) table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
+
+  for (const t of teams[streamKey]) {
+    table.set(t, { team: t, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 });
+  }
 
   for (const m of resultsSet[streamKey]) {
     if (!isPlayed(m)) continue;
@@ -160,13 +192,29 @@ function computeTable(streamKey, resultsSet) {
     const home = table.get(m.home) || { team: m.home, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
     const away = table.get(m.away) || { team: m.away, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0 };
 
-    home.P++; away.P++;
-    home.GF += m.homeGoals; home.GA += m.awayGoals;
-    away.GF += m.awayGoals; away.GA += m.homeGoals;
+    home.P++;
+    away.P++;
 
-    if (m.homeGoals > m.awayGoals) { home.W++; home.Pts += 3; away.L++; }
-    else if (m.homeGoals < m.awayGoals) { away.W++; away.Pts += 3; home.L++; }
-    else { home.D++; away.D++; home.Pts++; away.Pts++; }
+    home.GF += m.homeGoals;
+    home.GA += m.awayGoals;
+
+    away.GF += m.awayGoals;
+    away.GA += m.homeGoals;
+
+    if (m.homeGoals > m.awayGoals) {
+      home.W++;
+      home.Pts += 3;
+      away.L++;
+    } else if (m.homeGoals < m.awayGoals) {
+      away.W++;
+      away.Pts += 3;
+      home.L++;
+    } else {
+      home.D++;
+      away.D++;
+      home.Pts++;
+      away.Pts++;
+    }
 
     home.GD = home.GF - home.GA;
     away.GD = away.GF - away.GA;
@@ -176,21 +224,33 @@ function computeTable(streamKey, resultsSet) {
   }
 
   const rows = Array.from(table.values());
-  rows.sort((a, b) => (b.Pts - a.Pts) || (b.GD - a.GD) || (b.GF - a.GF) || a.team.localeCompare(b.team));
+  rows.sort((a, b) =>
+    (b.Pts - a.Pts) ||
+    (b.GD - a.GD) ||
+    (b.GF - a.GF) ||
+    a.team.localeCompare(b.team)
+  );
+
   return rows;
 }
 
 function renderLog(tbodyId, rows) {
   const body = $(tbodyId);
   if (!body) return;
+
   body.innerHTML = "";
   rows.forEach((r, i) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${i + 1}</td>
       <td><strong>${safeText(r.team)}</strong></td>
-      <td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td>
-      <td>${r.GF}</td><td>${r.GA}</td><td>${r.GD >= 0 ? "+" : ""}${r.GD}</td>
+      <td>${r.P}</td>
+      <td>${r.W}</td>
+      <td>${r.D}</td>
+      <td>${r.L}</td>
+      <td>${r.GF}</td>
+      <td>${r.GA}</td>
+      <td>${r.GD >= 0 ? "+" : ""}${r.GD}</td>
       <td><strong>${r.Pts}</strong></td>
     `;
     body.appendChild(tr);
@@ -198,12 +258,20 @@ function renderLog(tbodyId, rows) {
 }
 
 function bestHighlightLatestPlayed() {
-  const played = [...week3.A, ...week3.B, ...week2.A, ...week2.B, ...week1.A, ...week1.B].filter(isPlayed);
+  const played = [
+    ...week4.A, ...week4.B,
+    ...week3.A, ...week3.B,
+    ...week2.A, ...week2.B,
+    ...week1.A, ...week1.B
+  ].filter(isPlayed);
+
   if (!played.length) return "No played matches yet";
+
   played.sort((x, y) =>
     (Math.abs(y.homeGoals - y.awayGoals) - Math.abs(x.homeGoals - x.awayGoals)) ||
     ((y.homeGoals + y.awayGoals) - (x.homeGoals + x.awayGoals))
   );
+
   const m = played[0];
   return `${m.home} ${m.homeGoals} – ${m.awayGoals} ${m.away}`;
 }
@@ -217,6 +285,7 @@ function setActive(el, on) {
   if (!el) return;
   el.classList.toggle("active", !!on);
 }
+
 function syncFixtureButtonActive() {
   setActive($("btnStreamA"), fixtureStreamFilter === "A");
   setActive($("btnStreamB"), fixtureStreamFilter === "B");
@@ -224,9 +293,11 @@ function syncFixtureButtonActive() {
 
 function getFilteredFixtures() {
   const q = (($("fixtureSearch")?.value) || "").toLowerCase().trim();
+
   return normalizedFixtures.filter((f) => {
     if (fixtureStreamFilter && f.stream !== fixtureStreamFilter) return false;
     if (!q) return true;
+
     const hay = `${f.home} ${f.away} ${f.venue} ${f.stream} week${f.week} ${f.date}`.toLowerCase();
     return hay.includes(q);
   });
@@ -272,6 +343,7 @@ function setNextMatchCard(filteredList = null) {
     meta.textContent = "";
     return;
   }
+
   nm.textContent = `${f.home} vs ${f.away}`;
   meta.textContent = `Stream ${f.stream} • Week ${f.week} • ${f.date} ${f.time} • ${f.venue}`;
 }
@@ -292,8 +364,10 @@ function applyResultSearch() {
   const isW1 = ($("week1Block")?.style.display || "") !== "none";
   const isW2 = ($("week2Block")?.style.display || "none") !== "none";
   const isW3 = ($("week3Block")?.style.display || "none") !== "none";
+  const isW4 = ($("week4Block")?.style.display || "none") !== "none";
 
-  const ids = isW3 ? ["resultsListA3", "resultsListB3"]
+  const ids = isW4 ? ["resultsListA4", "resultsListB4"]
+          : isW3 ? ["resultsListA3", "resultsListB3"]
           : isW2 ? ["resultsListA2", "resultsListB2"]
           : isW1 ? ["resultsListA1", "resultsListB1"]
           : ["resultsListA1", "resultsListB1"];
@@ -301,6 +375,7 @@ function applyResultSearch() {
   for (const id of ids) {
     const list = $(id);
     if (!list) continue;
+
     for (const li of list.querySelectorAll("li")) {
       const t = li.textContent.toLowerCase();
       li.style.display = !q || t.includes(q) ? "" : "none";
@@ -312,20 +387,34 @@ function showWeek1() {
   $("week1Block").style.display = "";
   $("week2Block").style.display = "none";
   $("week3Block").style.display = "none";
+  if ($("week4Block")) $("week4Block").style.display = "none";
   $("resultSearch").value = "";
   applyResultSearch();
 }
+
 function showWeek2() {
   $("week1Block").style.display = "none";
   $("week2Block").style.display = "";
   $("week3Block").style.display = "none";
+  if ($("week4Block")) $("week4Block").style.display = "none";
   $("resultSearch").value = "";
   applyResultSearch();
 }
+
 function showWeek3() {
   $("week1Block").style.display = "none";
   $("week2Block").style.display = "none";
   $("week3Block").style.display = "";
+  if ($("week4Block")) $("week4Block").style.display = "none";
+  $("resultSearch").value = "";
+  applyResultSearch();
+}
+
+function showWeek4() {
+  if ($("week1Block")) $("week1Block").style.display = "none";
+  if ($("week2Block")) $("week2Block").style.display = "none";
+  if ($("week3Block")) $("week3Block").style.display = "none";
+  if ($("week4Block")) $("week4Block").style.display = "";
   $("resultSearch").value = "";
   applyResultSearch();
 }
@@ -354,15 +443,22 @@ function renderSlide() {
   meta.textContent = s.meta;
 }
 
-function nextSlide() { slideIndex = (slideIndex + 1) % slides.length; renderSlide(); }
-function prevSlide() { slideIndex = (slideIndex - 1 + slides.length) % slides.length; renderSlide(); }
+function nextSlide() {
+  slideIndex = (slideIndex + 1) % slides.length;
+  renderSlide();
+}
+
+function prevSlide() {
+  slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+  renderSlide();
+}
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  $("yearNow").textContent = new Date().getFullYear();
-  $("donateLink").href = DONATE_URL;
+  if ($("yearNow")) $("yearNow").textContent = new Date().getFullYear();
+  if ($("donateLink")) $("donateLink").href = DONATE_URL;
 
   // Fixtures
   renderFixtures(normalizedFixtures);
@@ -376,6 +472,8 @@ document.addEventListener("DOMContentLoaded", () => {
   renderResults("resultsListB2", week2.B);
   renderResults("resultsListA3", week3.A);
   renderResults("resultsListB3", week3.B);
+  renderResults("resultsListA4", week4.A);
+  renderResults("resultsListB4", week4.B);
 
   // Logs
   const rowsA = computeTable("A", overall);
@@ -383,24 +481,35 @@ document.addEventListener("DOMContentLoaded", () => {
   renderLog("logBodyA", rowsA);
   renderLog("logBodyB", rowsB);
 
-  $("leaderA").textContent = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
-  $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
-  $("highlightResult").textContent = bestHighlightLatestPlayed();
+  if ($("leaderA")) $("leaderA").textContent = rowsA[0]?.team ? `A: ${rowsA[0].team} (${rowsA[0].Pts} pts)` : "A: N/A";
+  if ($("leaderB")) $("leaderB").textContent = rowsB[0]?.team ? `B: ${rowsB[0].team} (${rowsB[0].Pts} pts)` : "B: N/A";
+  if ($("highlightResult")) $("highlightResult").textContent = bestHighlightLatestPlayed();
 
   // Results buttons
-  $("resultSearch").addEventListener("input", applyResultSearch);
-  $("btnClearResults").addEventListener("click", () => { $("resultSearch").value = ""; applyResultSearch(); });
-  $("btnShowWeek1").addEventListener("click", showWeek1);
-  $("btnShowWeek2").addEventListener("click", showWeek2);
-  $("btnShowWeek3").addEventListener("click", showWeek3);
+  if ($("resultSearch")) $("resultSearch").addEventListener("input", applyResultSearch);
+  if ($("btnClearResults")) $("btnClearResults").addEventListener("click", () => {
+    $("resultSearch").value = "";
+    applyResultSearch();
+  });
+
+  if ($("btnShowWeek1")) $("btnShowWeek1").addEventListener("click", showWeek1);
+  if ($("btnShowWeek2")) $("btnShowWeek2").addEventListener("click", showWeek2);
+  if ($("btnShowWeek3")) $("btnShowWeek3").addEventListener("click", showWeek3);
+  if ($("btnShowWeek4")) $("btnShowWeek4").addEventListener("click", showWeek4);
 
   // Fixtures search + stream buttons
-  $("fixtureSearch").addEventListener("input", applyFixtureFilters);
-  $("btnStreamA").addEventListener("click", () => { fixtureStreamFilter = "A"; applyFixtureFilters(); });
-  $("btnStreamB").addEventListener("click", () => { fixtureStreamFilter = "B"; applyFixtureFilters(); });
+  if ($("fixtureSearch")) $("fixtureSearch").addEventListener("input", applyFixtureFilters);
+  if ($("btnStreamA")) $("btnStreamA").addEventListener("click", () => {
+    fixtureStreamFilter = "A";
+    applyFixtureFilters();
+  });
+  if ($("btnStreamB")) $("btnStreamB").addEventListener("click", () => {
+    fixtureStreamFilter = "B";
+    applyFixtureFilters();
+  });
 
   // Clear fixtures filters
-  $("btnClearFixture").addEventListener("click", () => {
+  if ($("btnClearFixture")) $("btnClearFixture").addEventListener("click", () => {
     fixtureStreamFilter = null;
     $("fixtureSearch").value = "";
     applyFixtureFilters();
@@ -408,9 +517,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Slideshow
   renderSlide();
-  $("nextPhoto").addEventListener("click", nextSlide);
-  $("prevPhoto").addEventListener("click", prevSlide);
-  setInterval(() => { if (slides.length > 1) nextSlide(); }, 6000);
+  if ($("nextPhoto")) $("nextPhoto").addEventListener("click", nextSlide);
+  if ($("prevPhoto")) $("prevPhoto").addEventListener("click", prevSlide);
+  setInterval(() => {
+    if (slides.length > 1) nextSlide();
+  }, 6000);
 
   // Default results view
   showWeek1();
