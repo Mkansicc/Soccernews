@@ -1,14 +1,18 @@
 "use strict";
 
-/* Script.js v32
-  ✅ Week 4 = postponed only
-  ✅ Week 4 does not affect log table
-  ✅ Week 5 added
-  ✅ Only 4 Week 5 matches counted as played
+/* Script.js v33
+  ✅ Week 4 updated with official played results
+  ✅ Week 4 now counts 4 played matches per stream
+  ✅ Walkover included as 2–0 for Eastern Rangers vs Fast Eleven
+  ✅ Week 5 cleared to avoid duplicate fixtures/results in the log table
+  ✅ Logo auto-update included if #siteLogo or .site-logo exists
   ✅ Week toggle + result search included
 */
 
 const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
+
+// Change this to your real logo path/file
+const LOGO_URL = "images/logo.png";
 
 // ===============================
 // TEAMS
@@ -84,36 +88,32 @@ const week3 = {
   ],
 };
 
-// ✅ WEEK 4 = POSTPONED ONLY
+// ✅ WEEK 4 = OFFICIAL RESULTS
 const week4 = {
   A: [
-    { home: "Royal Tigers FC", away: "Crusaders FC", status: "Postponed" },
-    { home: "FC Wondrous", away: "Movers FC", status: "Postponed" },
-    { home: "Morning Stars FC", away: "Highlanders FC", status: "Postponed" },
-    { home: "Eastern Rangers FC", away: "Fast Eleven FC", status: "Postponed" },
-  ],
-  B: [
-    { home: "Real Rangers FC", away: "Liverpool FC", status: "Postponed" },
-    { home: "Bhubhezi FC", away: "Welverdiend Masters FC", status: "Postponed" },
-    { home: "Xihuhuri FC", away: "Labamba FC", status: "Postponed" },
-    { home: "Junior Pirates FC", away: "City Pillars FC", status: "Postponed" },
-  ],
-};
-
-// ✅ WEEK 5 = ONLY 4 MATCHES PLAYED
-const week5 = {
-  A: [
-    { home: "Royal Tigers FC", away: "Crusaders FC", homeGoals: 1, awayGoals: 3 },
-    { home: "FC Wondrous", away: "Movers FC", status: "Results not posted on Facebook" },
+    { home: "FC Wondrous", away: "Movers FC", homeGoals: 6, awayGoals: 0 },
     { home: "Morning Stars FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 0 },
-    { home: "Eastern Rangers FC", away: "Fast Eleven FC", status: "Results not posted on Facebook" },
+    {
+      home: "Eastern Rangers FC",
+      away: "Fast Eleven FC",
+      homeGoals: 2,
+      awayGoals: 0,
+      note: "Walkover"
+    },
+    { home: "Royal Tigers FC", away: "Crusaders FC", homeGoals: 1, awayGoals: 3 },
   ],
   B: [
     { home: "Real Rangers FC", away: "Liverpool FC", homeGoals: 0, awayGoals: 7 },
     { home: "Bhubhezi FC", away: "Welverdiend Masters FC", homeGoals: 2, awayGoals: 2 },
-    { home: "Xihuhuri FC", away: "Labamba FC", status: "Results not posted on Facebook" },
-    { home: "Junior Pirates FC", away: "City Pillars FC", status: "Results not posted on Facebook" },
+    { home: "Xihuhuri FC", away: "Labamba FC", homeGoals: 0, awayGoals: 4 },
+    { home: "Junior Pirates FC", away: "City Pillars FC", homeGoals: 3, awayGoals: 2 },
   ],
+};
+
+// ✅ WEEK 5 CLEARED TO PREVENT DUPLICATE FIXTURES IN TABLE
+const week5 = {
+  A: [],
+  B: [],
 };
 
 const overall = {
@@ -138,6 +138,20 @@ function formatScore(hg, ag) {
   return `${hg} – ${ag}`;
 }
 
+function updateLogo() {
+  const logoById = $("siteLogo");
+  if (logoById) {
+    logoById.src = LOGO_URL;
+    logoById.alt = "League Logo";
+  }
+
+  const logos = document.querySelectorAll(".site-logo");
+  logos.forEach((img) => {
+    img.src = LOGO_URL;
+    img.alt = "League Logo";
+  });
+}
+
 function renderResults(listId, data) {
   const el = $(listId);
   if (!el) return;
@@ -157,6 +171,7 @@ function renderResults(listId, data) {
     if (isPlayed(m)) {
       li.innerHTML = `
         <strong>${safeText(m.home)}</strong> ${formatScore(m.homeGoals, m.awayGoals)} ${safeText(m.away)}
+        ${m.note ? `<span class="pill small-pill">${safeText(m.note)}</span>` : ""}
       `;
     } else {
       li.innerHTML = `
@@ -290,14 +305,20 @@ function applyResultSearch() {
   }
 }
 
+function resetSearch() {
+  if ($("resultSearch")) {
+    $("resultSearch").value = "";
+  }
+  applyResultSearch();
+}
+
 function showWeek1() {
   $("week1Block").style.display = "";
   $("week2Block").style.display = "none";
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
+  resetSearch();
 }
 
 function showWeek2() {
@@ -306,8 +327,7 @@ function showWeek2() {
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
+  resetSearch();
 }
 
 function showWeek3() {
@@ -316,8 +336,7 @@ function showWeek3() {
   $("week3Block").style.display = "";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
+  resetSearch();
 }
 
 function showWeek4() {
@@ -326,8 +345,7 @@ function showWeek4() {
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "";
   $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
+  resetSearch();
 }
 
 function showWeek5() {
@@ -336,14 +354,15 @@ function showWeek5() {
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "";
-  $("resultSearch").value = "";
-  applyResultSearch();
+  resetSearch();
 }
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
+  updateLogo();
+
   renderResults("resultsListA1", week1.A);
   renderResults("resultsListB1", week1.B);
 
@@ -380,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("resultSearch")?.addEventListener("input", applyResultSearch);
 
   $("btnClearResults")?.addEventListener("click", () => {
-    $("resultSearch").value = "";
+    if ($("resultSearch")) $("resultSearch").value = "";
     applyResultSearch();
   });
 
