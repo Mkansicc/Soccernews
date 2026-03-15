@@ -1,10 +1,10 @@
 "use strict";
 
-/* Script.js v34
-  ✅ Week 4 results added under results section
-  ✅ Week 4 counts as played matches
-  ✅ Week 5 left available
-  ✅ Week toggle + result search included
+/* Script.js v35
+  ✅ Week 4 results fully added under Results section
+  ✅ Week 4 included in log tables
+  ✅ Week 5 kept for pending fixtures/results
+  ✅ Search, slideshow, fixtures filter, leaders and highlight included
 */
 
 const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
@@ -83,7 +83,6 @@ const week3 = {
   ],
 };
 
-// ✅ WEEK 4 OFFICIAL RESULTS
 const week4 = {
   A: [
     { home: "FC Wondrous", away: "Movers FC", homeGoals: 6, awayGoals: 0 },
@@ -99,7 +98,6 @@ const week4 = {
   ],
 };
 
-// ✅ WEEK 5
 const week5 = {
   A: [
     { home: "Royal Tigers FC", away: "Crusaders FC", status: "Pending" },
@@ -121,6 +119,33 @@ const overall = {
 };
 
 // ===============================
+// FIXTURES
+// ===============================
+const fixtures = [
+  { stream: "A", date: "TBD", time: "16:00", home: "Royal Tigers FC", away: "Crusaders FC", venue: "Royal Tigers FC", status: "Pending" },
+  { stream: "A", date: "TBD", time: "16:00", home: "FC Wondrous", away: "Movers FC", venue: "FC Wondrous", status: "Pending" },
+  { stream: "A", date: "TBD", time: "16:00", home: "Morning Stars FC", away: "Highlanders FC", venue: "Morning Stars FC", status: "Pending" },
+  { stream: "A", date: "TBD", time: "16:00", home: "Eastern Rangers FC", away: "Fast Eleven FC", venue: "Eastern Rangers FC", status: "Pending" },
+
+  { stream: "B", date: "TBD", time: "16:00", home: "Real Rangers FC", away: "Liverpool FC", venue: "Real Rangers FC", status: "Pending" },
+  { stream: "B", date: "TBD", time: "16:00", home: "Bhubhezi FC", away: "Welverdiend Masters FC", venue: "Bhubhezi FC", status: "Pending" },
+  { stream: "B", date: "TBD", time: "16:00", home: "Xihuhuri FC", away: "Labamba FC", venue: "Xihuhuri FC", status: "Pending" },
+  { stream: "B", date: "TBD", time: "16:00", home: "Junior Pirates FC", away: "City Pillars FC", venue: "Junior Pirates FC", status: "Pending" },
+];
+
+// ===============================
+// PHOTOS
+// ===============================
+const photos = Array.from({ length: 16 }, (_, i) => ({
+  src: `images/photo${i + 1}.jpg`,
+  title: `WSL Photo ${i + 1}`,
+  meta: `Photo ${i + 1} of 16`
+}));
+
+let currentPhotoIndex = 0;
+let fixtureFilter = "ALL";
+
+// ===============================
 // HELPERS
 // ===============================
 const $ = (id) => document.getElementById(id);
@@ -137,6 +162,13 @@ function formatScore(hg, ag) {
   return `${hg} – ${ag}`;
 }
 
+function getAllPlayedMatches() {
+  return [...overall.A, ...overall.B].filter(isPlayed);
+}
+
+// ===============================
+// RESULTS RENDER
+// ===============================
 function renderResults(listId, data) {
   const el = $(listId);
   if (!el) return;
@@ -169,6 +201,9 @@ function renderResults(listId, data) {
   }
 }
 
+// ===============================
+// TABLES
+// ===============================
 function computeTable(streamKey, resultsSet) {
   const table = new Map();
 
@@ -191,6 +226,8 @@ function computeTable(streamKey, resultsSet) {
 
     const home = table.get(m.home);
     const away = table.get(m.away);
+
+    if (!home || !away) continue;
 
     home.P++;
     away.P++;
@@ -258,24 +295,23 @@ function renderLog(tbodyId, rows) {
 // ===============================
 // RESULTS SEARCH + WEEK TOGGLE
 // ===============================
-function applyResultSearch() {
-  const q = (($("resultSearch")?.value) || "").toLowerCase().trim();
-
+function getCurrentWeekListIds() {
   const isW1 = ($("week1Block")?.style.display || "") !== "none";
   const isW2 = ($("week2Block")?.style.display || "none") !== "none";
   const isW3 = ($("week3Block")?.style.display || "none") !== "none";
   const isW4 = ($("week4Block")?.style.display || "none") !== "none";
   const isW5 = ($("week5Block")?.style.display || "none") !== "none";
 
-  const ids = isW5
-    ? ["resultsListA5", "resultsListB5"]
-    : isW4
-    ? ["resultsListA4", "resultsListB4"]
-    : isW3
-    ? ["resultsListA3", "resultsListB3"]
-    : isW2
-    ? ["resultsListA2", "resultsListB2"]
-    : ["resultsListA1", "resultsListB1"];
+  if (isW5) return ["resultsListA5", "resultsListB5"];
+  if (isW4) return ["resultsListA4", "resultsListB4"];
+  if (isW3) return ["resultsListA3", "resultsListB3"];
+  if (isW2) return ["resultsListA2", "resultsListB2"];
+  return ["resultsListA1", "resultsListB1"];
+}
+
+function applyResultSearch() {
+  const q = (($("resultSearch")?.value) || "").toLowerCase().trim();
+  const ids = getCurrentWeekListIds();
 
   for (const id of ids) {
     const list = $(id);
@@ -288,54 +324,150 @@ function applyResultSearch() {
   }
 }
 
-function showWeek1() {
-  $("week1Block").style.display = "";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
+function setActiveWeekButton(activeId) {
+  document.querySelectorAll(".week-btn").forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  const activeBtn = $(activeId);
+  if (activeBtn) activeBtn.classList.add("active");
+}
+
+function showOnlyWeek(blockId, buttonId) {
+  const blocks = ["week1Block", "week2Block", "week3Block", "week4Block", "week5Block"];
+  blocks.forEach((id) => {
+    const el = $(id);
+    if (el) el.style.display = id === blockId ? "" : "none";
+  });
+
+  setActiveWeekButton(buttonId);
+
+  if ($("resultSearch")) {
+    $("resultSearch").value = "";
+  }
   applyResultSearch();
 }
 
-function showWeek2() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
+function showWeek1() { showOnlyWeek("week1Block", "btnShowWeek1"); }
+function showWeek2() { showOnlyWeek("week2Block", "btnShowWeek2"); }
+function showWeek3() { showOnlyWeek("week3Block", "btnShowWeek3"); }
+function showWeek4() { showOnlyWeek("week4Block", "btnShowWeek4"); }
+function showWeek5() { showOnlyWeek("week5Block", "btnShowWeek5"); }
+
+// ===============================
+// FIXTURES
+// ===============================
+function renderFixtures() {
+  const body = $("fixturesBody");
+  if (!body) return;
+
+  const q = (($("fixtureSearch")?.value) || "").toLowerCase().trim();
+
+  const filtered = fixtures.filter((m) => {
+    const streamOk = fixtureFilter === "ALL" || m.stream === fixtureFilter;
+    const searchText = `${m.home} ${m.away} ${m.venue} ${m.status}`.toLowerCase();
+    const queryOk = !q || searchText.includes(q);
+    return streamOk && queryOk;
+  });
+
+  body.innerHTML = "";
+
+  if (!filtered.length) {
+    body.innerHTML = `<tr><td colspan="5" class="muted">No fixtures found.</td></tr>`;
+    return;
+  }
+
+  filtered.forEach((m) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${safeText(m.date)}</td>
+      <td>${safeText(m.time)}</td>
+      <td><strong>${safeText(m.home)}</strong> vs ${safeText(m.away)}</td>
+      <td>${safeText(m.venue)}</td>
+      <td><span class="pill small-pill">${safeText(m.status)}</span></td>
+    `;
+    body.appendChild(tr);
+  });
 }
 
-function showWeek3() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
+function setFixtureFilter(type) {
+  fixtureFilter = type;
+
+  $("btnStreamA")?.classList.toggle("active", type === "A");
+  $("btnStreamB")?.classList.toggle("active", type === "B");
+
+  renderFixtures();
 }
 
-function showWeek4() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "";
-  $("week5Block").style.display = "none";
-  $("resultSearch").value = "";
-  applyResultSearch();
+// ===============================
+// HERO
+// ===============================
+function renderHighlight() {
+  const highlight = $("highlightResult");
+  if (!highlight) return;
+
+  const played = getAllPlayedMatches();
+  const latest = played[played.length - 1];
+
+  if (!latest) {
+    highlight.textContent = "No result yet";
+    return;
+  }
+
+  highlight.textContent = `${latest.home} ${latest.homeGoals}–${latest.awayGoals} ${latest.away}`;
 }
 
-function showWeek5() {
-  $("week1Block").style.display = "none";
-  $("week2Block").style.display = "none";
-  $("week3Block").style.display = "none";
-  $("week4Block").style.display = "none";
-  $("week5Block").style.display = "";
-  $("resultSearch").value = "";
-  applyResultSearch();
+// ===============================
+// DONATE
+// ===============================
+function renderDonateLink() {
+  const donateLink = $("donateLink");
+  if (donateLink) {
+    donateLink.href = DONATE_URL;
+  }
+}
+
+// ===============================
+// PHOTOS
+// ===============================
+function renderPhoto() {
+  const img = $("slideImage");
+  const title = $("slideTitle");
+  const meta = $("slideMeta");
+
+  if (!img || !title || !meta || !photos.length) return;
+
+  const photo = photos[currentPhotoIndex];
+  img.src = photo.src;
+  img.alt = photo.title;
+  title.textContent = photo.title;
+  meta.textContent = photo.meta;
+
+  img.onerror = function () {
+    this.src = "";
+    title.textContent = "Photo not found";
+    meta.textContent = `Please add ${photo.src}`;
+  };
+}
+
+function nextPhoto() {
+  currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+  renderPhoto();
+}
+
+function prevPhoto() {
+  currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+  renderPhoto();
+}
+
+// ===============================
+// FOOTER
+// ===============================
+function renderYear() {
+  const yearNow = $("yearNow");
+  if (yearNow) {
+    yearNow.textContent = new Date().getFullYear();
+  }
 }
 
 // ===============================
@@ -375,10 +507,16 @@ document.addEventListener("DOMContentLoaded", () => {
       : "B: N/A";
   }
 
+  renderHighlight();
+  renderDonateLink();
+  renderFixtures();
+  renderPhoto();
+  renderYear();
+
   $("resultSearch")?.addEventListener("input", applyResultSearch);
 
   $("btnClearResults")?.addEventListener("click", () => {
-    $("resultSearch").value = "";
+    if ($("resultSearch")) $("resultSearch").value = "";
     applyResultSearch();
   });
 
@@ -387,6 +525,20 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnShowWeek3")?.addEventListener("click", showWeek3);
   $("btnShowWeek4")?.addEventListener("click", showWeek4);
   $("btnShowWeek5")?.addEventListener("click", showWeek5);
+
+  $("fixtureSearch")?.addEventListener("input", renderFixtures);
+  $("btnStreamA")?.addEventListener("click", () => setFixtureFilter("A"));
+  $("btnStreamB")?.addEventListener("click", () => setFixtureFilter("B"));
+  $("btnClearFixture")?.addEventListener("click", () => {
+    fixtureFilter = "ALL";
+    if ($("fixtureSearch")) $("fixtureSearch").value = "";
+    $("btnStreamA")?.classList.remove("active");
+    $("btnStreamB")?.classList.remove("active");
+    renderFixtures();
+  });
+
+  $("nextPhoto")?.addEventListener("click", nextPhoto);
+  $("prevPhoto")?.addEventListener("click", prevPhoto);
 
   showWeek1();
 });
