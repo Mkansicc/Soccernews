@@ -1,18 +1,13 @@
 "use strict";
 
-/* Script.js v33
-  ✅ Week 4 updated with official played results
-  ✅ Week 4 now counts 4 played matches per stream
-  ✅ Walkover included as 2–0 for Eastern Rangers vs Fast Eleven
-  ✅ Week 5 cleared to avoid duplicate fixtures/results in the log table
-  ✅ Logo auto-update included if #siteLogo or .site-logo exists
+/* Script.js v34
+  ✅ Week 4 results added under results section
+  ✅ Week 4 counts as played matches
+  ✅ Week 5 left available
   ✅ Week toggle + result search included
 */
 
 const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
-
-// Change this to your real logo path/file
-const LOGO_URL = "images/logo.png";
 
 // ===============================
 // TEAMS
@@ -88,18 +83,12 @@ const week3 = {
   ],
 };
 
-// ✅ WEEK 4 = OFFICIAL RESULTS
+// ✅ WEEK 4 OFFICIAL RESULTS
 const week4 = {
   A: [
     { home: "FC Wondrous", away: "Movers FC", homeGoals: 6, awayGoals: 0 },
     { home: "Morning Stars FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 0 },
-    {
-      home: "Eastern Rangers FC",
-      away: "Fast Eleven FC",
-      homeGoals: 2,
-      awayGoals: 0,
-      note: "Walkover"
-    },
+    { home: "Eastern Rangers FC", away: "Fast Eleven FC", homeGoals: 2, awayGoals: 0, note: "Walkover" },
     { home: "Royal Tigers FC", away: "Crusaders FC", homeGoals: 1, awayGoals: 3 },
   ],
   B: [
@@ -110,15 +99,25 @@ const week4 = {
   ],
 };
 
-// ✅ WEEK 5 CLEARED TO PREVENT DUPLICATE FIXTURES IN TABLE
+// ✅ WEEK 5
 const week5 = {
-  A: [],
-  B: [],
+  A: [
+    { home: "Royal Tigers FC", away: "Crusaders FC", status: "Pending" },
+    { home: "FC Wondrous", away: "Movers FC", status: "Pending" },
+    { home: "Morning Stars FC", away: "Highlanders FC", status: "Pending" },
+    { home: "Eastern Rangers FC", away: "Fast Eleven FC", status: "Pending" },
+  ],
+  B: [
+    { home: "Real Rangers FC", away: "Liverpool FC", status: "Pending" },
+    { home: "Bhubhezi FC", away: "Welverdiend Masters FC", status: "Pending" },
+    { home: "Xihuhuri FC", away: "Labamba FC", status: "Pending" },
+    { home: "Junior Pirates FC", away: "City Pillars FC", status: "Pending" },
+  ],
 };
 
 const overall = {
-  A: [...week1.A, ...week2.A, ...week3.A, ...week4.A, ...week5.A],
-  B: [...week1.B, ...week2.B, ...week3.B, ...week4.B, ...week5.B],
+  A: [...week1.A, ...week2.A, ...week3.A, ...week4.A],
+  B: [...week1.B, ...week2.B, ...week3.B, ...week4.B],
 };
 
 // ===============================
@@ -136,20 +135,6 @@ function isPlayed(m) {
 
 function formatScore(hg, ag) {
   return `${hg} – ${ag}`;
-}
-
-function updateLogo() {
-  const logoById = $("siteLogo");
-  if (logoById) {
-    logoById.src = LOGO_URL;
-    logoById.alt = "League Logo";
-  }
-
-  const logos = document.querySelectorAll(".site-logo");
-  logos.forEach((img) => {
-    img.src = LOGO_URL;
-    img.alt = "League Logo";
-  });
 }
 
 function renderResults(listId, data) {
@@ -197,37 +182,32 @@ function computeTable(streamKey, resultsSet) {
       GF: 0,
       GA: 0,
       GD: 0,
-      Pts: 0
+      Pts: 0,
     });
   }
 
   for (const m of resultsSet[streamKey]) {
     if (!isPlayed(m)) continue;
 
-    const home = table.get(m.home) || {
-      team: m.home, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0
-    };
-    const away = table.get(m.away) || {
-      team: m.away, P: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, GD: 0, Pts: 0
-    };
+    const home = table.get(m.home);
+    const away = table.get(m.away);
 
     home.P++;
     away.P++;
 
     home.GF += m.homeGoals;
     home.GA += m.awayGoals;
-
     away.GF += m.awayGoals;
     away.GA += m.homeGoals;
 
     if (m.homeGoals > m.awayGoals) {
       home.W++;
-      home.Pts += 3;
       away.L++;
+      home.Pts += 3;
     } else if (m.homeGoals < m.awayGoals) {
       away.W++;
-      away.Pts += 3;
       home.L++;
+      away.Pts += 3;
     } else {
       home.D++;
       away.D++;
@@ -237,12 +217,10 @@ function computeTable(streamKey, resultsSet) {
 
     home.GD = home.GF - home.GA;
     away.GD = away.GF - away.GA;
-
-    table.set(m.home, home);
-    table.set(m.away, away);
   }
 
   const rows = Array.from(table.values());
+
   rows.sort((a, b) =>
     (b.Pts - a.Pts) ||
     (b.GD - a.GD) ||
@@ -258,6 +236,7 @@ function renderLog(tbodyId, rows) {
   if (!body) return;
 
   body.innerHTML = "";
+
   rows.forEach((r, i) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -288,10 +267,14 @@ function applyResultSearch() {
   const isW4 = ($("week4Block")?.style.display || "none") !== "none";
   const isW5 = ($("week5Block")?.style.display || "none") !== "none";
 
-  const ids = isW5 ? ["resultsListA5", "resultsListB5"]
-    : isW4 ? ["resultsListA4", "resultsListB4"]
-    : isW3 ? ["resultsListA3", "resultsListB3"]
-    : isW2 ? ["resultsListA2", "resultsListB2"]
+  const ids = isW5
+    ? ["resultsListA5", "resultsListB5"]
+    : isW4
+    ? ["resultsListA4", "resultsListB4"]
+    : isW3
+    ? ["resultsListA3", "resultsListB3"]
+    : isW2
+    ? ["resultsListA2", "resultsListB2"]
     : ["resultsListA1", "resultsListB1"];
 
   for (const id of ids) {
@@ -305,20 +288,14 @@ function applyResultSearch() {
   }
 }
 
-function resetSearch() {
-  if ($("resultSearch")) {
-    $("resultSearch").value = "";
-  }
-  applyResultSearch();
-}
-
 function showWeek1() {
   $("week1Block").style.display = "";
   $("week2Block").style.display = "none";
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "none";
-  resetSearch();
+  $("resultSearch").value = "";
+  applyResultSearch();
 }
 
 function showWeek2() {
@@ -327,7 +304,8 @@ function showWeek2() {
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "none";
-  resetSearch();
+  $("resultSearch").value = "";
+  applyResultSearch();
 }
 
 function showWeek3() {
@@ -336,7 +314,8 @@ function showWeek3() {
   $("week3Block").style.display = "";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "none";
-  resetSearch();
+  $("resultSearch").value = "";
+  applyResultSearch();
 }
 
 function showWeek4() {
@@ -345,7 +324,8 @@ function showWeek4() {
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "";
   $("week5Block").style.display = "none";
-  resetSearch();
+  $("resultSearch").value = "";
+  applyResultSearch();
 }
 
 function showWeek5() {
@@ -354,15 +334,14 @@ function showWeek5() {
   $("week3Block").style.display = "none";
   $("week4Block").style.display = "none";
   $("week5Block").style.display = "";
-  resetSearch();
+  $("resultSearch").value = "";
+  applyResultSearch();
 }
 
 // ===============================
 // INIT
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  updateLogo();
-
   renderResults("resultsListA1", week1.A);
   renderResults("resultsListB1", week1.B);
 
@@ -399,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("resultSearch")?.addEventListener("input", applyResultSearch);
 
   $("btnClearResults")?.addEventListener("click", () => {
-    if ($("resultSearch")) $("resultSearch").value = "";
+    $("resultSearch").value = "";
     applyResultSearch();
   });
 
