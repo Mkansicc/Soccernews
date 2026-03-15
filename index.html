@@ -8,17 +8,14 @@
 
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Google AdSense -->
   <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
     crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <!-- Animated background -->
   <div class="bg-anim" aria-hidden="true">
     <div class="glow"></div>
     <div class="ball"></div>
@@ -48,13 +45,12 @@
   </header>
 
   <main>
-    <!-- HERO -->
     <section class="hero">
       <div class="container hero-grid">
         <div>
           <h1>WSL Match Updates</h1>
           <p class="muted">
-            Week 1, Week 2, Week 3 and Week 4 results are saved. Logs below are cumulative for all played matches.
+            Week 1 to Week 3 results are saved, Week 4 was postponed, and Week 5 results are now added. Logs below are cumulative for all played matches only.
           </p>
 
           <div class="hero-actions">
@@ -64,9 +60,9 @@
 
           <div class="quick-cards">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Next Match</div>
-              <div id="nextMatch" class="card-big">Week 5 Fixtures Pending</div>
-              <div id="nextMatchMeta" class="muted small">Official fixtures can be updated anytime</div>
+              <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Current Fixtures</div>
+              <div id="nextMatch" class="card-big">Loading…</div>
+              <div id="nextMatchMeta" class="muted small"></div>
             </div>
 
             <div class="card">
@@ -106,17 +102,22 @@
       </div>
     </section>
 
-    <!-- FIXTURES -->
     <section id="fixtures" class="section">
       <div class="container">
         <div class="section-head">
-          <h2><i class="fa-solid fa-calendar-days"></i> Fixtures (Week 5)</h2>
+          <h2><i class="fa-solid fa-calendar-days"></i> Fixtures</h2>
           <div class="tools">
             <input id="fixtureSearch" class="input" placeholder="Search team..." />
           </div>
         </div>
 
         <div class="search-actions">
+          <button class="btn btn-outline small-btn fixture-week-btn active" type="button" id="btnShowFixturesWeek4">
+            <i class="fa-solid fa-4"></i> Week 4
+          </button>
+          <button class="btn btn-outline small-btn fixture-week-btn" type="button" id="btnShowFixturesWeek6">
+            <i class="fa-solid fa-6"></i> Week 6
+          </button>
           <button class="btn btn-outline small-btn" type="button" id="btnStreamA">
             <i class="fa-solid fa-filter"></i> Stream A
           </button>
@@ -128,30 +129,35 @@
           </button>
         </div>
 
+        <div class="fixture-headline card compact-card">
+          <div id="fixtureWeekTitle" class="card-title">Loading fixtures…</div>
+          <div id="fixtureWeekMeta" class="muted small"></div>
+        </div>
+
         <div class="table-wrap">
-          <table class="table" aria-label="Week 5 fixtures">
+          <table class="table" aria-label="fixtures">
             <thead>
               <tr>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Match</th>
                 <th>Venue (Home)</th>
+                <th>Stream</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody id="fixturesBody">
-              <tr><td colspan="5" class="muted">Loading fixtures…</td></tr>
+              <tr><td colspan="6" class="muted">Loading fixtures…</td></tr>
             </tbody>
           </table>
         </div>
 
         <p class="muted small" style="margin-top:10px;">
-          Venue is automatically set to the Home team and time is forced to 16:00.
+          Venue is automatically set to the home team and kick off time is 16H00.
         </p>
       </div>
     </section>
 
-    <!-- RESULTS -->
     <section id="results" class="section alt">
       <div class="container">
         <div class="section-head">
@@ -225,21 +231,21 @@
         </div>
 
         <div id="week4Block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-futbol"></i> Week 4 • Saturday, 14 March 2026</h3>
+          <h3 class="subhead"><i class="fa-solid fa-clock-rotate-left"></i> Week 4 • Sunday, 08 March 2026 • Postponed</h3>
           <div class="grid-2">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Postponed Fixtures</div>
               <ol id="resultsListA4" class="muted list-ol"></ol>
             </div>
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Postponed Fixtures</div>
               <ol id="resultsListB4" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
 
         <div id="week5Block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-calendar-plus"></i> Week 5</h3>
+          <h3 class="subhead"><i class="fa-solid fa-futbol"></i> Week 5 • Saturday, 14 March 2026</h3>
           <div class="grid-2">
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
@@ -265,7 +271,6 @@
       </div>
     </section>
 
-    <!-- STREAM A LOG -->
     <section id="streamA" class="section">
       <div class="container">
         <div class="section-head">
@@ -287,7 +292,6 @@
       </div>
     </section>
 
-    <!-- STREAM B LOG -->
     <section id="streamB" class="section alt">
       <div class="container">
         <div class="section-head">
@@ -318,7 +322,6 @@
       </div>
     </section>
 
-    <!-- PHOTOS -->
     <section id="photos" class="section">
       <div class="container">
         <div class="section-head">
@@ -351,6 +354,6 @@
     </footer>
   </main>
 
-  <script src="Script.js?v=35" defer></script>
+  <script src="Script.js?v=36" defer></script>
 </body>
 </html>
