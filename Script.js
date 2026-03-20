@@ -1,10 +1,9 @@
 "use strict";
 
-/* Script.js v36
-  ✅ Week 4 changed to postponed fixtures
-  ✅ Week 5 now contains the 14 March 2026 results
-  ✅ Week 6 fixtures added
-  ✅ Logs count only played matches
+/* Script.js v37
+  ✅ Week 4 updated with played Stream B matches
+  ✅ Stream A for Week 4 still pending
+  ✅ Logs count Week 4 + Week 5 played matches
   ✅ Results, fixtures, slideshow, filters, leaders and highlight included
 */
 
@@ -84,19 +83,19 @@ const week3 = {
   ],
 };
 
-// WEEK 4 = POSTPONED
+// WEEK 4 = UPDATED
 const week4 = {
   A: [
-    { home: "FC Wondrous", away: "Morning Stars FC", status: "Postponed" },
-    { home: "Highlanders FC", away: "Crusaders FC", status: "Postponed" },
-    { home: "Movers FC", away: "Eastern Rangers FC", status: "Postponed" },
-    { home: "Fast Eleven FC", away: "Royal Tigers FC", status: "Postponed" },
+    { home: "FC Wondrous", away: "Morning Stars FC", status: "Pending" },
+    { home: "Highlanders FC", away: "Crusaders FC", status: "Pending" },
+    { home: "Movers FC", away: "Eastern Rangers FC", status: "Pending" },
+    { home: "Fast Eleven FC", away: "Royal Tigers FC", status: "Pending" },
   ],
   B: [
-    { home: "Liverpool FC", away: "Bhubhezi FC", status: "Postponed" },
-    { home: "Xihuhuri FC", away: "Real Rangers FC", status: "Postponed" },
-    { home: "City Pillars FC", away: "Welverdiend Masters FC", status: "Postponed" },
-    { home: "Labamba FC", away: "Junior Pirates FC", status: "Postponed" },
+    { home: "Liverpool FC", away: "Bhubhezi FC", homeGoals: 2, awayGoals: 0 },
+    { home: "Xihuhuri FC", away: "Real Rangers FC", homeGoals: 7, awayGoals: 0 },
+    { home: "City Pillars FC", away: "Welverdiend Masters FC", homeGoals: 1, awayGoals: 0 },
+    { home: "Labamba FC", away: "Junior Pirates FC", homeGoals: 3, awayGoals: 1 },
   ],
 };
 
@@ -117,23 +116,23 @@ const week5 = {
 };
 
 const overall = {
-  A: [...week1.A, ...week2.A, ...week3.A, ...week5.A],
-  B: [...week1.B, ...week2.B, ...week3.B, ...week5.B],
+  A: [...week1.A, ...week2.A, ...week3.A, ...week4.A, ...week5.A],
+  B: [...week1.B, ...week2.B, ...week3.B, ...week4.B, ...week5.B],
 };
 
 // ===============================
 // FIXTURES
 // ===============================
 const week4Fixtures = [
-  { stream: "A", date: "08 March 2026", time: "16:00", home: "FC Wondrous", away: "Morning Stars FC", venue: "FC Wondrous", status: "Postponed" },
-  { stream: "A", date: "08 March 2026", time: "16:00", home: "Highlanders FC", away: "Crusaders FC", venue: "Highlanders FC", status: "Postponed" },
-  { stream: "A", date: "08 March 2026", time: "16:00", home: "Movers FC", away: "Eastern Rangers FC", venue: "Movers FC", status: "Postponed" },
-  { stream: "A", date: "08 March 2026", time: "16:00", home: "Fast Eleven FC", away: "Royal Tigers FC", venue: "Fast Eleven FC", status: "Postponed" },
+  { stream: "A", date: "08 March 2026", time: "16:00", home: "FC Wondrous", away: "Morning Stars FC", venue: "FC Wondrous", status: "Pending" },
+  { stream: "A", date: "08 March 2026", time: "16:00", home: "Highlanders FC", away: "Crusaders FC", venue: "Highlanders FC", status: "Pending" },
+  { stream: "A", date: "08 March 2026", time: "16:00", home: "Movers FC", away: "Eastern Rangers FC", venue: "Movers FC", status: "Pending" },
+  { stream: "A", date: "08 March 2026", time: "16:00", home: "Fast Eleven FC", away: "Royal Tigers FC", venue: "Fast Eleven FC", status: "Pending" },
 
-  { stream: "B", date: "08 March 2026", time: "16:00", home: "Liverpool FC", away: "Bhubhezi FC", venue: "Liverpool FC", status: "Postponed" },
-  { stream: "B", date: "08 March 2026", time: "16:00", home: "Xihuhuri FC", away: "Real Rangers FC", venue: "Xihuhuri FC", status: "Postponed" },
-  { stream: "B", date: "08 March 2026", time: "16:00", home: "City Pillars FC", away: "Welverdiend Masters FC", venue: "City Pillars FC", status: "Postponed" },
-  { stream: "B", date: "08 March 2026", time: "16:00", home: "Labamba FC", away: "Junior Pirates FC", venue: "Labamba FC", status: "Postponed" },
+  { stream: "B", date: "08 March 2026", time: "16:00", home: "Liverpool FC", away: "Bhubhezi FC", venue: "Liverpool FC", status: "Played" },
+  { stream: "B", date: "08 March 2026", time: "16:00", home: "Xihuhuri FC", away: "Real Rangers FC", venue: "Xihuhuri FC", status: "Played" },
+  { stream: "B", date: "08 March 2026", time: "16:00", home: "City Pillars FC", away: "Welverdiend Masters FC", venue: "City Pillars FC", status: "Played" },
+  { stream: "B", date: "08 March 2026", time: "16:00", home: "Labamba FC", away: "Junior Pirates FC", venue: "Labamba FC", status: "Played" },
 ];
 
 const week6Fixtures = [
@@ -394,7 +393,7 @@ function renderFixtures() {
   if (title && meta) {
     if (currentFixtureWeek === "4") {
       title.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Week 4 Fixtures • Sunday, 08 March 2026`;
-      meta.textContent = "Kick off 16H00 • All matches postponed";
+      meta.textContent = "Kick off 16H00 • Stream B played, Stream A pending";
     } else {
       title.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Week 6 Fixtures • Sunday, 22 March 2026`;
       meta.textContent = "Kick off 16H00 • Scheduled fixtures";
