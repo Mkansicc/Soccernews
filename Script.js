@@ -1,8 +1,9 @@
 "use strict";
 
-/* Script.js v37
-  ✅ Week 4 updated with played Stream B matches
-  ✅ Stream A for Week 4 still pending
+/* Script.js v38
+  ✅ Week 4 Stream A updated
+  ✅ Week 4 Stream B updated
+  ✅ Fast Eleven FC vs Royal Tigers FC still pending
   ✅ Logs count Week 4 + Week 5 played matches
   ✅ Results, fixtures, slideshow, filters, leaders and highlight included
 */
@@ -83,12 +84,12 @@ const week3 = {
   ],
 };
 
-// WEEK 4 = UPDATED
+// WEEK 4 = UPDATED RESULTS
 const week4 = {
   A: [
-    { home: "FC Wondrous", away: "Morning Stars FC", status: "Pending" },
-    { home: "Highlanders FC", away: "Crusaders FC", status: "Pending" },
-    { home: "Movers FC", away: "Eastern Rangers FC", status: "Pending" },
+    { home: "FC Wondrous", away: "Morning Stars FC", homeGoals: 0, awayGoals: 1 },
+    { home: "Highlanders FC", away: "Crusaders FC", homeGoals: 1, awayGoals: 1 },
+    { home: "Movers FC", away: "Eastern Rangers FC", homeGoals: 2, awayGoals: 1 },
     { home: "Fast Eleven FC", away: "Royal Tigers FC", status: "Pending" },
   ],
   B: [
@@ -124,9 +125,9 @@ const overall = {
 // FIXTURES
 // ===============================
 const week4Fixtures = [
-  { stream: "A", date: "08 March 2026", time: "16:00", home: "FC Wondrous", away: "Morning Stars FC", venue: "FC Wondrous", status: "Pending" },
-  { stream: "A", date: "08 March 2026", time: "16:00", home: "Highlanders FC", away: "Crusaders FC", venue: "Highlanders FC", status: "Pending" },
-  { stream: "A", date: "08 March 2026", time: "16:00", home: "Movers FC", away: "Eastern Rangers FC", venue: "Movers FC", status: "Pending" },
+  { stream: "A", date: "08 March 2026", time: "16:00", home: "FC Wondrous", away: "Morning Stars FC", venue: "FC Wondrous", status: "Played" },
+  { stream: "A", date: "08 March 2026", time: "16:00", home: "Highlanders FC", away: "Crusaders FC", venue: "Highlanders FC", status: "Played" },
+  { stream: "A", date: "08 March 2026", time: "16:00", home: "Movers FC", away: "Eastern Rangers FC", venue: "Movers FC", status: "Played" },
   { stream: "A", date: "08 March 2026", time: "16:00", home: "Fast Eleven FC", away: "Royal Tigers FC", venue: "Fast Eleven FC", status: "Pending" },
 
   { stream: "B", date: "08 March 2026", time: "16:00", home: "Liverpool FC", away: "Bhubhezi FC", venue: "Liverpool FC", status: "Played" },
@@ -393,7 +394,7 @@ function renderFixtures() {
   if (title && meta) {
     if (currentFixtureWeek === "4") {
       title.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Week 4 Fixtures • Sunday, 08 March 2026`;
-      meta.textContent = "Kick off 16H00 • Stream B played, Stream A pending";
+      meta.textContent = "Kick off 16H00 • 7 matches played • 1 match pending";
     } else {
       title.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Week 6 Fixtures • Sunday, 22 March 2026`;
       meta.textContent = "Kick off 16H00 • Scheduled fixtures";
