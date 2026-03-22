@@ -1,11 +1,11 @@
 "use strict";
 
-/* Script.js v39
+/* Script.js v40
   ✅ Week 4 pending result updated: Fast Eleven FC 0-2 Royal Tigers FC
   ✅ Week 6 results added
   ✅ Overall log updated through Week 6
-  ✅ Week 6 fixtures marked as played
-  ✅ Week 6 results ready for display
+  ✅ Week 7 fixtures added
+  ✅ Week 4, Week 6, Week 7 fixtures toggle supported
 */
 
 const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
@@ -84,7 +84,6 @@ const week3 = {
   ],
 };
 
-// WEEK 4 = UPDATED FINAL RESULTS
 const week4 = {
   A: [
     { home: "FC Wondrous", away: "Morning Stars FC", homeGoals: 0, awayGoals: 1 },
@@ -100,7 +99,6 @@ const week4 = {
   ],
 };
 
-// WEEK 5 = 14 MARCH 2026 RESULTS
 const week5 = {
   A: [
     { home: "FC Wondrous", away: "Movers FC", homeGoals: 6, awayGoals: 0 },
@@ -116,7 +114,6 @@ const week5 = {
   ],
 };
 
-// WEEK 6 = 22 MARCH 2026 RESULTS
 const week6 = {
   A: [
     { home: "Highlanders FC", away: "FC Wondrous", homeGoals: 0, awayGoals: 1 },
@@ -164,6 +161,18 @@ const week6Fixtures = [
   { stream: "B", date: "22 March 2026", time: "16:00", home: "City Pillars FC", away: "Xihuhuri FC", venue: "City Pillars FC", status: "Played" },
 ];
 
+const week7Fixtures = [
+  { stream: "A", date: "28 March 2026", time: "16:00", home: "Fast Eleven FC", away: "FC Wondrous", venue: "Fast Eleven FC", status: "Upcoming" },
+  { stream: "A", date: "28 March 2026", time: "16:00", home: "Royal Tigers FC", away: "Highlanders FC", venue: "Royal Tigers FC", status: "Upcoming" },
+  { stream: "A", date: "28 March 2026", time: "16:00", home: "Movers FC", away: "Crusaders FC", venue: "Movers FC", status: "Upcoming" },
+  { stream: "A", date: "28 March 2026", time: "16:00", home: "Eastern Rangers FC", away: "Morning Stars FC", venue: "Eastern Rangers FC", status: "Upcoming" },
+
+  { stream: "B", date: "28 March 2026", time: "16:00", home: "Liverpool FC", away: "Labamba FC", venue: "Liverpool FC", status: "Upcoming" },
+  { stream: "B", date: "28 March 2026", time: "16:00", home: "Junior Pirates FC", away: "Welverdiend Masters FC", venue: "Junior Pirates FC", status: "Upcoming" },
+  { stream: "B", date: "28 March 2026", time: "16:00", home: "Real Rangers FC", away: "City Pillars FC", venue: "Real Rangers FC", status: "Upcoming" },
+  { stream: "B", date: "28 March 2026", time: "16:00", home: "Xihuhuri FC", away: "Bhubhezi FC", venue: "Xihuhuri FC", status: "Upcoming" },
+];
+
 // ===============================
 // PHOTOS
 // ===============================
@@ -175,7 +184,7 @@ const photos = Array.from({ length: 16 }, (_, i) => ({
 
 let currentPhotoIndex = 0;
 let fixtureFilter = "ALL";
-let currentFixtureWeek = "6";
+let currentFixtureWeek = "7";
 
 // ===============================
 // HELPERS
@@ -195,7 +204,9 @@ function formatScore(hg, ag) {
 }
 
 function getCurrentFixtureList() {
-  return currentFixtureWeek === "6" ? week6Fixtures : week4Fixtures;
+  if (currentFixtureWeek === "7") return week7Fixtures;
+  if (currentFixtureWeek === "6") return week6Fixtures;
+  return week4Fixtures;
 }
 
 function getAllPlayedMatches() {
@@ -414,9 +425,12 @@ function renderFixtures() {
     if (currentFixtureWeek === "4") {
       title.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Week 4 Fixtures • Sunday, 08 March 2026`;
       meta.textContent = "Kick off 16H00 • 8 matches played";
-    } else {
+    } else if (currentFixtureWeek === "6") {
       title.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Week 6 Fixtures • Sunday, 22 March 2026`;
       meta.textContent = "Kick off 16H00 • 8 matches played";
+    } else if (currentFixtureWeek === "7") {
+      title.innerHTML = `<i class="fa-solid fa-calendar-days"></i> Week 7 Fixtures • Saturday, 28 March 2026`;
+      meta.textContent = "Kick off 16H00 • 8 matches scheduled";
     }
   }
 
@@ -453,6 +467,12 @@ function showFixturesWeek6() {
   renderFixtures();
 }
 
+function showFixturesWeek7() {
+  currentFixtureWeek = "7";
+  setActiveFixtureWeekButton("btnShowFixturesWeek7");
+  renderFixtures();
+}
+
 function setFixtureFilter(type) {
   fixtureFilter = type;
   $("btnStreamA")?.classList.toggle("active", type === "A");
@@ -483,8 +503,8 @@ function renderCurrentFixtureCard() {
   const nextMatchMeta = $("nextMatchMeta");
   if (!nextMatch || !nextMatchMeta) return;
 
-  nextMatch.textContent = "Week 6 • Sunday 22 March 2026";
-  nextMatchMeta.textContent = "All 8 matches played";
+  nextMatch.textContent = "Week 7 • Saturday 28 March 2026";
+  nextMatchMeta.textContent = "8 matches scheduled";
 }
 
 // ===============================
@@ -598,6 +618,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("btnShowFixturesWeek4")?.addEventListener("click", showFixturesWeek4);
   $("btnShowFixturesWeek6")?.addEventListener("click", showFixturesWeek6);
+  $("btnShowFixturesWeek7")?.addEventListener("click", showFixturesWeek7);
 
   $("fixtureSearch")?.addEventListener("input", renderFixtures);
 
@@ -616,5 +637,5 @@ document.addEventListener("DOMContentLoaded", () => {
   $("prevPhoto")?.addEventListener("click", prevPhoto);
 
   showWeek6();
-  showFixturesWeek6();
+  showFixturesWeek7();
 });
