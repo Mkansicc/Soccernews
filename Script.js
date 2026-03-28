@@ -1,44 +1,43 @@
 "use strict";
 
-/* Script.js v41
-   ✅ Week 7 results added
-   ✅ Liverpool FC 2-2 Labamba FC
-   ✅ Log table now includes Week 7
+/* Script.js v42
+✅ Week 7 updated results
+✅ Liverpool FC 2-2 Labamba FC
+✅ Bhubhezi FC 2-2 Xihuhuri FC
+✅ Log table includes Week 7
 */
-
-const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
 
 // ===============================
 // TEAMS
 // ===============================
 const teams = {
-  A: [
-    "Morning Stars FC",
-    "Crusaders FC",
-    "Royal Tigers FC",
-    "Highlanders FC",
-    "Eastern Rangers FC",
-    "Fast Eleven FC",
-    "FC Wondrous",
-    "Movers FC",
-  ],
-  B: [
-    "Labamba FC",
-    "Bhubhezi FC",
-    "Liverpool FC",
-    "Xihuhuri FC",
-    "Welverdiend Masters FC",
-    "Junior Pirates FC",
-    "Real Rangers FC",
-    "City Pillars FC",
-  ],
+A:[
+"Morning Stars FC",
+"Crusaders FC",
+"Royal Tigers FC",
+"Highlanders FC",
+"Eastern Rangers FC",
+"Fast Eleven FC",
+"FC Wondrous",
+"Movers FC"
+],
+
+B:[
+"Labamba FC",
+"Bhubhezi FC",
+"Liverpool FC",
+"Xihuhuri FC",
+"Welverdiend Masters FC",
+"Junior Pirates FC",
+"Real Rangers FC",
+"City Pillars FC"
+]
 };
 
 // ===============================
-// RESULTS
+// WEEK 1
 // ===============================
-
-const week1 = {
+const week1={
 A:[
 {home:"Morning Stars FC",away:"Movers FC",homeGoals:4,awayGoals:0},
 {home:"Crusaders FC",away:"FC Wondrous",homeGoals:2,awayGoals:0},
@@ -53,7 +52,10 @@ B:[
 ]
 };
 
-const week2 = {
+// ===============================
+// WEEK 2
+// ===============================
+const week2={
 A:[
 {home:"Crusaders FC",away:"FC Wondrous",homeGoals:3,awayGoals:2},
 {home:"Royal Tigers FC",away:"Eastern Rangers FC",homeGoals:0,awayGoals:1},
@@ -68,7 +70,10 @@ B:[
 ]
 };
 
-const week3 = {
+// ===============================
+// WEEK 3
+// ===============================
+const week3={
 A:[
 {home:"Eastern Rangers FC",away:"FC Wondrous",homeGoals:1,awayGoals:2},
 {home:"Crusaders FC",away:"Morning Stars FC",homeGoals:0,awayGoals:1},
@@ -83,7 +88,10 @@ B:[
 ]
 };
 
-const week4 = {
+// ===============================
+// WEEK 4
+// ===============================
+const week4={
 A:[
 {home:"FC Wondrous",away:"Morning Stars FC",homeGoals:0,awayGoals:1},
 {home:"Highlanders FC",away:"Crusaders FC",homeGoals:1,awayGoals:1},
@@ -98,11 +106,14 @@ B:[
 ]
 };
 
-const week5 = {
+// ===============================
+// WEEK 5
+// ===============================
+const week5={
 A:[
 {home:"FC Wondrous",away:"Movers FC",homeGoals:6,awayGoals:0},
 {home:"Morning Stars FC",away:"Highlanders FC",homeGoals:1,awayGoals:0},
-{home:"Eastern Rangers FC",away:"Fast Eleven FC",homeGoals:2,awayGoals:0,note:"Walkover"},
+{home:"Eastern Rangers FC",away:"Fast Eleven FC",homeGoals:2,awayGoals:0},
 {home:"Royal Tigers FC",away:"Crusaders FC",homeGoals:1,awayGoals:3}
 ],
 B:[
@@ -113,7 +124,10 @@ B:[
 ]
 };
 
-const week6 = {
+// ===============================
+// WEEK 6
+// ===============================
+const week6={
 A:[
 {home:"Highlanders FC",away:"FC Wondrous",homeGoals:0,awayGoals:1},
 {home:"Movers FC",away:"Fast Eleven FC",homeGoals:2,awayGoals:1},
@@ -129,59 +143,44 @@ B:[
 };
 
 // ===============================
-// WEEK 7 RESULTS
+// WEEK 7 (UPDATED)
 // ===============================
-const week7 = {
+const week7={
 A:[
 {home:"Fast Eleven FC",away:"FC Wondrous",homeGoals:null,awayGoals:null},
 {home:"Royal Tigers FC",away:"Highlanders FC",homeGoals:null,awayGoals:null},
 {home:"Movers FC",away:"Crusaders FC",homeGoals:null,awayGoals:null},
 {home:"Eastern Rangers FC",away:"Morning Stars FC",homeGoals:null,awayGoals:null}
 ],
+
 B:[
 {home:"Liverpool FC",away:"Labamba FC",homeGoals:2,awayGoals:2},
 {home:"Junior Pirates FC",away:"Welverdiend Masters FC",homeGoals:null,awayGoals:null},
 {home:"Real Rangers FC",away:"City Pillars FC",homeGoals:null,awayGoals:null},
-{home:"Xihuhuri FC",away:"Bhubhezi FC",homeGoals:null,awayGoals:null}
+{home:"Xihuhuri FC",away:"Bhubhezi FC",homeGoals:2,awayGoals:2}
 ]
 };
 
 // ===============================
-// OVERALL RESULTS
+// ALL RESULTS
 // ===============================
-const overall = {
-A:[
-...week1.A,
-...week2.A,
-...week3.A,
-...week4.A,
-...week5.A,
-...week6.A,
-...week7.A
-],
-B:[
-...week1.B,
-...week2.B,
-...week3.B,
-...week4.B,
-...week5.B,
-...week6.B,
-...week7.B
-]
+const overall={
+A:[...week1.A,...week2.A,...week3.A,...week4.A,...week5.A,...week6.A,...week7.A],
+B:[...week1.B,...week2.B,...week3.B,...week4.B,...week5.B,...week6.B,...week7.B]
 };
 
 // ===============================
 // TABLE CALCULATION
 // ===============================
-function computeTable(streamKey, resultsSet){
+function computeTable(stream){
 
 const table=new Map();
 
-for(const t of teams[streamKey]){
-table.set(t,{team:t,P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,Pts:0});
+for(const team of teams[stream]){
+table.set(team,{team,P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,Pts:0});
 }
 
-for(const m of resultsSet[streamKey]){
+for(const m of overall[stream]){
 
 if(!Number.isInteger(m.homeGoals)||!Number.isInteger(m.awayGoals))continue;
 
@@ -197,11 +196,9 @@ away.GA+=m.homeGoals;
 
 if(m.homeGoals>m.awayGoals){
 home.W++;away.L++;home.Pts+=3;
-}
-else if(m.homeGoals<m.awayGoals){
+}else if(m.homeGoals<m.awayGoals){
 away.W++;home.L++;away.Pts+=3;
-}
-else{
+}else{
 home.D++;away.D++;home.Pts++;away.Pts++;
 }
 
@@ -213,11 +210,12 @@ away.GD=away.GF-away.GA;
 const rows=[...table.values()];
 
 rows.sort((a,b)=>
-(b.Pts-a.Pts)||(b.GD-a.GD)||(b.GF-a.GF)
+(b.Pts-a.Pts)||
+(b.GD-a.GD)||
+(b.GF-a.GF)
 );
 
 return rows;
-
 }
 
 // ===============================
@@ -225,10 +223,10 @@ return rows;
 // ===============================
 document.addEventListener("DOMContentLoaded",()=>{
 
-const rowsA=computeTable("A",overall);
-const rowsB=computeTable("B",overall);
+const tableA=computeTable("A");
+const tableB=computeTable("B");
 
-console.log("Stream A Table",rowsA);
-console.log("Stream B Table",rowsB);
+console.log("Stream A Table",tableA);
+console.log("Stream B Table",tableB);
 
 });
