@@ -1,232 +1,152 @@
-"use strict";
+const donateURL = "https://example.com";
 
-/* Script.js v42
-✅ Week 7 updated results
-✅ Liverpool FC 2-2 Labamba FC
-✅ Bhubhezi FC 2-2 Xihuhuri FC
-✅ Log table includes Week 7
-*/
+document.getElementById("donateLink").href = donateURL;
 
-// ===============================
-// TEAMS
-// ===============================
-const teams = {
-A:[
-"Morning Stars FC",
-"Crusaders FC",
-"Royal Tigers FC",
-"Highlanders FC",
-"Eastern Rangers FC",
+const teamsA = [
 "Fast Eleven FC",
 "FC Wondrous",
-"Movers FC"
-],
+"Royal Tigers FC",
+"Highlanders FC",
+"Movers FC",
+"Crusaders FC",
+"Eastern Rangers FC",
+"Morning Stars FC"
+];
 
-B:[
-"Labamba FC",
-"Bhubhezi FC",
+const teamsB = [
 "Liverpool FC",
-"Xihuhuri FC",
-"Welverdiend Masters FC",
+"Labamba FC",
 "Junior Pirates FC",
+"Welverdiend Masters FC",
 "Real Rangers FC",
-"City Pillars FC"
-]
-};
+"City Pillars FC",
+"Xihuhuri FC",
+"Bhubhezi FC"
+];
 
-// ===============================
-// WEEK 1
-// ===============================
-const week1={
-A:[
-{home:"Morning Stars FC",away:"Movers FC",homeGoals:4,awayGoals:0},
-{home:"Crusaders FC",away:"FC Wondrous",homeGoals:2,awayGoals:0},
-{home:"Royal Tigers FC",away:"Fast Eleven FC",homeGoals:2,awayGoals:0},
-{home:"Highlanders FC",away:"Eastern Rangers FC",homeGoals:2,awayGoals:1}
-],
-B:[
-{home:"Labamba FC",away:"City Pillars FC",homeGoals:7,awayGoals:1},
-{home:"Bhubhezi FC",away:"Real Rangers FC",homeGoals:4,awayGoals:0},
-{home:"Liverpool FC",away:"Junior Pirates FC",homeGoals:2,awayGoals:0},
-{home:"Xihuhuri FC",away:"Welverdiend Masters FC",homeGoals:4,awayGoals:3}
-]
-};
+function createTable(teams){
+return teams.map(t=>({
+team:t,
+P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,PTS:0
+}));
+}
 
-// ===============================
-// WEEK 2
-// ===============================
-const week2={
-A:[
-{home:"Crusaders FC",away:"FC Wondrous",homeGoals:3,awayGoals:2},
-{home:"Royal Tigers FC",away:"Eastern Rangers FC",homeGoals:0,awayGoals:1},
-{home:"Morning Stars FC",away:"Fast Eleven FC",homeGoals:3,awayGoals:1},
-{home:"Movers FC",away:"Highlanders FC",homeGoals:1,awayGoals:2}
-],
-B:[
-{home:"City Pillars FC",away:"Liverpool FC",homeGoals:0,awayGoals:1},
-{home:"Junior Pirates FC",away:"Xihuhuri FC",homeGoals:2,awayGoals:0},
-{home:"Bhubhezi FC",away:"Labamba FC",homeGoals:2,awayGoals:1},
-{home:"Real Rangers FC",away:"Welverdiend Masters FC",homeGoals:1,awayGoals:3}
-]
-};
+let tableA=createTable(teamsA);
+let tableB=createTable(teamsB);
 
-// ===============================
-// WEEK 3
-// ===============================
-const week3={
-A:[
-{home:"Eastern Rangers FC",away:"FC Wondrous",homeGoals:1,awayGoals:2},
-{home:"Crusaders FC",away:"Morning Stars FC",homeGoals:0,awayGoals:1},
-{home:"Royal Tigers FC",away:"Movers FC",homeGoals:4,awayGoals:2},
-{home:"Highlanders FC",away:"Fast Eleven FC",homeGoals:4,awayGoals:1}
-],
-B:[
-{home:"Xihuhuri FC",away:"Liverpool FC",homeGoals:0,awayGoals:0},
-{home:"City Pillars FC",away:"Bhubhezi FC",homeGoals:1,awayGoals:2},
-{home:"Real Rangers FC",away:"Junior Pirates FC",homeGoals:0,awayGoals:1},
-{home:"Welverdiend Masters FC",away:"Labamba FC",homeGoals:0,awayGoals:0}
-]
-};
+function updateTable(table,home,away,hg,ag){
 
-// ===============================
-// WEEK 4
-// ===============================
-const week4={
-A:[
-{home:"FC Wondrous",away:"Morning Stars FC",homeGoals:0,awayGoals:1},
-{home:"Highlanders FC",away:"Crusaders FC",homeGoals:1,awayGoals:1},
-{home:"Movers FC",away:"Eastern Rangers FC",homeGoals:2,awayGoals:1},
-{home:"Fast Eleven FC",away:"Royal Tigers FC",homeGoals:0,awayGoals:2}
-],
-B:[
-{home:"Liverpool FC",away:"Bhubhezi FC",homeGoals:2,awayGoals:0},
-{home:"Xihuhuri FC",away:"Real Rangers FC",homeGoals:7,awayGoals:0},
-{home:"City Pillars FC",away:"Welverdiend Masters FC",homeGoals:1,awayGoals:0},
-{home:"Labamba FC",away:"Junior Pirates FC",homeGoals:3,awayGoals:1}
-]
-};
+let h=table.find(t=>t.team===home);
+let a=table.find(t=>t.team===away);
 
-// ===============================
-// WEEK 5
-// ===============================
+h.P++; a.P++;
+
+h.GF+=hg;
+h.GA+=ag;
+
+a.GF+=ag;
+a.GA+=hg;
+
+if(hg>ag){h.W++;a.L++;h.PTS+=3;}
+else if(ag>hg){a.W++;h.L++;a.PTS+=3;}
+else{h.D++;a.D++;h.PTS++;a.PTS++;}
+
+h.GD=h.GF-h.GA;
+a.GD=a.GF-a.GA;
+}
+
+const week1={A:[],B:[]};
+const week2={A:[],B:[]};
+const week3={A:[],B:[]};
+const week4={A:[],B:[]};
+
 const week5={
 A:[
-{home:"FC Wondrous",away:"Movers FC",homeGoals:6,awayGoals:0},
-{home:"Morning Stars FC",away:"Highlanders FC",homeGoals:1,awayGoals:0},
-{home:"Eastern Rangers FC",away:"Fast Eleven FC",homeGoals:2,awayGoals:0},
-{home:"Royal Tigers FC",away:"Crusaders FC",homeGoals:1,awayGoals:3}
+{home:"Fast Eleven FC",away:"FC Wondrous",hg:1,ag:0},
+{home:"Royal Tigers FC",away:"Highlanders FC",hg:2,ag:1},
+{home:"Movers FC",away:"Crusaders FC",hg:0,ag:0},
+{home:"Eastern Rangers FC",away:"Morning Stars FC",hg:3,ag:1}
 ],
 B:[
-{home:"Real Rangers FC",away:"Liverpool FC",homeGoals:0,awayGoals:7},
-{home:"Bhubhezi FC",away:"Welverdiend Masters FC",homeGoals:2,awayGoals:2},
-{home:"Xihuhuri FC",away:"Labamba FC",homeGoals:0,awayGoals:4},
-{home:"Junior Pirates FC",away:"City Pillars FC",homeGoals:3,awayGoals:2}
+{home:"Liverpool FC",away:"Labamba FC",hg:1,ag:2},
+{home:"Junior Pirates FC",away:"Welverdiend Masters FC",hg:0,ag:0},
+{home:"Real Rangers FC",away:"City Pillars FC",hg:2,ag:0},
+{home:"Xihuhuri FC",away:"Bhubhezi FC",hg:1,ag:1}
 ]
 };
 
-// ===============================
-// WEEK 6
-// ===============================
 const week6={
-A:[
-{home:"Highlanders FC",away:"FC Wondrous",homeGoals:0,awayGoals:1},
-{home:"Movers FC",away:"Fast Eleven FC",homeGoals:2,awayGoals:1},
-{home:"Morning Stars FC",away:"Royal Tigers FC",homeGoals:4,awayGoals:0},
-{home:"Crusaders FC",away:"Eastern Rangers FC",homeGoals:1,awayGoals:2}
-],
-B:[
-{home:"Welverdiend Masters FC",away:"Liverpool FC",homeGoals:1,awayGoals:2},
-{home:"Labamba FC",away:"Real Rangers FC",homeGoals:6,awayGoals:0},
-{home:"Bhubhezi FC",away:"Junior Pirates FC",homeGoals:1,awayGoals:1},
-{home:"City Pillars FC",away:"Xihuhuri FC",homeGoals:2,awayGoals:3}
-]
+A:[],
+B:[]
 };
 
-// ===============================
-// WEEK 7 (UPDATED)
-// ===============================
 const week7={
-A:[
-{home:"Fast Eleven FC",away:"FC Wondrous",homeGoals:null,awayGoals:null},
-{home:"Royal Tigers FC",away:"Highlanders FC",homeGoals:null,awayGoals:null},
-{home:"Movers FC",away:"Crusaders FC",homeGoals:null,awayGoals:null},
-{home:"Eastern Rangers FC",away:"Morning Stars FC",homeGoals:null,awayGoals:null}
-],
-
+A:[],
 B:[
-{home:"Liverpool FC",away:"Labamba FC",homeGoals:2,awayGoals:2},
-{home:"Junior Pirates FC",away:"Welverdiend Masters FC",homeGoals:null,awayGoals:null},
-{home:"Real Rangers FC",away:"City Pillars FC",homeGoals:null,awayGoals:null},
-{home:"Xihuhuri FC",away:"Bhubhezi FC",homeGoals:2,awayGoals:2}
+{home:"Liverpool FC",away:"Labamba FC",hg:2,ag:2},
+{home:"Xihuhuri FC",away:"Bhubhezi FC",hg:2,ag:2}
 ]
 };
 
-// ===============================
-// ALL RESULTS
-// ===============================
-const overall={
-A:[...week1.A,...week2.A,...week3.A,...week4.A,...week5.A,...week6.A,...week7.A],
-B:[...week1.B,...week2.B,...week3.B,...week4.B,...week5.B,...week6.B,...week7.B]
-};
-
-// ===============================
-// TABLE CALCULATION
-// ===============================
-function computeTable(stream){
-
-const table=new Map();
-
-for(const team of teams[stream]){
-table.set(team,{team,P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,Pts:0});
+function processWeek(week,table){
+week.forEach(m=>{
+updateTable(table,m.home,m.away,m.hg,m.ag);
+});
 }
 
-for(const m of overall[stream]){
+processWeek(week5.A,tableA);
+processWeek(week5.B,tableB);
+processWeek(week7.B,tableB);
 
-if(!Number.isInteger(m.homeGoals)||!Number.isInteger(m.awayGoals))continue;
+function renderResults(id,list){
 
-const home=table.get(m.home);
-const away=table.get(m.away);
+let el=document.getElementById(id);
 
-home.P++;away.P++;
+el.innerHTML="";
 
-home.GF+=m.homeGoals;
-home.GA+=m.awayGoals;
-away.GF+=m.awayGoals;
-away.GA+=m.homeGoals;
-
-if(m.homeGoals>m.awayGoals){
-home.W++;away.L++;home.Pts+=3;
-}else if(m.homeGoals<m.awayGoals){
-away.W++;home.L++;away.Pts+=3;
-}else{
-home.D++;away.D++;home.Pts++;away.Pts++;
-}
-
-home.GD=home.GF-home.GA;
-away.GD=away.GF-away.GA;
+list.forEach(m=>{
+let li=document.createElement("li");
+li.textContent=`${m.home} ${m.hg} - ${m.ag} ${m.away}`;
+el.appendChild(li);
+});
 
 }
 
-const rows=[...table.values()];
+renderResults("resultsListA5",week5.A);
+renderResults("resultsListB5",week5.B);
+renderResults("resultsListB7",week7.B);
 
-rows.sort((a,b)=>
-(b.Pts-a.Pts)||
-(b.GD-a.GD)||
-(b.GF-a.GF)
-);
+function renderTable(id,table){
 
-return rows;
-}
+table.sort((a,b)=>b.PTS-a.PTS||b.GD-a.GD||b.GF-a.GF);
 
-// ===============================
-// INIT
-// ===============================
-document.addEventListener("DOMContentLoaded",()=>{
+let body=document.getElementById(id);
+body.innerHTML="";
 
-const tableA=computeTable("A");
-const tableB=computeTable("B");
+table.forEach((t,i)=>{
 
-console.log("Stream A Table",tableA);
-console.log("Stream B Table",tableB);
+let tr=document.createElement("tr");
+
+tr.innerHTML=`
+<td>${i+1}</td>
+<td>${t.team}</td>
+<td>${t.P}</td>
+<td>${t.W}</td>
+<td>${t.D}</td>
+<td>${t.L}</td>
+<td>${t.GF}</td>
+<td>${t.GA}</td>
+<td>${t.GD}</td>
+<td>${t.PTS}</td>
+`;
+
+body.appendChild(tr);
 
 });
+
+}
+
+renderTable("logBodyA",tableA);
+renderTable("logBodyB",tableB);
+
+document.getElementById("yearNow").textContent=new Date().getFullYear();
