@@ -8,17 +8,14 @@
 
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Google AdSense -->
   <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
     crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <!-- Animated background -->
   <div class="bg-anim" aria-hidden="true">
     <div class="glow"></div>
     <div class="ball"></div>
@@ -48,13 +45,12 @@
   </header>
 
   <main>
-    <!-- HERO -->
     <section class="hero">
       <div class="container hero-grid">
         <div>
           <h1>WSL Match Updates</h1>
           <p class="muted">
-            Week 1, Week 2, Week 3 and Week 4 results are saved. Logs below are cumulative for all played matches.
+            Matchday 7 updated. Logs below are cumulative for all played matches from Week 1 to Week 7.
           </p>
 
           <div class="hero-actions">
@@ -64,15 +60,15 @@
 
           <div class="quick-cards">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Next Match</div>
-              <div id="nextMatch" class="card-big">Week 5 Fixtures Pending</div>
-              <div id="nextMatchMeta" class="muted small">Official fixtures can be updated anytime</div>
+              <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Next Matchday</div>
+              <div id="nextMatch" class="card-big">Tuesday, 31 March 2026</div>
+              <div id="nextMatchMeta" class="muted small">Fixtures confirmed for Stream A and Stream B</div>
             </div>
 
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
-              <div id="highlightResult" class="card-big">Loading…</div>
-              <div class="muted small">Latest played match</div>
+              <div id="highlightResult" class="card-big">Fast Eleven FC 0 – 3 FC Wondrous (W/O)</div>
+              <div class="muted small">Latest matchday highlight</div>
             </div>
 
             <div class="card">
@@ -106,11 +102,10 @@
       </div>
     </section>
 
-    <!-- FIXTURES -->
     <section id="fixtures" class="section">
       <div class="container">
         <div class="section-head">
-          <h2><i class="fa-solid fa-calendar-days"></i> Fixtures (Week 5)</h2>
+          <h2><i class="fa-solid fa-calendar-days"></i> Fixtures</h2>
           <div class="tools">
             <input id="fixtureSearch" class="input" placeholder="Search team..." />
           </div>
@@ -129,7 +124,7 @@
         </div>
 
         <div class="table-wrap">
-          <table class="table" aria-label="Week 5 fixtures">
+          <table class="table" aria-label="Fixtures">
             <thead>
               <tr>
                 <th>Date</th>
@@ -139,19 +134,16 @@
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody id="fixturesBody">
-              <tr><td colspan="5" class="muted">Loading fixtures…</td></tr>
-            </tbody>
+            <tbody id="fixturesBody"></tbody>
           </table>
         </div>
 
         <p class="muted small" style="margin-top:10px;">
-          Venue is automatically set to the Home team and time is forced to 16:00.
+          Venue is automatically set to the Home team and time is set to 16:00.
         </p>
       </div>
     </section>
 
-    <!-- RESULTS -->
     <section id="results" class="section alt">
       <div class="container">
         <div class="section-head">
@@ -162,92 +154,112 @@
         </div>
 
         <div class="search-actions">
-          <button class="btn btn-outline small-btn week-btn active" type="button" id="btnShowWeek1">
-            <i class="fa-solid fa-1"></i> Week 1
-          </button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek2">
-            <i class="fa-solid fa-2"></i> Week 2
-          </button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek3">
-            <i class="fa-solid fa-3"></i> Week 3
-          </button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek4">
-            <i class="fa-solid fa-4"></i> Week 4
-          </button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek5">
-            <i class="fa-solid fa-5"></i> Week 5
-          </button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek1">Week 1</button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek2">Week 2</button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek3">Week 3</button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek4">Week 4</button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek5">Week 5</button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek6">Week 6</button>
+          <button class="btn btn-outline small-btn week-btn active" type="button" id="btnShowWeek7">Week 7</button>
           <button class="btn btn-outline small-btn" type="button" id="btnClearResults">
             <i class="fa-solid fa-eraser"></i> Clear Search
           </button>
         </div>
 
-        <div id="week1Block">
+        <div id="week1Block" class="week-block" style="display:none;">
           <h3 class="subhead"><i class="fa-solid fa-circle-check"></i> Week 1</h3>
           <div class="grid-2">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <div class="card-title">Stream A • Results</div>
               <ol id="resultsListA1" class="muted list-ol"></ol>
             </div>
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <div class="card-title">Stream B • Results</div>
               <ol id="resultsListB1" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
 
-        <div id="week2Block" style="display:none; margin-top:14px;">
+        <div id="week2Block" class="week-block" style="display:none; margin-top:14px;">
           <h3 class="subhead"><i class="fa-solid fa-fire"></i> Week 2</h3>
           <div class="grid-2">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <div class="card-title">Stream A • Results</div>
               <ol id="resultsListA2" class="muted list-ol"></ol>
             </div>
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <div class="card-title">Stream B • Results</div>
               <ol id="resultsListB2" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
 
-        <div id="week3Block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-bolt"></i> Week 3 • Friday, 27 February 2026</h3>
+        <div id="week3Block" class="week-block" style="display:none; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-bolt"></i> Week 3</h3>
           <div class="grid-2">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <div class="card-title">Stream A • Results</div>
               <ol id="resultsListA3" class="muted list-ol"></ol>
             </div>
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <div class="card-title">Stream B • Results</div>
               <ol id="resultsListB3" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
 
-        <div id="week4Block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-futbol"></i> Week 4 • Saturday, 14 March 2026</h3>
+        <div id="week4Block" class="week-block" style="display:none; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-futbol"></i> Week 4</h3>
           <div class="grid-2">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <div class="card-title">Stream A • Results</div>
               <ol id="resultsListA4" class="muted list-ol"></ol>
             </div>
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <div class="card-title">Stream B • Results</div>
               <ol id="resultsListB4" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
 
-        <div id="week5Block" style="display:none; margin-top:14px;">
+        <div id="week5Block" class="week-block" style="display:none; margin-top:14px;">
           <h3 class="subhead"><i class="fa-solid fa-calendar-plus"></i> Week 5</h3>
           <div class="grid-2">
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-a"></i> Stream A • Results</div>
+              <div class="card-title">Stream A • Results</div>
               <ol id="resultsListA5" class="muted list-ol"></ol>
             </div>
             <div class="card">
-              <div class="card-title"><i class="fa-solid fa-b"></i> Stream B • Results</div>
+              <div class="card-title">Stream B • Results</div>
               <ol id="resultsListB5" class="muted list-ol"></ol>
+            </div>
+          </div>
+        </div>
+
+        <div id="week6Block" class="week-block" style="display:none; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-flag"></i> Week 6</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Stream A • Results</div>
+              <ol id="resultsListA6" class="muted list-ol"></ol>
+            </div>
+            <div class="card">
+              <div class="card-title">Stream B • Results</div>
+              <ol id="resultsListB6" class="muted list-ol"></ol>
+            </div>
+          </div>
+        </div>
+
+        <div id="week7Block" class="week-block" style="display:block; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-trophy"></i> Week 7 • Matchday 7 • 28 March 2026</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Stream A • Results</div>
+              <ol id="resultsListA7" class="muted list-ol"></ol>
+            </div>
+            <div class="card">
+              <div class="card-title">Stream B • Results</div>
+              <ol id="resultsListB7" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
@@ -265,7 +277,6 @@
       </div>
     </section>
 
-    <!-- STREAM A LOG -->
     <section id="streamA" class="section">
       <div class="container">
         <div class="section-head">
@@ -287,7 +298,6 @@
       </div>
     </section>
 
-    <!-- STREAM B LOG -->
     <section id="streamB" class="section alt">
       <div class="container">
         <div class="section-head">
@@ -318,7 +328,6 @@
       </div>
     </section>
 
-    <!-- PHOTOS -->
     <section id="photos" class="section">
       <div class="container">
         <div class="section-head">
@@ -351,6 +360,6 @@
     </footer>
   </main>
 
-  <script src="Script.js?v=35" defer></script>
+  <script src="Script.js?v=41" defer></script>
 </body>
 </html>
