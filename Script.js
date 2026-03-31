@@ -1,6 +1,6 @@
 "use strict";
 
-/* Script.js v41 UPDATED */
+/* Script.js v42 UPDATED */
 
 const DONATE_URL = "https://www.paypal.com/donate/?business=mkansicc@gmail.com&currency_code=ZAR";
 
@@ -148,6 +148,21 @@ const week7 = {
   ]
 };
 
+const week8 = {
+  A: [
+    { home: "Royal Tigers FC", away: "FC Wondrous", homeGoals: 7, awayGoals: 2 },
+    { home: "Crusaders FC", away: "Fast Eleven FC", homeGoals: 4, awayGoals: 3 },
+    { home: "Eastern Rangers FC", away: "Highlanders FC", homeGoals: 1, awayGoals: 1 },
+    { home: "Morning Stars FC", away: "Movers FC", homeGoals: 2, awayGoals: 1 }
+  ],
+
+  B: [
+    { home: "Junior Pirates FC", away: "Liverpool FC", homeGoals: 3, awayGoals: 2 },
+    { home: "City Pillars FC", away: "Labamba FC", homeGoals: 0, awayGoals: 2 },
+    { home: "Bhubhezi FC", away: "Real Rangers FC", homeGoals: 3, awayGoals: 1 }
+  ]
+};
+
 const allWeeks = [
   { key: 1, label: "Week 1", A: week1.A, B: week1.B },
   { key: 2, label: "Week 2", A: week2.A, B: week2.B },
@@ -155,12 +170,13 @@ const allWeeks = [
   { key: 4, label: "Week 4", A: week4.A, B: week4.B },
   { key: 5, label: "Week 5", A: week5.A, B: week5.B },
   { key: 6, label: "Week 6", A: week6.A, B: week6.B },
-  { key: 7, label: "Week 7", A: week7.A, B: week7.B }
+  { key: 7, label: "Week 7", A: week7.A, B: week7.B },
+  { key: 8, label: "Week 8", A: week8.A, B: week8.B }
 ];
 
 const overall = {
-  A: [...week1.A, ...week2.A, ...week3.A, ...week4.A, ...week5.A, ...week6.A, ...week7.A],
-  B: [...week1.B, ...week2.B, ...week3.B, ...week4.B, ...week5.B, ...week6.B, ...week7.B]
+  A: [...week1.A, ...week2.A, ...week3.A, ...week4.A, ...week5.A, ...week6.A, ...week7.A, ...week8.A],
+  B: [...week1.B, ...week2.B, ...week3.B, ...week4.B, ...week5.B, ...week6.B, ...week7.B, ...week8.B]
 };
 
 /* ===============================
@@ -168,14 +184,14 @@ FIXTURES
 =============================== */
 
 const fixtures = [
-  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Junior Pirates FC vs Liverpool FC", venue: "Junior Pirates FC", status: "Scheduled", stream: "B" },
-  { date: "Tuesday, 31 March 2026", time: "16:00", match: "City Pillars FC vs Labamba FC", venue: "City Pillars FC", status: "Scheduled", stream: "B" },
-  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Bhubhezi FC vs Real Rangers FC", venue: "Bhubhezi FC", status: "Scheduled", stream: "B" },
+  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Junior Pirates FC vs Liverpool FC", venue: "Junior Pirates FC", status: "FT • 3-2", stream: "B" },
+  { date: "Tuesday, 31 March 2026", time: "16:00", match: "City Pillars FC vs Labamba FC", venue: "City Pillars FC", status: "FT • 0-2", stream: "B" },
+  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Bhubhezi FC vs Real Rangers FC", venue: "Bhubhezi FC", status: "FT • 3-1", stream: "B" },
 
-  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Royal Tigers FC vs FC Wondrous", venue: "Royal Tigers FC", status: "Scheduled", stream: "A" },
-  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Crusaders FC vs Fast Eleven FC", venue: "Crusaders FC", status: "Scheduled", stream: "A" },
-  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Eastern Rangers FC vs Highlanders FC", venue: "Eastern Rangers FC", status: "Scheduled", stream: "A" },
-  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Morning Stars FC vs Movers FC", venue: "Morning Stars FC", status: "Scheduled", stream: "A" },
+  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Royal Tigers FC vs FC Wondrous", venue: "Royal Tigers FC", status: "FT • 7-2", stream: "A" },
+  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Crusaders FC vs Fast Eleven FC", venue: "Crusaders FC", status: "FT • 4-3", stream: "A" },
+  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Eastern Rangers FC vs Highlanders FC", venue: "Eastern Rangers FC", status: "FT • 1-1", stream: "A" },
+  { date: "Tuesday, 31 March 2026", time: "16:00", match: "Morning Stars FC vs Movers FC", venue: "Morning Stars FC", status: "FT • 2-1", stream: "A" },
 
   { date: "Monday, 06 April 2026", time: "16:00", match: "Xihuhuri FC vs Welverdiend Masters FC", venue: "Xihuhuri FC", status: "Postponed match", stream: "B" },
   { date: "Saturday, 11 April 2026", time: "-", match: "League resumes after Easter holiday", venue: "-", status: "Notice", stream: "NOTICE" }
@@ -213,6 +229,8 @@ function computeTable(streamKey) {
   overall[streamKey].forEach(m => {
     const h = table[m.home];
     const a = table[m.away];
+
+    if (!h || !a) return;
 
     h.P++; a.P++;
 
@@ -305,7 +323,7 @@ function showWeek(weekNo) {
 }
 
 function setupWeekButtons() {
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= 8; i++) {
     const btn = $(`btnShowWeek${i}`);
     if (btn) {
       btn.addEventListener("click", () => showWeek(i));
@@ -375,7 +393,8 @@ function setupResultSearch() {
     resultsListA4: week4.A, resultsListB4: week4.B,
     resultsListA5: week5.A, resultsListB5: week5.B,
     resultsListA6: week6.A, resultsListB6: week6.B,
-    resultsListA7: week7.A, resultsListB7: week7.B
+    resultsListA7: week7.A, resultsListB7: week7.B,
+    resultsListA8: week8.A, resultsListB8: week8.B
   };
 
   function applyResultSearch() {
@@ -483,6 +502,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderResults("resultsListA7", week7.A);
   renderResults("resultsListB7", week7.B);
 
+  renderResults("resultsListA8", week8.A);
+  renderResults("resultsListB8", week8.B);
+
   renderLog("logBodyA", computeTable("A"));
   renderLog("logBodyB", computeTable("B"));
 
@@ -492,5 +514,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFixtureFilters();
   setupResultSearch();
   setupPhotos();
-  showWeek(7);
+  showWeek(8);
 });
