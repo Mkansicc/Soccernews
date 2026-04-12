@@ -7,7 +7,6 @@
   <meta name="description" content="Welverdiend Soccer League updates: fixtures, results, log tables, photos, donations." />
 
   <link rel="stylesheet" href="style.css" />
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <script async
@@ -50,7 +49,7 @@
         <div>
           <h1>WSL Match Updates</h1>
           <p class="muted">
-            Matchday 8 updated. Logs below are cumulative for all played matches from Week 1 to Week 8.
+            Matchday 9 updated. Logs below are cumulative for all played matches from Week 1 to Week 9.
           </p>
 
           <div class="hero-actions">
@@ -61,13 +60,13 @@
           <div class="quick-cards">
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Latest Matchday</div>
-              <div id="nextMatch" class="card-big">Tuesday, 31 March 2026</div>
-              <div id="nextMatchMeta" class="muted small">Week 8 results confirmed for Stream A and Stream B</div>
+              <div id="nextMatch" class="card-big">Sunday, 12 April 2026</div>
+              <div id="nextMatchMeta" class="muted small">Week 9 results confirmed for Stream A and Stream B</div>
             </div>
 
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
-              <div id="highlightResult" class="card-big">Royal Tigers FC 7 – 2 FC Wondrous</div>
+              <div id="highlightResult" class="card-big">Liverpool FC 5 – 0 City Pillars FC</div>
               <div class="muted small">Latest matchday highlight</div>
             </div>
 
@@ -161,7 +160,8 @@
           <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek5">Week 5</button>
           <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek6">Week 6</button>
           <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek7">Week 7</button>
-          <button class="btn btn-outline small-btn week-btn active" type="button" id="btnShowWeek8">Week 8</button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek8">Week 8</button>
+          <button class="btn btn-outline small-btn week-btn active" type="button" id="btnShowWeek9">Week 9</button>
           <button class="btn btn-outline small-btn" type="button" id="btnClearResults">
             <i class="fa-solid fa-eraser"></i> Clear Search
           </button>
@@ -265,7 +265,7 @@
           </div>
         </div>
 
-        <div id="week8Block" class="week-block" style="display:block; margin-top:14px;">
+        <div id="week8Block" class="week-block" style="display:none; margin-top:14px;">
           <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 8 • Matchday 8 • 31 March 2026</h3>
           <div class="grid-2">
             <div class="card">
@@ -275,6 +275,20 @@
             <div class="card">
               <div class="card-title">Stream B • Results</div>
               <ol id="resultsListB8" class="muted list-ol"></ol>
+            </div>
+          </div>
+        </div>
+
+        <div id="week9Block" class="week-block" style="display:block; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 9 • Matchday 9 • 12 April 2026</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Stream A • Results</div>
+              <ol id="resultsListA9" class="muted list-ol"></ol>
+            </div>
+            <div class="card">
+              <div class="card-title">Stream B • Results</div>
+              <ol id="resultsListB9" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
@@ -375,6 +389,6 @@
     </footer>
   </main>
 
-  <script src="Script.js?v=42" defer></script>
+  <script src="Script.js?v=46" defer></script>
 </body>
 </html>
