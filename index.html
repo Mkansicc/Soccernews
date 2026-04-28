@@ -1,350 +1,53 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Welverdiend Soccer League (WSL) | Updates</title>
-  <meta name="description" content="Welverdiend Soccer League updates: fixtures, results, log tables, photos, donations." />
-
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
-    crossorigin="anonymous"></script>
+<meta charset="utf-8">
+<title>WSL Matchday 11</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="bg-anim" aria-hidden="true">
-    <div class="glow"></div>
-    <div class="ball"></div>
-    <div class="ball ball2"></div>
-    <div class="ball ball3"></div>
-  </div>
 
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="brand">
-        <img class="wsl-logo" src="images/wsl-logo.png" alt="WSL Logo" onerror="this.style.display='none'">
-        <div class="brand-text">
-          <div class="brand-title">WELVERDIEND SOCCER LEAGUE (WSL)</div>
-          <div class="brand-subtitle">Fixtures • Results • Logs</div>
-        </div>
-      </div>
+<h1>WELVERDIEND SOCCER LEAGUE</h1>
+<h2>Matchday 11 • 27 April 2026</h2>
 
-      <nav class="nav">
-        <a href="#fixtures"><i class="fa-solid fa-calendar-days"></i> Fixtures</a>
-        <a href="#results"><i class="fa-solid fa-trophy"></i> Results</a>
-        <a href="#streamA"><i class="fa-solid fa-table-list"></i> Stream A Log</a>
-        <a href="#streamB"><i class="fa-solid fa-table-list"></i> Stream B Log</a>
-        <a href="#photos"><i class="fa-solid fa-image"></i> Photos</a>
-        <a class="btn btn-donate" href="#donate"><i class="fa-solid fa-heart"></i> Donate</a>
-      </nav>
-    </div>
-  </header>
+<!-- RESULTS -->
+<div class="grid-2">
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <h1>WSL Match Updates</h1>
-          <p class="muted">
-            Matchday 11 updated. Logs below are cumulative for all confirmed played matches from Week 1 to Week 11.
-          </p>
+<div>
+<h3>Stream A</h3>
+<ol id="resultsListA11"></ol>
+</div>
 
-          <div class="hero-actions">
-            <a class="btn" href="#fixtures"><i class="fa-solid fa-bolt"></i> View Fixtures</a>
-            <a class="btn btn-outline" href="#results"><i class="fa-solid fa-trophy"></i> View Results</a>
-          </div>
+<div>
+<h3>Stream B</h3>
+<ol id="resultsListB11"></ol>
+</div>
 
-          <div class="quick-cards">
-            <div class="card">
-              <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Latest Matchday</div>
-              <div id="nextMatch" class="card-big">Monday, 27 April 2026</div>
-              <div id="nextMatchMeta" class="muted small">Matchday 11 confirmed results added; 2 fixtures remain pending</div>
-            </div>
+</div>
 
-            <div class="card">
-              <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
-              <div id="highlightResult" class="card-big">Liverpool FC 4 – 1 Bhubhezi FC</div>
-              <div class="muted small">Latest confirmed highlight</div>
-            </div>
+<!-- LOG TABLES -->
+<h2>Log Table Stream A</h2>
+<table border="1">
+<thead>
+<tr>
+<th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+</tr>
+</thead>
+<tbody id="logBodyA"></tbody>
+</table>
 
-            <div class="card">
-              <div class="card-title"><i class="fa-solid fa-crown"></i> Leaders (Overall)</div>
-              <div id="leaderA" class="card-big">A: Loading…</div>
-              <div id="leaderB" class="card-big">B: Loading…</div>
-            </div>
-          </div>
-        </div>
+<h2>Log Table Stream B</h2>
+<table border="1">
+<thead>
+<tr>
+<th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+</tr>
+</thead>
+<tbody id="logBodyB"></tbody>
+</table>
 
-        <div class="hero-side">
-          <div class="card card-highlight" id="donate">
-            <div class="card-title"><i class="fa-solid fa-hand-holding-heart"></i> Sponsor / Donate</div>
-            <p class="muted">Support kits, transport, balls, and youth development.</p>
+<script src="Script.js"></script>
 
-            <a id="donateLink" class="btn btn-donate wide" href="#" target="_blank" rel="noopener">
-              <i class="fa-solid fa-heart"></i> Donate Now
-            </a>
-
-            <div class="muted small" style="margin-top:10px;">
-              <code>Donate link is set in Script.js</code>
-            </div>
-
-            <div class="sponsor-row">
-              <span class="pill"><i class="fa-solid fa-shirt"></i> Kits</span>
-              <span class="pill"><i class="fa-solid fa-bus"></i> Transport</span>
-              <span class="pill"><i class="fa-solid fa-futbol"></i> Balls</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="fixtures" class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2><i class="fa-solid fa-calendar-days"></i> Fixtures</h2>
-          <div class="tools">
-            <input id="fixtureSearch" class="input" placeholder="Search team..." />
-          </div>
-        </div>
-
-        <div class="search-actions">
-          <button class="btn btn-outline small-btn" type="button" id="btnStreamA">
-            <i class="fa-solid fa-filter"></i> Stream A
-          </button>
-          <button class="btn btn-outline small-btn" type="button" id="btnStreamB">
-            <i class="fa-solid fa-filter"></i> Stream B
-          </button>
-          <button class="btn btn-outline small-btn" type="button" id="btnClearFixture">
-            <i class="fa-solid fa-eraser"></i> Clear
-          </button>
-        </div>
-
-        <div class="table-wrap">
-          <table class="table" aria-label="Fixtures">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Match</th>
-                <th>Venue (Home)</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="fixturesBody"></tbody>
-          </table>
-        </div>
-
-        <p class="muted small" style="margin-top:10px;">
-          Venue is automatically set to the Home team and time is set to 16:00.
-        </p>
-      </div>
-    </section>
-
-    <section id="results" class="section alt">
-      <div class="container">
-        <div class="section-head">
-          <h2><i class="fa-solid fa-trophy"></i> Results</h2>
-          <div class="tools">
-            <input id="resultSearch" class="input" placeholder="Search team..." />
-          </div>
-        </div>
-
-        <div class="search-actions">
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek1">Week 1</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek2">Week 2</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek3">Week 3</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek4">Week 4</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek5">Week 5</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek6">Week 6</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek7">Week 7</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek8">Week 8</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek9">Week 9</button>
-          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek10">Week 10</button>
-          <button class="btn btn-outline small-btn week-btn active" type="button" id="btnShowWeek11">Week 11</button>
-          <button class="btn btn-outline small-btn" type="button" id="btnClearResults">
-            <i class="fa-solid fa-eraser"></i> Clear Search
-          </button>
-        </div>
-
-        <div id="week1Block" class="week-block" style="display:none;">
-          <h3 class="subhead"><i class="fa-solid fa-circle-check"></i> Week 1</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA1" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB1" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week2Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-fire"></i> Week 2</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA2" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB2" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week3Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-bolt"></i> Week 3</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA3" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB3" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week4Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-futbol"></i> Week 4</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA4" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB4" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week5Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-calendar-plus"></i> Week 5</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA5" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB5" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week6Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-flag"></i> Week 6</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA6" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB6" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week7Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-trophy"></i> Week 7 • Matchday 7 • 28 March 2026</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA7" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB7" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week8Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 8 • Matchday 8 • 31 March 2026</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA8" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB8" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week9Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 9 • Matchday 9 • 12 April 2026</h3>
-          <div class="grid-2">
-            <div class="card"><div class="card-title">Stream A • Results</div><ol id="resultsListA9" class="muted list-ol"></ol></div>
-            <div class="card"><div class="card-title">Stream B • Results</div><ol id="resultsListB9" class="muted list-ol"></ol></div>
-          </div>
-        </div>
-
-        <div id="week10Block" class="week-block" style="display:none; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 10 • Matchday 10 • 19 April 2026</h3>
-          <div class="grid-2">
-            <div class="card">
-              <div class="card-title">Stream A • Results</div>
-              <ol id="resultsListA10" class="muted list-ol"></ol>
-            </div>
-            <div class="card">
-              <div class="card-title">Stream B • Results</div>
-              <ol id="resultsListB10" class="muted list-ol"></ol>
-            </div>
-          </div>
-        </div>
-
-        <div id="week11Block" class="week-block" style="display:block; margin-top:14px;">
-          <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 11 • Matchday 11 • 27 April 2026</h3>
-          <div class="grid-2">
-            <div class="card">
-              <div class="card-title">Stream A • Results</div>
-              <ol id="resultsListA11" class="muted list-ol"></ol>
-              <p class="muted small">Eastern Rangers FC vs Movers FC is still pending.</p>
-            </div>
-            <div class="card">
-              <div class="card-title">Stream B • Results</div>
-              <ol id="resultsListB11" class="muted list-ol"></ol>
-              <p class="muted small">Real Rangers FC vs Xihuhuri FC is still pending.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="streamA" class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2><i class="fa-solid fa-table-list"></i> Stream A • Log Table (Overall)</h2>
-        </div>
-        <div class="table-wrap">
-          <table class="table" aria-label="Stream A overall log table">
-            <thead>
-              <tr>
-                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
-              </tr>
-            </thead>
-            <tbody id="logBodyA">
-              <tr><td colspan="10" class="muted">Loading log…</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section id="streamB" class="section alt">
-      <div class="container">
-        <div class="section-head">
-          <h2><i class="fa-solid fa-table-list"></i> Stream B • Log Table (Overall)</h2>
-        </div>
-        <div class="table-wrap">
-          <table class="table" aria-label="Stream B overall log table">
-            <thead>
-              <tr>
-                <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
-              </tr>
-            </thead>
-            <tbody id="logBodyB">
-              <tr><td colspan="10" class="muted">Loading log…</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <section id="photos" class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2><i class="fa-solid fa-image"></i> Photos (1–16)</h2>
-          <div class="tools">
-            <button class="btn btn-outline small-btn" type="button" id="prevPhoto"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="btn btn-outline small-btn" type="button" id="nextPhoto"><i class="fa-solid fa-chevron-right"></i></button>
-          </div>
-        </div>
-
-        <div class="slideshow card">
-          <div class="slide-frame">
-            <img id="slideImage" alt="Team photo slideshow" />
-          </div>
-          <div class="slide-caption">
-            <div id="slideTitle" class="slide-title">Loading…</div>
-            <div id="slideMeta" class="muted small"></div>
-          </div>
-        </div>
-
-        <p class="muted small">Put your photos in <code>images/photo1.jpg</code> up to <code>images/photo16.jpg</code>.</p>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <div class="muted small">© <span id="yearNow"></span> Welverdiend Soccer League</div>
-        <div class="muted small">Designed by CC Mkansi • Built for GitHub Pages</div>
-      </div>
-    </footer>
-  </main>
-
-  <script src="Script.js?v=48" defer></script>
 </body>
 </html>
