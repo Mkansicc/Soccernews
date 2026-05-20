@@ -49,7 +49,7 @@
         <div>
           <h1>WSL Match Updates</h1>
           <p class="muted">
-            Matchday 11 updated. Logs below are cumulative for all confirmed played matches from Week 1 to Week 11.
+            Latest results updated. Logs below are cumulative for all confirmed played matches from Week 1 to Week 12.
           </p>
 
           <div class="hero-actions">
@@ -60,13 +60,13 @@
           <div class="quick-cards">
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-calendar-check"></i> Latest Matchday</div>
-              <div id="nextMatch" class="card-big">Monday, 27 April 2026</div>
-              <div id="nextMatchMeta" class="muted small">Matchday 11 confirmed results added; 2 fixtures remain pending</div>
+              <div id="nextMatch" class="card-big">Latest Results</div>
+              <div id="nextMatchMeta" class="muted small">Week 12 confirmed for Stream A and Stream B</div>
             </div>
 
             <div class="card">
               <div class="card-title"><i class="fa-solid fa-star"></i> Highlight</div>
-              <div id="highlightResult" class="card-big">Liverpool FC 4 – 1 Bhubhezi FC</div>
+              <div id="highlightResult" class="card-big">Royal Tigers FC 3 – 4 Morning Stars FC</div>
               <div class="muted small">Latest confirmed highlight</div>
             </div>
 
@@ -163,7 +163,8 @@
           <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek8">Week 8</button>
           <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek9">Week 9</button>
           <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek10">Week 10</button>
-          <button class="btn btn-outline small-btn week-btn active" type="button" id="btnShowWeek11">Week 11</button>
+          <button class="btn btn-outline small-btn week-btn" type="button" id="btnShowWeek11">Week 11</button>
+          <button class="btn btn-outline small-btn week-btn active" type="button" id="btnShowWeek12">Week 12</button>
           <button class="btn btn-outline small-btn" type="button" id="btnClearResults">
             <i class="fa-solid fa-eraser"></i> Clear Search
           </button>
@@ -255,18 +256,30 @@
           </div>
         </div>
 
-        <div id="week11Block" class="week-block" style="display:block; margin-top:14px;">
+        <div id="week11Block" class="week-block" style="display:none; margin-top:14px;">
           <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 11 • Matchday 11 • 27 April 2026</h3>
           <div class="grid-2">
             <div class="card">
               <div class="card-title">Stream A • Results</div>
               <ol id="resultsListA11" class="muted list-ol"></ol>
-              <p class="muted small">Eastern Rangers FC vs Movers FC is still pending.</p>
             </div>
             <div class="card">
               <div class="card-title">Stream B • Results</div>
               <ol id="resultsListB11" class="muted list-ol"></ol>
-              <p class="muted small">Real Rangers FC vs Xihuhuri FC is still pending.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="week12Block" class="week-block" style="display:block; margin-top:14px;">
+          <h3 class="subhead"><i class="fa-solid fa-medal"></i> Week 12 • Latest Results</h3>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Stream A • Results</div>
+              <ol id="resultsListA12" class="muted list-ol"></ol>
+            </div>
+            <div class="card">
+              <div class="card-title">Stream B • Results</div>
+              <ol id="resultsListB12" class="muted list-ol"></ol>
             </div>
           </div>
         </div>
